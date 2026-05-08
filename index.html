@@ -2137,6 +2137,266 @@ input, textarea, select {
   .section-header { flex-direction: column; align-items: flex-start; }
   .section-tagline { text-align: left; }
 }
+
+/* ========================================================================
+   Photos — avatars & thumbnails (added)
+   ======================================================================== */
+.avatar img,
+.creator-avatar img,
+.mini-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+.creator-avatar.has-photo,
+.avatar.has-photo,
+.mini-avatar.has-photo { color: transparent; }
+
+/* Thumbnail photo layer — sits on top of gradient bg, gradient is the fallback */
+.thumb-bg.has-photo {
+  background-size: cover;
+  background-position: center;
+}
+/* Slightly stronger bottom darken when a real photo is showing, for legibility */
+.video-card .thumb:has(.thumb-bg.has-photo) .thumb-overlay {
+  background: linear-gradient(180deg, rgba(15,42,36,0.05) 0%, rgba(15,42,36,0) 35%, rgba(15,42,36,0.55) 80%, rgba(15,42,36,0.85) 100%);
+}
+
+/* Player backgrounds with photo + dark wash for legibility */
+.player-bg-ad.has-photo,
+.player-bg-video.has-photo {
+  background-size: cover;
+  background-position: center;
+}
+.player-bg-ad.has-photo::after,
+.player-bg-video.has-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(15,42,36,0.78) 0%, rgba(15,42,36,0.55) 50%, rgba(15,42,36,0.85) 100%);
+}
+.player-bg-ad.has-photo::after {
+  background: linear-gradient(135deg, rgba(42,27,15,0.78) 0%, rgba(92,61,26,0.5) 50%, rgba(15,15,15,0.85) 100%);
+}
+
+/* ========================================================================
+   Verification Slider — proof-of-watch overlay (added)
+   ======================================================================== */
+.verify-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, rgba(15,42,36,0.78) 0%, rgba(15,42,36,0.94) 100%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: verifyFade 0.35s ease;
+  padding: 24px;
+}
+.verify-overlay.show { display: flex; }
+@keyframes verifyFade {
+  from { opacity: 0; backdrop-filter: blur(0px); }
+  to   { opacity: 1; backdrop-filter: blur(8px); }
+}
+
+.verify-card {
+  width: min(100%, 460px);
+  text-align: center;
+  color: var(--parchment);
+  position: relative;
+}
+.verify-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.verify-card h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: -0.015em;
+  margin-bottom: 8px;
+  color: var(--parchment);
+}
+.verify-card .verify-sub {
+  font-size: 14px;
+  color: var(--sage);
+  margin-bottom: 28px;
+  line-height: 1.45;
+}
+
+/* The slide track */
+.verify-track {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  height: 64px;
+  margin: 0 auto;
+  background: rgba(245, 241, 234, 0.08);
+  border: 1px solid rgba(245, 241, 234, 0.14);
+  border-radius: 100px;
+  overflow: hidden;
+  transition: background 0.3s ease, border-color 0.3s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+.verify-track-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  background: linear-gradient(90deg, rgba(200,144,46,0.0) 0%, rgba(200,144,46,0.55) 100%);
+  pointer-events: none;
+  transition: width 0.05s linear;
+}
+.verify-track-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(245, 241, 234, 0.55);
+  pointer-events: none;
+  padding-left: 64px;
+}
+.verify-arrows {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 2px;
+  pointer-events: none;
+  opacity: 0.45;
+}
+.verify-arrows span {
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--gold-soft);
+  border-top: 2px solid var(--gold-soft);
+  transform: rotate(45deg);
+  animation: verifyArrow 1.4s ease-in-out infinite;
+}
+.verify-arrows span:nth-child(2) { animation-delay: 0.15s; }
+.verify-arrows span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes verifyArrow {
+  0%, 100% { opacity: 0.3; transform: rotate(45deg) translate(-3px, 3px); }
+  50%      { opacity: 1;   transform: rotate(45deg) translate(0, 0); }
+}
+
+/* The draggable thumb (gold coin) */
+.verify-thumb {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(140deg, #ECC881 0%, #C8902E 50%, #B07A1F 100%);
+  box-shadow: 0 4px 18px rgba(200,144,46,0.45), inset 0 -2px 0 rgba(0,0,0,0.18), inset 0 2px 0 rgba(255,255,255,0.3);
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--evergreen);
+  transition: left 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 2;
+}
+.verify-thumb.dragging { cursor: grabbing; transition: none; }
+.verify-thumb svg { width: 22px; height: 22px; }
+
+/* Countdown timer ring beneath the slider */
+.verify-timer {
+  margin-top: 24px;
+  height: 4px;
+  width: 100%;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+  background: rgba(245, 241, 234, 0.08);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+}
+.verify-timer-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(90deg, var(--gold-soft) 0%, var(--gold) 100%);
+  transform-origin: left center;
+}
+.verify-overlay.show .verify-timer-fill {
+  animation: verifyDrain 5s linear forwards;
+}
+@keyframes verifyDrain {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+.verify-timer-text {
+  margin-top: 12px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  font-weight: 600;
+}
+.verify-timer-text strong { color: var(--gold-soft); font-weight: 700; }
+
+/* Success state */
+.verify-overlay.success .verify-track {
+  background: rgba(200,144,46,0.18);
+  border-color: rgba(200,144,46,0.6);
+}
+.verify-overlay.success .verify-track-fill { width: 100% !important; }
+.verify-overlay.success .verify-thumb {
+  left: calc(100% - 60px) !important;
+  background: linear-gradient(140deg, #ECC881 0%, #C8902E 100%);
+}
+.verify-overlay.success .verify-track-label,
+.verify-overlay.success .verify-arrows { opacity: 0; }
+.verify-overlay.success .verify-timer-fill { animation: none; }
+
+/* Failure state */
+.verify-overlay.fail .verify-track {
+  background: rgba(178,58,58,0.15);
+  border-color: rgba(178,58,58,0.5);
+  animation: verifyShake 0.4s ease;
+}
+@keyframes verifyShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+/* Tip prompt pulse — draws eye after successful verification */
+@keyframes tipPromptPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200,144,46,0); }
+  50%      { box-shadow: 0 0 0 12px rgba(200,144,46,0.18); }
+}
+.tip-prompt.pulse { animation: tipPromptPulse 1.2s ease-out 2; }
+
+@media (max-width: 768px) {
+  .verify-card h3 { font-size: 22px; }
+  .verify-card .verify-sub { font-size: 13px; margin-bottom: 20px; }
+  .verify-track { height: 56px; }
+  .verify-thumb { width: 48px; height: 48px; }
+  .verify-track-label { font-size: 11px; padding-left: 56px; }
+}
 </style>
 </head>
 <body>
@@ -2192,7 +2452,7 @@ input, textarea, select {
         </svg>
         $12.40
       </span>
-      <div class="avatar">RS</div>
+      <div class="avatar has-photo"><img src="https://randomuser.me/api/portraits/men/52.jpg" alt="Randall S." loading="lazy" /></div>
     </div>
   </div>
 </header>
@@ -2348,7 +2608,7 @@ input, textarea, select {
           <div class="story-visual">
             <div class="mini-mock mini-profile">
               <div class="mini-mock-header">
-                <div class="mini-avatar" style="background: linear-gradient(135deg, #C8902E, #B07A1F);">S</div>
+                <div class="mini-avatar has-photo"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Sally Whitman" loading="lazy" /></div>
                 <div>
                   <div class="mini-name">Sally Whitman</div>
                   <div class="mini-sub">50 · Midwest US · Verified</div>
@@ -3236,10 +3496,10 @@ input, textarea, select {
       </div>
       <div class="sidebar-section">
         <div class="sidebar-label">Following</div>
-        <div class="sidebar-link"><div class="creator-avatar" style="width:24px; height:24px; font-size:10px;">AH</div>Dr. Amelia Hart</div>
-        <div class="sidebar-link"><div class="creator-avatar" style="width:24px; height:24px; font-size:10px;">MR</div>Dr. Marcus Reeves</div>
-        <div class="sidebar-link"><div class="creator-avatar" style="width:24px; height:24px; font-size:10px;">SC</div>Dr. Sarah Chen</div>
-        <div class="sidebar-link"><div class="creator-avatar" style="width:24px; height:24px; font-size:10px;">JK</div>Jay Kettle, RD</div>
+        <div class="sidebar-link"><div class="creator-avatar has-photo" style="width:24px; height:24px; font-size:10px;"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Dr. Hart" loading="lazy" /></div>Dr. Amelia Hart</div>
+        <div class="sidebar-link"><div class="creator-avatar has-photo" style="width:24px; height:24px; font-size:10px;"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Dr. Reeves" loading="lazy" /></div>Dr. Marcus Reeves</div>
+        <div class="sidebar-link"><div class="creator-avatar has-photo" style="width:24px; height:24px; font-size:10px;"><img src="https://randomuser.me/api/portraits/women/26.jpg" alt="Dr. Chen" loading="lazy" /></div>Dr. Sarah Chen</div>
+        <div class="sidebar-link"><div class="creator-avatar has-photo" style="width:24px; height:24px; font-size:10px;"><img src="https://randomuser.me/api/portraits/men/15.jpg" alt="Jay Kettle" loading="lazy" /></div>Jay Kettle, RD</div>
       </div>
       <div class="sidebar-section">
         <div class="sidebar-label">Your tip jar</div>
@@ -3287,7 +3547,7 @@ input, textarea, select {
       <div class="video-grid">
         <div class="video-card" data-action="watch">
           <div class="thumb">
-            <div class="thumb-bg bg-1"></div>
+            <div class="thumb-bg bg-1 has-photo" style="background-image: url('https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=720&h=460&fit=crop&auto=format&q=70');"></div>
             <div class="thumb-pattern"></div>
             <div class="thumb-overlay"></div>
             <span class="thumb-tip-score"><span class="coin"></span>91% tip rate</span>
@@ -3301,7 +3561,7 @@ input, textarea, select {
 
         <div class="video-card" data-action="watch">
           <div class="thumb">
-            <div class="thumb-bg bg-3"></div>
+            <div class="thumb-bg bg-3 has-photo" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=720&h=460&fit=crop&auto=format&q=70');"></div>
             <div class="thumb-pattern"></div>
             <div class="thumb-overlay"></div>
             <span class="thumb-tip-score"><span class="coin"></span>88% tip rate</span>
@@ -3315,7 +3575,7 @@ input, textarea, select {
 
         <div class="video-card" data-action="watch">
           <div class="thumb">
-            <div class="thumb-bg bg-2"></div>
+            <div class="thumb-bg bg-2 has-photo" style="background-image: url('https://images.unsplash.com/photo-1631157769375-c393378b1bff?w=720&h=460&fit=crop&auto=format&q=70');"></div>
             <div class="thumb-pattern"></div>
             <div class="thumb-overlay"></div>
             <span class="thumb-tip-score"><span class="coin"></span>94% tip rate</span>
@@ -3329,7 +3589,7 @@ input, textarea, select {
 
         <div class="video-card" data-action="watch">
           <div class="thumb">
-            <div class="thumb-bg bg-4"></div>
+            <div class="thumb-bg bg-4 has-photo" style="background-image: url('https://images.unsplash.com/photo-1551884170-09fb70a3a2ed?w=720&h=460&fit=crop&auto=format&q=70');"></div>
             <div class="thumb-pattern"></div>
             <div class="thumb-overlay"></div>
             <span class="thumb-tip-score"><span class="coin"></span>72% tip rate</span>
@@ -3343,7 +3603,7 @@ input, textarea, select {
 
         <div class="video-card" data-action="watch">
           <div class="thumb">
-            <div class="thumb-bg bg-5"></div>
+            <div class="thumb-bg bg-5 has-photo" style="background-image: url('https://images.unsplash.com/photo-1559757175-5700dde675bc?w=720&h=460&fit=crop&auto=format&q=70');"></div>
             <div class="thumb-pattern"></div>
             <div class="thumb-overlay"></div>
             <span class="thumb-tip-score"><span class="coin"></span>89% tip rate</span>
@@ -3357,7 +3617,7 @@ input, textarea, select {
 
         <div class="video-card" data-action="watch">
           <div class="thumb">
-            <div class="thumb-bg bg-6"></div>
+            <div class="thumb-bg bg-6 has-photo" style="background-image: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=720&h=460&fit=crop&auto=format&q=70');"></div>
             <div class="thumb-pattern"></div>
             <div class="thumb-overlay"></div>
             <span class="thumb-tip-score"><span class="coin"></span>95% tip rate</span>
@@ -3371,7 +3631,7 @@ input, textarea, select {
 
         <div class="video-card" data-action="watch">
           <div class="thumb">
-            <div class="thumb-bg bg-7"></div>
+            <div class="thumb-bg bg-7 has-photo" style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=720&h=460&fit=crop&auto=format&q=70');"></div>
             <div class="thumb-pattern"></div>
             <div class="thumb-overlay"></div>
             <span class="thumb-tip-score"><span class="coin"></span>83% tip rate</span>
@@ -3385,7 +3645,7 @@ input, textarea, select {
 
         <div class="video-card" data-action="watch">
           <div class="thumb">
-            <div class="thumb-bg bg-8"></div>
+            <div class="thumb-bg bg-8 has-photo" style="background-image: url('https://images.unsplash.com/photo-1545389336-cf090694435e?w=720&h=460&fit=crop&auto=format&q=70');"></div>
             <div class="thumb-pattern"></div>
             <div class="thumb-overlay"></div>
             <span class="thumb-tip-score"><span class="coin"></span>78% tip rate</span>
@@ -3399,7 +3659,7 @@ input, textarea, select {
 
         <div class="video-card" data-action="watch">
           <div class="thumb">
-            <div class="thumb-bg bg-9"></div>
+            <div class="thumb-bg bg-9 has-photo" style="background-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=720&h=460&fit=crop&auto=format&q=70');"></div>
             <div class="thumb-pattern"></div>
             <div class="thumb-overlay"></div>
             <span class="thumb-tip-score"><span class="coin"></span>92% tip rate</span>
@@ -3422,8 +3682,8 @@ input, textarea, select {
   <div class="watch-shell">
     <div class="watch-main">
       <div class="player" id="player">
-        <div class="player-bg-ad"></div>
-        <div class="player-bg-video"></div>
+        <div class="player-bg-ad has-photo" style="background-image: url('https://images.unsplash.com/photo-1631157769375-c393378b1bff?w=1400&h=900&fit=crop&auto=format&q=70');"></div>
+        <div class="player-bg-video has-photo" style="background-image: url('https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=1400&h=900&fit=crop&auto=format&q=70');"></div>
 
         <div class="ad-banner">
           <span class="ad-label">Sponsored by Atria Sleep</span>
@@ -3467,6 +3727,31 @@ input, textarea, select {
         <div class="player-progress">
           <div class="player-progress-fill"></div>
         </div>
+
+        <!-- Verification overlay — appears when video ends, 5-second window to confirm watch -->
+        <div class="verify-overlay" id="verify-overlay">
+          <div class="verify-card">
+            <div class="verify-eyebrow" id="verify-eyebrow">⏤ Confirm you watched</div>
+            <h3 id="verify-headline">Slide the coin to prove you're here</h3>
+            <p class="verify-sub" id="verify-sub">Real attention earns. Slide all the way right within 5 seconds — if you miss it, the video plays again.</p>
+
+            <div class="verify-track" id="verify-track">
+              <div class="verify-track-fill" id="verify-track-fill"></div>
+              <div class="verify-track-label">Slide to confirm</div>
+              <div class="verify-arrows"><span></span><span></span><span></span></div>
+              <div class="verify-thumb" id="verify-thumb">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M13 5l7 7-7 7"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="verify-timer">
+              <div class="verify-timer-fill" id="verify-timer-fill"></div>
+            </div>
+            <div class="verify-timer-text" id="verify-timer-text"><strong id="verify-countdown">5</strong>&nbsp;&nbsp;seconds to confirm</div>
+          </div>
+        </div>
       </div>
 
       <div class="video-info">
@@ -3474,7 +3759,7 @@ input, textarea, select {
 
         <div class="video-meta-row">
           <div class="creator-row">
-            <div class="creator-avatar">AH</div>
+            <div class="creator-avatar has-photo"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Dr. Amelia Hart" loading="lazy" /></div>
             <div class="creator-info">
               <div class="name">Dr. Amelia Hart <span class="verified"></span></div>
               <div class="stats">182k subscribers · Endocrinologist</div>
@@ -4200,12 +4485,20 @@ document.querySelectorAll('[data-view]').forEach(el => {
     if (view === 'watch') {
       document.getElementById('player').classList.remove('playing');
       document.getElementById('time-display').textContent = '0:08 / 0:30 (Ad)';
+      const fill = document.querySelector('.player-progress-fill');
+      if (fill) fill.style.width = '35%';
       // Reset Tip/Jip prompt to initial choice state
       const tp = document.getElementById('tip-prompt');
       if (tp) {
         tp.querySelectorAll('.tj-state').forEach(s => s.classList.remove('active'));
         const c = tp.querySelector('.tj-state[data-state="choice"]');
         if (c) c.classList.add('active');
+        tp.classList.remove('pulse');
+      }
+      // Reset verification overlay
+      const vo = document.getElementById('verify-overlay');
+      if (vo) {
+        vo.classList.remove('show', 'success', 'fail');
       }
     }
   });
@@ -4275,9 +4568,11 @@ document.querySelectorAll('.tip-preset').forEach(p => {
 });
 
 /* ============================================================
-   Player ad → video advance (clicking in player area or after delay)
+   Player ad → video → verification flow
    ============================================================ */
 let adProgressInterval = null;
+let videoProgressInterval = null;
+
 function startAdProgress() {
   let pct = 35;
   if (adProgressInterval) clearInterval(adProgressInterval);
@@ -4287,10 +4582,12 @@ function startAdProgress() {
     if (pct >= 100) {
       pct = 100;
       clearInterval(adProgressInterval);
+      adProgressInterval = null;
       setTimeout(() => {
         player.classList.add('playing');
         timeDisplay.textContent = '0:00 / 14:22';
         document.querySelector('.player-progress-fill').style.width = '0%';
+        startVideoProgress();
       }, 600);
     }
     if (fill && !player.classList.contains('playing')) fill.style.width = pct + '%';
@@ -4298,12 +4595,230 @@ function startAdProgress() {
   }, 800);
 }
 
+function startVideoProgress() {
+  // Demo: compress 14:22 into ~6 seconds, then trigger verification
+  let pct = 0;
+  if (videoProgressInterval) clearInterval(videoProgressInterval);
+  const fill = document.querySelector('.player-progress-fill');
+  const totalSeconds = 862; // 14:22
+  videoProgressInterval = setInterval(() => {
+    pct += 8;
+    if (pct >= 100) {
+      pct = 100;
+      clearInterval(videoProgressInterval);
+      videoProgressInterval = null;
+      if (fill) fill.style.width = '100%';
+      if (timeDisplay) timeDisplay.textContent = '14:22 / 14:22';
+      // Trigger verification
+      setTimeout(verifyShow, 400);
+      return;
+    }
+    if (fill) fill.style.width = pct + '%';
+    if (timeDisplay) {
+      const elapsed = Math.round(totalSeconds * pct / 100);
+      const mm = Math.floor(elapsed / 60);
+      const ss = (elapsed % 60).toString().padStart(2,'0');
+      timeDisplay.textContent = `${mm}:${ss} / 14:22`;
+    }
+  }, 480);
+}
+
 player?.addEventListener('click', (e) => {
   if (e.target.closest('.player-controls')) return;
+  if (e.target.closest('.verify-overlay')) return;
   if (!player.classList.contains('playing')) {
     if (!adProgressInterval) startAdProgress();
   }
 });
+
+/* ============================================================
+   Verification slider — proof-of-watch
+   ============================================================ */
+const verifyOverlay = document.getElementById('verify-overlay');
+const verifyTrack = document.getElementById('verify-track');
+const verifyThumb = document.getElementById('verify-thumb');
+const verifyTrackFill = document.getElementById('verify-track-fill');
+const verifyTimerFill = document.getElementById('verify-timer-fill');
+const verifyCountdown = document.getElementById('verify-countdown');
+const verifyHeadline = document.getElementById('verify-headline');
+const verifySub = document.getElementById('verify-sub');
+const verifyEyebrow = document.getElementById('verify-eyebrow');
+
+let verifyTimeoutId = null;
+let verifyCountdownInterval = null;
+let verifyDragging = false;
+let verifyDragStartX = 0;
+let verifyThumbStartLeft = 4;
+let verifyVerified = false;
+
+function verifyShow() {
+  if (!verifyOverlay) return;
+  // Reset state
+  verifyOverlay.classList.remove('success', 'fail');
+  verifyOverlay.classList.add('show');
+  verifyVerified = false;
+  if (verifyThumb) verifyThumb.style.left = '4px';
+  if (verifyTrackFill) verifyTrackFill.style.width = '0%';
+  if (verifyHeadline) verifyHeadline.textContent = "Slide the coin to prove you're here";
+  if (verifySub) verifySub.textContent = 'Real attention earns. Slide all the way right within 5 seconds — if you miss it, the video plays again.';
+  if (verifyEyebrow) verifyEyebrow.textContent = '⏤ Confirm you watched';
+
+  // Restart timer animation
+  if (verifyTimerFill) {
+    verifyTimerFill.style.animation = 'none';
+    void verifyTimerFill.offsetWidth; // reflow trick
+    verifyTimerFill.style.animation = '';
+  }
+
+  // Countdown text
+  let secs = 5;
+  if (verifyCountdown) verifyCountdown.textContent = secs;
+  if (verifyCountdownInterval) clearInterval(verifyCountdownInterval);
+  verifyCountdownInterval = setInterval(() => {
+    secs--;
+    if (verifyCountdown) verifyCountdown.textContent = Math.max(0, secs);
+    if (secs <= 0) clearInterval(verifyCountdownInterval);
+  }, 1000);
+
+  // Hard timeout
+  if (verifyTimeoutId) clearTimeout(verifyTimeoutId);
+  verifyTimeoutId = setTimeout(() => {
+    if (!verifyVerified) verifyTimeout();
+  }, 5050);
+}
+
+function verifyHide() {
+  if (!verifyOverlay) return;
+  verifyOverlay.classList.remove('show');
+  if (verifyTimeoutId) { clearTimeout(verifyTimeoutId); verifyTimeoutId = null; }
+  if (verifyCountdownInterval) { clearInterval(verifyCountdownInterval); verifyCountdownInterval = null; }
+}
+
+function verifySuccess() {
+  if (verifyVerified) return;
+  verifyVerified = true;
+  if (verifyTimeoutId) clearTimeout(verifyTimeoutId);
+  if (verifyCountdownInterval) clearInterval(verifyCountdownInterval);
+  verifyOverlay.classList.add('success');
+  if (verifyEyebrow) verifyEyebrow.textContent = '⏤ Verified';
+  if (verifyHeadline) verifyHeadline.textContent = 'Got it — your $0.75 is yours.';
+  if (verifySub) verifySub.textContent = 'Now choose where the coin goes.';
+  // Snap thumb to end visually
+  setTimeout(() => {
+    verifyHide();
+    // Pulse the tip prompt to draw the eye
+    if (tipPrompt) {
+      tipPrompt.classList.remove('pulse');
+      void tipPrompt.offsetWidth;
+      tipPrompt.classList.add('pulse');
+    }
+  }, 1100);
+}
+
+function verifyTimeout() {
+  if (verifyVerified) return;
+  verifyOverlay.classList.add('fail');
+  if (verifyEyebrow) verifyEyebrow.textContent = '⏤ Missed it';
+  if (verifyHeadline) verifyHeadline.textContent = "We didn't catch that watch.";
+  if (verifySub) verifySub.textContent = 'No worries — the video will play again so you can confirm.';
+  // Replay the full video after a brief beat
+  setTimeout(() => {
+    verifyHide();
+    resetPlayerToAd();
+    showToast('Video will replay — slide to confirm next time');
+  }, 1800);
+}
+
+function resetPlayerToAd() {
+  if (videoProgressInterval) { clearInterval(videoProgressInterval); videoProgressInterval = null; }
+  if (adProgressInterval) { clearInterval(adProgressInterval); adProgressInterval = null; }
+  player.classList.remove('playing');
+  timeDisplay.textContent = '0:08 / 0:30 (Ad)';
+  const fill = document.querySelector('.player-progress-fill');
+  if (fill) fill.style.width = '35%';
+  // Auto-restart the simulated playback after a moment
+  setTimeout(() => { if (!adProgressInterval) startAdProgress(); }, 700);
+}
+
+/* Slider drag mechanics */
+function getTrackBounds() {
+  const trackRect = verifyTrack.getBoundingClientRect();
+  const thumbW = verifyThumb.offsetWidth;
+  return {
+    minLeft: 4,
+    maxLeft: trackRect.width - thumbW - 4,
+    trackLeft: trackRect.left,
+    trackWidth: trackRect.width,
+    thumbW
+  };
+}
+
+function onVerifyPointerDown(e) {
+  if (verifyVerified) return;
+  if (verifyOverlay.classList.contains('fail')) return;
+  verifyDragging = true;
+  verifyThumb.classList.add('dragging');
+  verifyDragStartX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+  verifyThumbStartLeft = parseFloat(verifyThumb.style.left || '4') || 4;
+  e.preventDefault();
+}
+
+function onVerifyPointerMove(e) {
+  if (!verifyDragging) return;
+  const x = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+  const dx = x - verifyDragStartX;
+  const b = getTrackBounds();
+  let newLeft = verifyThumbStartLeft + dx;
+  newLeft = Math.max(b.minLeft, Math.min(b.maxLeft, newLeft));
+  verifyThumb.style.left = newLeft + 'px';
+
+  // Update track fill behind thumb
+  const pct = ((newLeft - b.minLeft) / (b.maxLeft - b.minLeft)) * 100;
+  if (verifyTrackFill) verifyTrackFill.style.width = (pct + 8) + '%';
+
+  // Auto-complete if past 92%
+  if (pct >= 92) {
+    verifyDragging = false;
+    verifyThumb.classList.remove('dragging');
+    verifySuccess();
+  }
+}
+
+function onVerifyPointerUp() {
+  if (!verifyDragging) return;
+  verifyDragging = false;
+  verifyThumb.classList.remove('dragging');
+  if (verifyVerified) return;
+  // Check if past threshold; otherwise snap back
+  const b = getTrackBounds();
+  const currentLeft = parseFloat(verifyThumb.style.left || '4') || 4;
+  const pct = ((currentLeft - b.minLeft) / (b.maxLeft - b.minLeft)) * 100;
+  if (pct >= 92) {
+    verifySuccess();
+  } else {
+    // Snap back
+    verifyThumb.style.left = '4px';
+    if (verifyTrackFill) verifyTrackFill.style.width = '0%';
+  }
+}
+
+if (verifyThumb) {
+  verifyThumb.addEventListener('pointerdown', onVerifyPointerDown);
+  verifyThumb.addEventListener('mousedown', onVerifyPointerDown);
+  verifyThumb.addEventListener('touchstart', (e) => {
+    onVerifyPointerDown(e);
+  }, { passive: false });
+}
+window.addEventListener('pointermove', onVerifyPointerMove);
+window.addEventListener('mousemove', onVerifyPointerMove);
+window.addEventListener('touchmove', (e) => {
+  if (verifyDragging) { onVerifyPointerMove(e); e.preventDefault(); }
+}, { passive: false });
+window.addEventListener('pointerup', onVerifyPointerUp);
+window.addEventListener('mouseup', onVerifyPointerUp);
+window.addEventListener('touchend', onVerifyPointerUp);
+window.addEventListener('touchcancel', onVerifyPointerUp);
+
 
 /* ============================================================
    Confirm tip / jip toasts
