@@ -1,0 +1,4426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TipJip — Health & wellness video, where attention pays both ways</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+/* ========================================================================
+   TipJip — Design System
+   ======================================================================== */
+:root {
+  /* Color */
+  --evergreen: #0F2A24;
+  --evergreen-2: #1B3A33;
+  --evergreen-3: #2C4F46;
+  --parchment: #F5F1EA;
+  --parchment-2: #EDE7D9;
+  --parchment-3: #E2DBC9;
+  --gold: #C8902E;
+  --gold-2: #B07A1F;
+  --gold-soft: #ECC881;
+  --sage: #C9D2C2;
+  --sage-soft: #DCE2D8;
+  --charcoal: #1A1F1B;
+  --muted: #6B7268;
+  --muted-2: #94998F;
+  --line: rgba(15, 42, 36, 0.10);
+  --line-soft: rgba(15, 42, 36, 0.05);
+  --danger: #B23A3A;
+
+  /* Type */
+  --font-display: 'Quicksand', 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+
+  /* Sizing */
+  --container: 1280px;
+  --radius-sm: 6px;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--charcoal);
+  background: var(--parchment);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+  font-size: inherit;
+}
+a { color: inherit; text-decoration: none; }
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* ========================================================================
+   Header / Navigation
+   ======================================================================== */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(245, 241, 234, 0.92);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.app-header-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.logo-mark {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+}
+.logo-word {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+.logo-word .tip-part { color: var(--evergreen); }
+.logo-word .jip-part { color: var(--gold); }
+.nav-primary {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+.nav-primary button {
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  border-radius: 100px;
+  transition: all 0.15s ease;
+  letter-spacing: 0.01em;
+}
+.nav-primary button:hover {
+  color: var(--evergreen);
+  background: var(--parchment-2);
+}
+.nav-primary button.active {
+  color: var(--evergreen);
+  background: var(--parchment-3);
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.balance-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px 7px 12px;
+  background: var(--evergreen);
+  color: var(--gold-soft);
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.balance-pill .coin {
+  width: 14px;
+  height: 14px;
+}
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--evergreen-3), var(--evergreen));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--parchment);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  border: 2px solid var(--parchment);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+/* ========================================================================
+   View System
+   ======================================================================== */
+.view {
+  display: none;
+  animation: fadeIn 0.35s ease;
+}
+.view.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ========================================================================
+   Buttons
+   ======================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 100px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  transition: all 0.18s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--evergreen);
+  color: var(--parchment);
+}
+.btn-primary:hover {
+  background: var(--evergreen-2);
+  transform: translateY(-1px);
+}
+.btn-gold {
+  background: var(--gold);
+  color: var(--evergreen);
+}
+.btn-gold:hover {
+  background: var(--gold-2);
+  color: var(--parchment);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--evergreen);
+  box-shadow: inset 0 0 0 1.5px var(--evergreen);
+}
+.btn-outline:hover {
+  background: var(--evergreen);
+  color: var(--parchment);
+}
+.btn-ghost {
+  background: var(--parchment-2);
+  color: var(--evergreen);
+}
+.btn-ghost:hover {
+  background: var(--parchment-3);
+}
+.btn-sm { padding: 8px 16px; font-size: 13px; }
+.btn-lg { padding: 16px 28px; font-size: 15px; }
+
+/* ========================================================================
+   LANDING PAGE
+   ======================================================================== */
+.hero {
+  padding: 80px 0 60px;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 480px;
+  gap: 64px;
+  align-items: center;
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--parchment-3);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--evergreen);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.hero-eyebrow .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(36px, 4.6vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  color: var(--evergreen);
+  margin-bottom: 28px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+.hero h1 em {
+  font-style: normal;
+  font-weight: 700;
+  color: var(--gold);
+}
+.hero p.lede {
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 520px;
+  margin-bottom: 36px;
+}
+.hero-cta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.hero-meta {
+  margin-top: 32px;
+  display: flex;
+  gap: 32px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.hero-meta strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--evergreen);
+  letter-spacing: -0.02em;
+  margin-bottom: 2px;
+}
+
+/* Hero illustration - a stylized "tip jar moment" */
+.hero-art {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  max-width: 480px;
+  justify-self: end;
+}
+.hero-art-card {
+  position: absolute;
+  background: var(--parchment-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: 0 30px 60px -30px rgba(15, 42, 36, 0.18);
+}
+.hero-art-card-1 {
+  top: 0;
+  left: 0;
+  width: 64%;
+  z-index: 2;
+}
+.hero-art-card-2 {
+  bottom: 0;
+  right: 0;
+  width: 70%;
+  z-index: 3;
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-color: transparent;
+}
+.hero-art-card-3 {
+  top: 28%;
+  right: 6%;
+  width: 38%;
+  z-index: 4;
+  background: var(--parchment);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  aspect-ratio: 0.85;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-art-thumb {
+  aspect-ratio: 16 / 10;
+  background: linear-gradient(135deg, var(--evergreen-3), var(--evergreen));
+  border-radius: 10px;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-art-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(200, 144, 46, 0.3), transparent 50%);
+}
+.hero-art-thumb .play-mini {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  background: var(--parchment);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-art-thumb .play-mini::before {
+  content: "";
+  border-style: solid;
+  border-width: 6px 0 6px 10px;
+  border-color: transparent transparent transparent var(--evergreen);
+  margin-left: 2px;
+}
+.hero-art-card h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.hero-art-card p {
+  font-size: 12px;
+  color: var(--muted);
+}
+.hero-art-card-2 p { color: var(--sage); }
+.hero-art-balance {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid rgba(245, 241, 234, 0.15);
+  margin-top: 10px;
+  font-size: 12px;
+}
+.hero-art-balance .v {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--gold-soft);
+}
+
+/* ========================================================================
+   Section: How it works
+   ======================================================================== */
+.section {
+  padding: 96px 0;
+  border-bottom: 1px solid var(--line);
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 56px;
+  gap: 32px;
+}
+.section-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold-2);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.section h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(30px, 4vw, 52px);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--evergreen);
+  max-width: 640px;
+}
+.section h2 em {
+  font-style: normal;
+  font-weight: 700;
+  color: var(--gold);
+}
+.section-tagline {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 360px;
+  text-align: right;
+}
+
+.flow-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+}
+.flow-step {
+  position: relative;
+  padding: 36px 32px;
+  background: var(--parchment-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  transition: all 0.25s ease;
+}
+.flow-step:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px -24px rgba(15, 42, 36, 0.18);
+}
+.flow-step .step-num {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gold-2);
+  letter-spacing: 0.04em;
+  margin-bottom: 24px;
+  display: block;
+}
+.flow-step h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--evergreen);
+  margin-bottom: 12px;
+}
+.flow-step p {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.flow-step .step-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--parchment);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: var(--evergreen);
+}
+
+/* ========================================================================
+   Three audiences section (split bands)
+   ======================================================================== */
+.audiences {
+  padding: 0;
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-bottom: none;
+}
+.audiences .section-eyebrow { color: var(--gold-soft); }
+.audiences h2 { color: var(--parchment); }
+.audiences-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid rgba(245, 241, 234, 0.15);
+}
+.audiences-tab {
+  flex: 1;
+  padding: 24px 28px;
+  cursor: pointer;
+  border-right: 1px solid rgba(245, 241, 234, 0.15);
+  transition: background 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+.audiences-tab:last-child { border-right: none; }
+.audiences-tab:hover { background: rgba(245, 241, 234, 0.04); }
+.audiences-tab.active {
+  background: var(--evergreen-2);
+}
+.audiences-tab .tab-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sage);
+  font-weight: 600;
+}
+.audiences-tab .tab-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+}
+.audiences-content {
+  padding: 64px 32px 96px;
+  max-width: var(--container);
+  margin: 0 auto;
+}
+.audiences-pane {
+  display: none;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 80px;
+  align-items: center;
+}
+.audiences-pane.active { display: grid; }
+.audiences-pane h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(30px, 3.5vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  margin-bottom: 24px;
+  color: var(--parchment);
+}
+.audiences-pane h3 em { font-style: normal; color: var(--gold-soft); font-weight: 700; }
+.audiences-pane p.lede {
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--sage);
+  margin-bottom: 32px;
+}
+.aud-points {
+  list-style: none;
+  margin-top: 32px;
+  display: grid;
+  gap: 16px;
+}
+.aud-points li {
+  display: flex;
+  gap: 14px;
+  align-items: start;
+  font-size: 15px;
+  color: var(--sage);
+}
+.aud-points li::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  margin-top: 9px;
+  flex-shrink: 0;
+}
+
+.aud-card {
+  background: var(--evergreen-2);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  border: 1px solid rgba(245, 241, 234, 0.08);
+}
+.aud-card .card-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sage);
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.aud-card-stat {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(245, 241, 234, 0.1);
+  font-size: 14px;
+  color: var(--sage);
+}
+.aud-card-stat:last-child { border-bottom: none; }
+.aud-card-stat strong {
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--parchment);
+  font-size: 16px;
+}
+.aud-card-stat .gold { color: var(--gold-soft); }
+
+/* ========================================================================
+   Math / Numbers section
+   ======================================================================== */
+.numbers {
+  background: var(--parchment-2);
+}
+.numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
+}
+.number-card {
+  padding: 36px 0;
+  border-top: 1px solid var(--line);
+}
+.number-card .num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 64px;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--evergreen);
+  margin-bottom: 12px;
+}
+.number-card .num span {
+  color: var(--gold-2);
+}
+.number-card .label {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ========================================================================
+   Trust / privacy section
+   ======================================================================== */
+.trust-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 80px;
+  align-items: center;
+}
+.trust-list {
+  list-style: none;
+  display: grid;
+  gap: 24px;
+}
+.trust-item {
+  display: flex;
+  gap: 18px;
+  align-items: start;
+  padding: 24px;
+  background: var(--parchment);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+}
+.trust-item-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--evergreen);
+  color: var(--gold-soft);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.trust-item h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+  color: var(--evergreen);
+}
+.trust-item p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ========================================================================
+   CTA / Final
+   ======================================================================== */
+.final-cta {
+  background: var(--evergreen);
+  color: var(--parchment);
+  padding: 120px 0;
+  text-align: center;
+  border-bottom: none;
+}
+.final-cta h2 {
+  color: var(--parchment);
+  margin: 0 auto 32px;
+  max-width: 800px;
+}
+.final-cta h2 em { color: var(--gold-soft); }
+.final-cta-form {
+  display: flex;
+  gap: 8px;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 6px;
+  background: var(--evergreen-2);
+  border-radius: 100px;
+  border: 1px solid rgba(245, 241, 234, 0.1);
+}
+.final-cta-form input {
+  flex: 1;
+  padding: 14px 22px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--parchment);
+  font-size: 14px;
+}
+.final-cta-form input::placeholder { color: var(--muted-2); }
+.final-cta-note {
+  margin-top: 24px;
+  font-size: 13px;
+  color: var(--sage);
+}
+
+/* ========================================================================
+   Footer
+   ======================================================================== */
+.app-footer {
+  padding: 56px 0 32px;
+  background: var(--parchment-2);
+  font-size: 13px;
+  color: var(--muted);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 48px;
+  margin-bottom: 48px;
+}
+.footer-brand p {
+  margin-top: 16px;
+  max-width: 280px;
+  line-height: 1.55;
+}
+.footer-col h5 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--evergreen);
+  margin-bottom: 16px;
+  letter-spacing: 0;
+}
+.footer-col a {
+  display: block;
+  padding: 4px 0;
+  transition: color 0.15s;
+}
+.footer-col a:hover { color: var(--evergreen); }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+}
+
+/* ========================================================================
+   BROWSE VIEW
+   ======================================================================== */
+.browse-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 0;
+  min-height: calc(100vh - 76px);
+}
+.browse-sidebar {
+  border-right: 1px solid var(--line);
+  padding: 32px 24px;
+  position: sticky;
+  top: 76px;
+  height: calc(100vh - 76px);
+  overflow-y: auto;
+}
+.sidebar-section {
+  margin-bottom: 28px;
+}
+.sidebar-label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  font-weight: 600;
+  padding: 0 12px;
+  margin-bottom: 8px;
+}
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--charcoal);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.sidebar-link:hover { background: var(--parchment-2); }
+.sidebar-link.active {
+  background: var(--evergreen);
+  color: var(--parchment);
+}
+.sidebar-link svg { flex-shrink: 0; }
+.browse-main {
+  padding: 32px 40px;
+}
+.browse-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.browse-header h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: -0.01em;
+  color: var(--evergreen);
+}
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  background: var(--parchment-2);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  flex: 1;
+  max-width: 420px;
+}
+.search-bar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+.search-bar input::placeholder { color: var(--muted-2); }
+.category-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 32px;
+  padding-bottom: 4px;
+}
+.category-chip {
+  padding: 8px 16px;
+  border-radius: 100px;
+  background: var(--parchment-2);
+  border: 1px solid var(--line);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--charcoal);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.category-chip:hover { border-color: var(--evergreen-3); }
+.category-chip.active {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-color: var(--evergreen);
+}
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 28px;
+}
+.video-card {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.video-card:hover { transform: translateY(-3px); }
+.video-card:hover .thumb { box-shadow: 0 20px 40px -20px rgba(15,42,36,0.35); }
+.thumb {
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+  background: var(--evergreen);
+  margin-bottom: 12px;
+  transition: box-shadow 0.25s ease;
+}
+.thumb-bg {
+  position: absolute;
+  inset: 0;
+}
+.thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.45) 100%);
+}
+.thumb-duration {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(15, 42, 36, 0.85);
+  color: var(--parchment);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+}
+.thumb-tip-score {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(245, 241, 234, 0.95);
+  color: var(--evergreen);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 100px;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.thumb-tip-score .coin {
+  width: 10px;
+  height: 10px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+.video-card h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  color: var(--evergreen);
+  margin-bottom: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.video-card .creator {
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.video-card .meta {
+  font-size: 12px;
+  color: var(--muted-2);
+  margin-top: 2px;
+}
+
+/* Thumbnail color schemes for variety (pure-CSS gradients, no images) */
+.bg-1 { background: linear-gradient(135deg, #1B3A33 0%, #2C4F46 50%, #C8902E 200%); }
+.bg-2 { background: linear-gradient(135deg, #2C4F46 0%, #1F3D34 100%); }
+.bg-3 { background: linear-gradient(160deg, #B07A1F 0%, #C8902E 50%, #1B3A33 100%); }
+.bg-4 { background: linear-gradient(135deg, #0F2A24 0%, #2C4F46 100%); }
+.bg-5 { background: linear-gradient(150deg, #1B3A33 0%, #1A1F1B 100%); }
+.bg-6 { background: linear-gradient(135deg, #C8902E 0%, #2C4F46 100%); }
+.bg-7 { background: linear-gradient(140deg, #1F3D34 0%, #B07A1F 200%); }
+.bg-8 { background: linear-gradient(135deg, #0F2A24 0%, #C8902E 200%); }
+.bg-9 { background: linear-gradient(135deg, #2C4F46 0%, #ECC881 200%); }
+.thumb-pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 30%),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.25) 0%, transparent 35%);
+}
+.thumb-title {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  right: 14px;
+  color: var(--parchment);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+  z-index: 2;
+}
+
+/* ========================================================================
+   WATCH VIEW
+   ======================================================================== */
+.watch-shell {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 28px 32px 64px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 40px;
+}
+.watch-main { min-width: 0; }
+.player {
+  aspect-ratio: 16 / 9;
+  background: var(--evergreen);
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+}
+.player-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.player-bg-ad {
+  background: linear-gradient(135deg, #2A1B0F 0%, #5C3D1A 50%, #8E5A1F 100%);
+  position: absolute;
+  inset: 0;
+}
+.player-bg-video {
+  background: linear-gradient(135deg, #1B3A33 0%, #2C4F46 70%, #1F3D34 100%);
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+.player.playing .player-bg-ad { display: none; }
+.player.playing .player-bg-video { display: block; }
+.player.playing .ad-banner { display: none; }
+.player.playing .ad-content { display: none; }
+.player.playing .video-content { display: flex; }
+
+.ad-banner {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: rgba(15, 42, 36, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  color: var(--parchment);
+  font-size: 13px;
+  z-index: 5;
+}
+.ad-banner .ad-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.ad-banner .ad-label::before {
+  content: "AD";
+  background: var(--gold);
+  color: var(--evergreen);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.06em;
+}
+.ad-earn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--gold-soft);
+}
+
+.ad-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: var(--parchment);
+  padding: 32px;
+}
+.ad-content .brand {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--gold-soft);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.ad-content h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  margin-bottom: 16px;
+}
+.ad-content p {
+  font-size: 16px;
+  color: var(--gold-soft);
+  margin-bottom: 28px;
+}
+.ad-content .ad-cta {
+  background: var(--gold);
+  color: var(--evergreen);
+  padding: 13px 26px;
+  border-radius: 100px;
+  font-weight: 600;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.video-content {
+  display: none;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: var(--parchment);
+  padding: 32px;
+  flex-direction: column;
+  align-items: center;
+}
+.video-content .play-large {
+  width: 80px;
+  height: 80px;
+  background: rgba(245, 241, 234, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  cursor: pointer;
+}
+.video-content .play-large::before {
+  content: "";
+  border-style: solid;
+  border-width: 14px 0 14px 22px;
+  border-color: transparent transparent transparent var(--parchment);
+  margin-left: 6px;
+}
+.video-content h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: -0.015em;
+  margin-bottom: 8px;
+}
+.video-content p { color: var(--sage); font-size: 14px; }
+
+.player-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(245, 241, 234, 0.15);
+}
+.player-progress-fill {
+  height: 100%;
+  background: var(--gold);
+  width: 35%;
+  transition: width 0.3s ease;
+}
+.player.playing .player-progress-fill { background: var(--parchment); width: 22%; }
+
+.player-controls {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--parchment);
+  font-size: 13px;
+  z-index: 5;
+}
+.player-controls .ctl {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.player-controls .ctl:hover { background: rgba(245, 241, 234, 0.15); }
+.time-display { letter-spacing: 0.02em; }
+
+/* Below player */
+.video-info {
+  margin-top: 24px;
+}
+.video-info h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--evergreen);
+  margin-bottom: 14px;
+}
+.video-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+.creator-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.creator-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--gold-2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--evergreen);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+}
+.creator-info .name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.005em;
+  color: var(--evergreen);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.creator-info .verified {
+  width: 14px;
+  height: 14px;
+  background: var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.creator-info .verified::after {
+  content: "";
+  width: 6px;
+  height: 3px;
+  border-left: 1.5px solid var(--evergreen);
+  border-bottom: 1.5px solid var(--evergreen);
+  transform: rotate(-45deg) translate(0px, -1px);
+}
+.creator-info .stats {
+  font-size: 12px;
+  color: var(--muted);
+}
+.video-actions {
+  display: flex;
+  gap: 8px;
+}
+.video-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: 100px;
+  background: var(--parchment-2);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--charcoal);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.video-action:hover { background: var(--parchment-3); }
+.video-action.primary {
+  background: var(--gold);
+  color: var(--evergreen);
+  font-weight: 600;
+}
+.video-action.primary:hover { background: var(--gold-2); color: var(--parchment); }
+
+.video-description {
+  margin-top: 24px;
+  padding: 24px;
+  background: var(--parchment-2);
+  border-radius: var(--radius);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--charcoal);
+}
+.video-description .desc-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.watch-side {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.tip-prompt {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  position: sticky;
+  top: 96px;
+  z-index: 10;
+  box-shadow: 0 12px 32px -16px rgba(15, 42, 36, 0.25);
+}
+.tip-prompt-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.tip-prompt h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+.tip-prompt p {
+  font-size: 13px;
+  color: var(--sage);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+.tip-amount-display {
+  text-align: center;
+  padding: 24px 0 20px;
+  border-top: 1px solid rgba(245, 241, 234, 0.12);
+  border-bottom: 1px solid rgba(245, 241, 234, 0.12);
+  margin-bottom: 20px;
+}
+.tip-amount-display .label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sage);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.tip-amount-display .amount {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 54px;
+  letter-spacing: -0.02em;
+  color: var(--gold-soft);
+  line-height: 1;
+}
+.tip-slider-wrap {
+  margin-bottom: 20px;
+}
+.tip-slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--sage);
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.tip-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 16px 0;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+.tip-split-item .label {
+  font-size: 11px;
+  color: var(--sage);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.tip-split-item .value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+}
+.tip-split-item.you .value { color: var(--parchment); }
+.tip-split-item.creator .value { color: var(--gold-soft); }
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  background: rgba(245, 241, 234, 0.12);
+  border-radius: 100px;
+  outline: none;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  cursor: pointer;
+  box-shadow: 0 0 0 4px rgba(200, 144, 46, 0.18);
+  border: 2px solid var(--evergreen);
+}
+.slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  cursor: pointer;
+  border: 2px solid var(--evergreen);
+}
+.tip-actions {
+  display: flex;
+  gap: 8px;
+}
+.tip-actions .btn {
+  flex: 1;
+  padding: 12px 16px;
+  font-size: 13px;
+}
+.tip-presets {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.tip-preset {
+  padding: 10px;
+  background: var(--evergreen-2);
+  border: 1px solid rgba(245, 241, 234, 0.12);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sage);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+.tip-preset:hover { border-color: var(--gold-soft); color: var(--parchment); }
+.tip-preset.active { background: var(--gold); color: var(--evergreen); border-color: var(--gold); }
+
+.up-next {
+  background: var(--parchment-2);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.up-next h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  margin-bottom: 14px;
+  color: var(--evergreen);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.up-next-card {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  cursor: pointer;
+  border-bottom: 1px solid var(--line-soft);
+}
+.up-next-card:last-child { border-bottom: none; }
+.up-next-card .un-thumb {
+  width: 100px;
+  aspect-ratio: 16 / 10;
+  border-radius: 6px;
+  flex-shrink: 0;
+  position: relative;
+}
+.up-next-card h5 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.3;
+  letter-spacing: 0;
+  margin-bottom: 4px;
+  color: var(--evergreen);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.up-next-card .un-meta {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ========================================================================
+   PROFILE VIEW (the trait file)
+   ======================================================================== */
+.profile-shell {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 56px 32px 80px;
+}
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 48px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+.profile-header-left .eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-2);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.profile-header h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 42px;
+  letter-spacing: -0.015em;
+  color: var(--evergreen);
+  line-height: 1.05;
+  margin-bottom: 8px;
+}
+.profile-header p {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 520px;
+}
+.profile-stats {
+  display: flex;
+  gap: 32px;
+  text-align: right;
+}
+.profile-stat .num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: -0.015em;
+  color: var(--evergreen);
+}
+.profile-stat .num.gold { color: var(--gold-2); }
+.profile-stat .label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  margin-top: 2px;
+}
+.profile-section {
+  margin-bottom: 48px;
+}
+.profile-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.profile-section h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.015em;
+  color: var(--evergreen);
+}
+.privacy-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 6px 12px;
+  background: var(--parchment-2);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.privacy-toggle:hover { background: var(--parchment-3); }
+.privacy-toggle .dot {
+  width: 8px;
+  height: 8px;
+  background: var(--evergreen);
+  border-radius: 50%;
+}
+.privacy-toggle.private .dot { background: var(--danger); }
+.trait-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.trait-chip {
+  padding: 10px 14px;
+  background: var(--parchment-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.15s ease;
+}
+.trait-chip:hover { border-color: var(--evergreen-3); }
+.trait-chip.selected {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-color: var(--evergreen);
+}
+.trait-chip .check {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid var(--line);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.trait-chip.selected .check {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.trait-chip.selected .check::after {
+  content: "";
+  width: 8px;
+  height: 4px;
+  border-left: 1.5px solid var(--evergreen);
+  border-bottom: 1.5px solid var(--evergreen);
+  transform: rotate(-45deg) translate(0, -1px);
+}
+.trait-input {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.trait-field {
+  display: block;
+}
+.trait-field label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.trait-field input,
+.trait-field select {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--parchment-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.trait-field input:focus,
+.trait-field select:focus { border-color: var(--evergreen-3); }
+
+/* ========================================================================
+   CREATOR VIEW
+   ======================================================================== */
+.creator-shell {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+.creator-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+}
+.metric-card {
+  padding: 28px;
+  border-radius: var(--radius-lg);
+  background: var(--parchment-2);
+  border: 1px solid var(--line);
+}
+.metric-card.primary {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
+.metric-card.primary::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(200, 144, 46, 0.18), transparent 70%);
+  pointer-events: none;
+}
+.metric-card .label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.metric-card.primary .label { color: var(--sage); }
+.metric-card .value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 52px;
+  letter-spacing: -0.02em;
+  color: var(--evergreen);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.metric-card.primary .value { color: var(--parchment); }
+.metric-card .value .currency {
+  font-size: 28px;
+  vertical-align: top;
+  margin-right: 2px;
+  color: var(--gold-2);
+}
+.metric-card.primary .value .currency { color: var(--gold-soft); }
+.metric-card .delta {
+  font-size: 12px;
+  color: var(--evergreen-3);
+  font-weight: 500;
+}
+.metric-card.primary .delta { color: var(--gold-soft); }
+.metric-card .delta.positive::before {
+  content: "↑ ";
+  font-weight: 700;
+}
+.score-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.score-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: conic-gradient(var(--gold) 0deg 314deg, var(--parchment-3) 314deg 360deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 16px 0 12px;
+}
+.score-circle::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  background: var(--parchment-2);
+  border-radius: 50%;
+}
+.score-circle span {
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--evergreen);
+  letter-spacing: -0.01em;
+}
+.score-circle span sub {
+  font-size: 12px;
+  color: var(--muted);
+  vertical-align: bottom;
+}
+.creator-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 32px;
+  margin-top: 16px;
+}
+.creator-tab {
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.15s;
+}
+.creator-tab:hover { color: var(--evergreen); }
+.creator-tab.active {
+  color: var(--evergreen);
+  border-bottom-color: var(--gold);
+}
+.video-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.video-table thead {
+  background: var(--parchment-2);
+}
+.video-table th {
+  text-align: left;
+  padding: 14px 18px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.video-table td {
+  padding: 18px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  vertical-align: middle;
+}
+.video-table tr:hover td { background: var(--parchment-2); }
+.video-table .vt-thumb {
+  width: 90px;
+  aspect-ratio: 16 / 10;
+  border-radius: 6px;
+  display: inline-block;
+  margin-right: 12px;
+  vertical-align: middle;
+  position: relative;
+}
+.video-table .vt-title {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 280px;
+}
+.video-table .vt-title strong {
+  font-family: var(--font-display);
+  font-weight: 600;
+  display: block;
+  letter-spacing: 0;
+  color: var(--evergreen);
+  margin-bottom: 2px;
+}
+.video-table .vt-title small {
+  font-size: 11px;
+  color: var(--muted);
+}
+.video-table .vt-num {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--evergreen);
+}
+.video-table .vt-num.gold { color: var(--gold-2); }
+
+/* ========================================================================
+   ADVERTISER VIEW
+   ======================================================================== */
+.adv-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 32px;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+.adv-main {
+  background: var(--parchment-2);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+}
+.adv-main h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: -0.01em;
+  color: var(--evergreen);
+  margin-bottom: 6px;
+}
+.adv-main p.lede {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 32px;
+}
+.adv-stepper {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.adv-step {
+  flex: 1;
+  padding: 14px 0;
+  border-top: 2px solid var(--line);
+  font-size: 13px;
+  color: var(--muted);
+  transition: all 0.2s;
+}
+.adv-step.active {
+  border-top-color: var(--gold);
+  color: var(--evergreen);
+  font-weight: 600;
+}
+.adv-step.done { border-top-color: var(--evergreen); color: var(--evergreen); }
+.adv-step .step-n {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: -0.015em;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.adv-form-group {
+  margin-bottom: 28px;
+}
+.adv-form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--evergreen);
+  margin-bottom: 4px;
+}
+.adv-form-help {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.adv-input {
+  width: 100%;
+  padding: 14px 18px;
+  background: var(--parchment);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+}
+.adv-input:focus { border-color: var(--evergreen); }
+.bid-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.adv-targeting-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.adv-trait-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 14px;
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+.adv-trait-pill .x {
+  width: 16px;
+  height: 16px;
+  background: rgba(245, 241, 234, 0.18);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.adv-side {
+  position: sticky;
+  top: 96px;
+  align-self: start;
+}
+.adv-summary {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  margin-bottom: 16px;
+}
+.adv-summary h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+.adv-summary .label-sm {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.adv-est {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(245, 241, 234, 0.12);
+  font-size: 13px;
+  color: var(--sage);
+}
+.adv-est:last-of-type { border-bottom: none; }
+.adv-est strong {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--parchment);
+}
+.adv-reach {
+  background: var(--evergreen-2);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 20px 0;
+  text-align: center;
+}
+.adv-reach .num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 36px;
+  letter-spacing: -0.015em;
+  color: var(--gold-soft);
+  line-height: 1;
+}
+.adv-reach .label {
+  font-size: 11px;
+  color: var(--sage);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-top: 6px;
+}
+.adv-launch {
+  width: 100%;
+  margin-top: 6px;
+}
+
+.adv-active-list {
+  background: var(--parchment-2);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+.adv-active-list h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0;
+  color: var(--evergreen);
+  margin-bottom: 14px;
+}
+.adv-camp {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.adv-camp:last-child { border-bottom: none; }
+.adv-camp-name {
+  font-weight: 600;
+  color: var(--evergreen);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.adv-camp-status {
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.status-dot.paused { background: var(--muted-2); animation: none; }
+
+/* ========================================================================
+   Toast / Modal helpers
+   ======================================================================== */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--evergreen);
+  color: var(--parchment);
+  padding: 14px 24px;
+  border-radius: 100px;
+  box-shadow: 0 20px 40px -10px rgba(15, 42, 36, 0.3);
+  font-size: 14px;
+  z-index: 200;
+  opacity: 0;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ========================================================================
+   Responsive
+   ======================================================================== */
+@media (max-width: 1180px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 56px; }
+  .hero-art { max-width: 480px; margin: 0 auto; }
+}
+@media (max-width: 1024px) {
+  .hero-grid, .audiences-pane, .trust-grid { grid-template-columns: 1fr; gap: 48px; }
+  .watch-shell { grid-template-columns: 1fr; }
+  .browse-shell { grid-template-columns: 1fr; }
+  .browse-sidebar { display: none; }
+  .adv-shell { grid-template-columns: 1fr; }
+  .creator-hero { grid-template-columns: 1fr 1fr; }
+  .numbers-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .flow-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .app-header-inner { padding: 12px 20px; gap: 16px; }
+  .nav-primary { display: none; }
+  .container, .browse-main, .watch-shell, .profile-shell, .creator-shell, .adv-shell { padding-left: 20px; padding-right: 20px; }
+  .creator-hero, .numbers-grid, .footer-grid, .trait-input { grid-template-columns: 1fr; }
+  .video-grid { grid-template-columns: 1fr; }
+  .hero { padding: 48px 0 32px; }
+  .section { padding: 64px 0; }
+  .section-header { flex-direction: column; align-items: flex-start; }
+  .section-tagline { text-align: left; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========================================================================
+     HEADER
+     ======================================================================== -->
+<header class="app-header">
+  <div class="app-header-inner">
+    <a class="logo" data-view="landing">
+      <!-- New TipJip logomark: jar with hanging coin and smiling face -->
+      <svg class="logo-mark" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="TipJip">
+        <!-- Jar body (rounded square outline) -->
+        <rect x="9" y="16" width="62" height="58" rx="11" fill="none" stroke="#0F2A24" stroke-width="5" stroke-linejoin="round"/>
+        <!-- Lid -->
+        <rect x="17" y="3" width="46" height="13" rx="3" fill="#0F2A24"/>
+        <!-- Slot in lid -->
+        <rect x="32" y="7" width="16" height="3" rx="1.5" fill="#F5F1EA"/>
+        <!-- String from lid -->
+        <line x1="40" y1="16" x2="40" y2="29" stroke="#0F2A24" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Coin (gold) -->
+        <circle cx="40" cy="35" r="6" fill="#C8902E"/>
+        <!-- Coin center hole -->
+        <circle cx="40" cy="35" r="2" fill="#0F2A24"/>
+        <!-- Eye dot -->
+        <circle cx="40" cy="49" r="2" fill="#0F2A24"/>
+        <!-- Smile -->
+        <path d="M 22 56 Q 40 70 58 56" fill="none" stroke="#0F2A24" stroke-width="3.5" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-word"><span class="tip-part">Tip</span><span class="jip-part">Jip</span></span>
+    </a>
+
+    <nav class="nav-primary">
+      <button data-view="landing" class="active">Home</button>
+      <button data-view="browse">Browse</button>
+      <button data-view="watch">Watch</button>
+      <button data-view="profile">Profile</button>
+      <button data-view="creator">Creator Studio</button>
+      <button data-view="advertiser">Advertiser</button>
+    </nav>
+
+    <div class="nav-right">
+      <span class="balance-pill" title="Your tip jar">
+        <svg class="coin" viewBox="0 0 14 16" fill="none">
+          <!-- Jar body -->
+          <path d="M3 5 L3 13 Q3 14 4 14 L10 14 Q11 14 11 13 L11 5 Z" fill="none" stroke="#ECC881" stroke-width="1.2"/>
+          <!-- Lid -->
+          <rect x="2.5" y="3" width="9" height="2.4" rx="0.5" fill="#ECC881"/>
+          <!-- Slot -->
+          <rect x="5.5" y="3.8" width="3" height="0.5" rx="0.25" fill="#0F2A24"/>
+          <!-- Coin inside -->
+          <circle cx="7" cy="11" r="1.5" fill="#ECC881"/>
+        </svg>
+        $12.40
+      </span>
+      <div class="avatar">RS</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ========================================================================
+     LANDING VIEW
+     ======================================================================== -->
+<section class="view active" data-view="landing">
+
+  <div class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="hero-eyebrow"><span class="dot"></span>The tip jar — now for video</span>
+        <h1>Get paid to&nbsp;watch.<br><em>Tip</em> with thanks. <em>Jip</em> with feedback.</h1>
+        <p class="lede">Think of it like the tip jar at your favorite coffee shop — except every video has one, and the advertiser fills it with whatever they bid (minimum $0.50 per video, often more) the moment you finish their ad. If the creator earned it, drop a <em>tip</em> in their jar with a thanks. If the video didn't quite land, drop a <em>jip</em> in your own jar with feedback that helps them sharpen the next one. Either way, you walk away paid.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary btn-lg" data-view="browse">Explore the platform</button>
+          <button class="btn btn-outline btn-lg" data-view="watch">See it in action</button>
+        </div>
+        <div class="hero-meta">
+          <div><strong>$0.50+</strong>to you per ad</div>
+          <div><strong>100%</strong>of tips to creators</div>
+          <div><strong>$0</strong>to data brokers</div>
+        </div>
+      </div>
+
+      <div class="hero-art">
+        <div class="hero-art-card hero-art-card-1">
+          <div class="hero-art-thumb"><div class="play-mini"></div></div>
+          <h4>Hormones after 40: what really matters</h4>
+          <p>Dr. Amelia Hart · 14:22</p>
+        </div>
+        <div class="hero-art-card hero-art-card-2">
+          <div style="font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold-soft); font-weight:600; margin-bottom:10px;">— Your $0.75</div>
+          <h4 style="color:var(--parchment); margin-bottom: 16px;">Was this video worth&nbsp;it?</h4>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div style="background: var(--gold); color: var(--evergreen); padding: 14px 10px; border-radius: 10px; text-align: center;">
+              <div style="font-family: var(--font-display); font-size: 20px; letter-spacing: -0.015em; font-weight: 600;">Tip</div>
+              <div style="font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.78; margin-top: 3px; font-weight: 600;">Share with creator</div>
+            </div>
+            <div style="background: rgba(245, 241, 234, 0.06); color: var(--parchment); padding: 14px 10px; border-radius: 10px; text-align: center; border: 1px solid rgba(245, 241, 234, 0.18);">
+              <div style="font-family: var(--font-display); font-size: 20px; letter-spacing: -0.015em; font-weight: 600;">Jip</div>
+              <div style="font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.65; margin-top: 3px; font-weight: 600;">Keep it all</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-art-card hero-art-card-3">
+          <svg viewBox="0 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;" aria-label="Tip jar">
+            <!-- Animated coin dropping into jar -->
+            <circle cx="50" cy="-8" r="5" fill="#0F2A24">
+              <animate attributeName="cy" values="-10;26;26;26;-10" keyTimes="0;0.35;0.5;0.95;1" dur="3.2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.35;0.65;0.95;1" dur="3.2s" repeatCount="indefinite"/>
+            </circle>
+            <!-- Jar body (clear glass with subtle outline) -->
+            <path d="M22 36 L22 110 Q22 120 32 120 L68 120 Q78 120 78 110 L78 36 Z"
+                  fill="rgba(15, 42, 36, 0.04)" stroke="#0F2A24" stroke-width="2.5"/>
+            <!-- Jar lid -->
+            <rect x="18" y="22" width="64" height="14" rx="2" fill="#0F2A24"/>
+            <!-- Slot in lid -->
+            <rect x="36" y="27" width="28" height="3" rx="1.5" fill="#ECC881"/>
+            <!-- Jar label band -->
+            <rect x="22" y="68" width="56" height="20" fill="rgba(15, 42, 36, 0.06)"/>
+            <text x="50" y="82" font-family="Quicksand, sans-serif" font-size="10" font-weight="700" text-anchor="middle" fill="#0F2A24" letter-spacing="0.5">tipjar</text>
+            <!-- Coins inside, accumulated at bottom -->
+            <circle cx="32" cy="108" r="6" fill="#C8902E"/>
+            <circle cx="48" cy="112" r="6" fill="#C8902E"/>
+            <circle cx="64" cy="106" r="6" fill="#C8902E"/>
+            <circle cx="38" cy="100" r="6" fill="#ECC881"/>
+            <circle cx="56" cy="98" r="6" fill="#ECC881"/>
+            <circle cx="46" cy="92" r="6" fill="#C8902E"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <div class="section-eyebrow">How it works</div>
+          <h2>Watch.<br><em>Tip or jip.</em><br>Cash out.</h2>
+        </div>
+        <p class="section-tagline">Three steps. About sixty seconds. The whole transaction lives between you, the creator, and the advertiser — nobody else.</p>
+      </div>
+
+      <div class="flow-grid">
+        <div class="flow-step">
+          <div class="step-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14v12a2 2 0 01-2 2H7a2 2 0 01-2-2V8z"/><path d="M5 8V5a1 1 0 011-1h12a1 1 0 011 1v3"/><line x1="9" y1="6" x2="15" y2="6"/></svg>
+          </div>
+          <span class="step-num">01 — Watch</span>
+          <h3>The advertiser fills your tip jar.</h3>
+          <p>Find a video, hit play. A 30-second sponsor ad runs first. The moment it ends, the advertiser drops their bid into your tip jar — minimum $0.50, often $1 to $3 for premium audiences. Not yet yours to keep, but waiting on your next move.</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6m0 8v6m-10-10h6m8 0h6"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <span class="step-num">02 — Tip or jip</span>
+          <h3>Drop it in their jar — or in yours.</h3>
+          <p><em>Tip</em> if the video taught you something — drop your coin in the creator's jar with a thanks. <em>Jip</em> if it didn't quite land — keep the coin in your own jar with feedback that helps them sharpen the next one.</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><path d="M8 14h2"/></svg>
+          </div>
+          <span class="step-num">03 — Cash out</span>
+          <h3>Your jar fills up. Empty it whenever.</h3>
+          <p>Coins from tipped and jipped videos both add to your TipJip jar. At $20, transfer to your bank or PayPal — no fees, no thresholds, no waiting period. Or let it ride and tip the next creator.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" style="background: var(--parchment-2);">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <div class="section-eyebrow">A real walkthrough</div>
+          <h2>Meet Sally. <em>50.</em><br>Watch the model in motion.</h2>
+        </div>
+        <p class="section-tagline">Five steps from sign-up to cash-out. The complete TipJip transaction in under two minutes.</p>
+      </div>
+
+      <div class="story-stack">
+
+        <!-- Scene 1: Sally builds her profile -->
+        <div class="story-row">
+          <div class="story-text">
+            <span class="story-step">Step 01</span>
+            <h3 class="story-title">Sally builds her private profile.</h3>
+            <p class="story-body">Sally signs up and spends five minutes declaring what she's interested in: hormone health, supplements, longevity, sleep. Her profile is encrypted, hers, and visible only to advertisers she opts into. She's now eligible to earn.</p>
+          </div>
+          <div class="story-visual">
+            <div class="mini-mock mini-profile">
+              <div class="mini-mock-header">
+                <div class="mini-avatar" style="background: linear-gradient(135deg, #C8902E, #B07A1F);">S</div>
+                <div>
+                  <div class="mini-name">Sally Whitman</div>
+                  <div class="mini-sub">50 · Midwest US · Verified</div>
+                </div>
+              </div>
+              <div class="mini-section-label">Interests · 8 selected</div>
+              <div class="mini-chips">
+                <span class="mini-chip on">Hormone health</span>
+                <span class="mini-chip on">Longevity</span>
+                <span class="mini-chip on">Supplements</span>
+                <span class="mini-chip on">Sleep</span>
+                <span class="mini-chip on">Strength</span>
+                <span class="mini-chip">Cold therapy</span>
+                <span class="mini-chip">Breathwork</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scene 2: Meno Supplements buys attention -->
+        <div class="story-row reverse">
+          <div class="story-text">
+            <span class="story-step">Step 02</span>
+            <h3 class="story-title">Meno Supplements buys attention.</h3>
+            <p class="story-body">An advertiser uploads a 30-second ad targeting women 40–60 who declared interest in hormone health and supplements. They bid <strong>$0.75</strong> per verified watch. Their estimated audience: 2,840 eligible viewers. Sally is one of them.</p>
+          </div>
+          <div class="story-visual">
+            <div class="mini-mock mini-campaign">
+              <div class="mini-mock-header">
+                <div class="mini-avatar" style="background: var(--evergreen); color: var(--gold-soft);">M</div>
+                <div>
+                  <div class="mini-name">Meno Supplements</div>
+                  <div class="mini-sub">November campaign · Active</div>
+                </div>
+              </div>
+              <div class="mini-row"><span>Targeting</span><strong>Hormone health · 40-60 · F</strong></div>
+              <div class="mini-row"><span>Bid per watch</span><strong style="color: var(--gold-2)">$0.75</strong></div>
+              <div class="mini-row"><span>Est. eligible viewers</span><strong>2,840</strong></div>
+              <div class="mini-row" style="border-bottom: none;"><span>Daily budget</span><strong>$200</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scene 3: Sally finds a video -->
+        <div class="story-row">
+          <div class="story-text">
+            <span class="story-step">Step 03</span>
+            <h3 class="story-title">Sally finds a video she actually wants.</h3>
+            <p class="story-body">She searches "premenopause supplements" and selects a video by Dr. Amelia Hart — a verified endocrinologist with a 91% tip rate. Sally hits play. The ad pre-roll begins.</p>
+          </div>
+          <div class="story-visual">
+            <div class="mini-video">
+              <div class="mini-video-thumb">
+                <div class="mini-thumb-pattern"></div>
+                <div class="mini-tip-badge">⏤ 91% tip rate</div>
+                <div class="mini-play"></div>
+                <div class="mini-thumb-title">Premenopause supplements that actually work</div>
+              </div>
+              <div class="mini-video-meta">Dr. Amelia Hart · Endocrinology · 14:22</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scene 4: Ad runs, $0.75 preloaded -->
+        <div class="story-row reverse">
+          <div class="story-text">
+            <span class="story-step">Step 04</span>
+            <h3 class="story-title">The ad runs. A coin appears at her tip jar's slot.</h3>
+            <p class="story-body">Sally watches the 30-second Meno Supplements ad. The advertiser's $0.75 hovers at the rim of her tip jar — paid in full, but not deposited yet. The coin only drops the moment she decides where it belongs: in Dr. Hart's jar, or in her own.</p>
+          </div>
+          <div class="story-visual">
+            <div class="mini-mock" style="background: var(--evergreen); color: var(--parchment); border-color: transparent;">
+              <div class="mini-section-label" style="color: var(--gold-soft);">Ad playing · 0:24 / 0:30</div>
+              <div style="aspect-ratio: 16/9; background: linear-gradient(135deg, #5C3D1A, #8E5A1F); border-radius: 10px; margin: 12px 0; position: relative; overflow: hidden;">
+                <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--gold-soft); font-family: var(--font-display); font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;">— Meno Supplements —</div>
+                <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.2);">
+                  <div style="height:100%; width: 78%; background: var(--gold);"></div>
+                </div>
+              </div>
+              <div class="mini-row" style="border-color: rgba(245, 241, 234, 0.12); color: var(--sage);">
+                <span>At the jar's rim · waiting</span>
+                <strong style="color: var(--gold-soft); font-family: var(--font-display); font-size: 22px; font-weight: 700;">$0.75</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scene 5: Tip or Jip - the climactic moment -->
+        <div class="story-row centered">
+          <div class="story-text" style="text-align: center; max-width: 640px; margin: 0 auto;">
+            <span class="story-step" style="color: var(--gold-2);">Step 05 — the moment</span>
+            <h3 class="story-title" style="font-size: 38px;">Sally drops the coin: in <em>Dr. Hart's jar</em> or her own.</h3>
+            <p class="story-body" style="margin: 16px auto 32px;">The video taught her three things she didn't know. She <em>tips</em> $0.50 into Dr. Hart's jar and drops $0.25 into her own. (If the video hadn't quite landed, she'd have <em>jipped</em> — kept all $0.75 for her own jar and dropped a note in for Dr. Hart with feedback.) Both currencies — money and honesty — find their way home. No platform takes a cut of either jar.</p>
+          </div>
+          <div class="story-visual" style="grid-column: 1 / -1; max-width: 720px; margin: 0 auto;">
+            <div class="tipjip-binary">
+              <div class="binary-card binary-tip">
+                <div class="binary-label">If she tips</div>
+                <div class="binary-amount">$0.50 → Dr. Hart's jar</div>
+                <div class="binary-amount-2">$0.25 → Sally's jar</div>
+                <div class="binary-bottom">Creator's jar fills with thanks.</div>
+              </div>
+              <div class="binary-divider">or</div>
+              <div class="binary-card binary-jip">
+                <div class="binary-label">If she jips</div>
+                <div class="binary-amount">$0.75 → Sally's jar</div>
+                <div class="binary-amount-2">Note → Dr. Hart's jar</div>
+                <div class="binary-bottom">Creator's jar fills with feedback for next time.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="text-align: center; margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--line);">
+        <p style="font-family: var(--font-body); font-size: 22px; line-height: 1.4; color: var(--evergreen); letter-spacing: -0.005em; max-width: 720px; margin: 0 auto 24px; font-weight: 500; font-style: italic;">"Advertisers want to pay <em style="color: var(--gold-2); font-style: normal; font-weight: 700;">you</em> directly for your attention — not a proxy. We just made that possible."</p>
+        <button class="btn btn-primary btn-lg" data-view="watch">See the tip-or-jip moment yourself</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .story-stack { display: grid; gap: 0; }
+    .story-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      padding: 56px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .story-row:last-child { border-bottom: none; padding-bottom: 32px; }
+    .story-row.reverse .story-text { order: 2; }
+    .story-row.reverse .story-visual { order: 1; }
+    .story-row.centered { grid-template-columns: 1fr; gap: 32px; padding: 64px 0 32px; }
+    .story-step {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold-2);
+      margin-bottom: 14px;
+    }
+    .story-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 30px;
+      line-height: 1.2;
+      letter-spacing: -0.015em;
+      color: var(--evergreen);
+      margin-bottom: 16px;
+    }
+    .story-title em { font-style: normal; color: var(--gold); font-weight: 700; }
+    .story-body { font-size: 16px; line-height: 1.6; color: var(--charcoal); }
+    .story-body em { font-style: normal; font-weight: 700; color: var(--gold-2); }
+
+    .mini-mock {
+      background: var(--parchment);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: 0 30px 60px -30px rgba(15, 42, 36, 0.18);
+    }
+    .mini-mock-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .mini-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-weight: 600; color: var(--parchment);
+      font-size: 16px;
+    }
+    .mini-name {
+      font-family: var(--font-display); font-weight: 700; font-size: 16px;
+      letter-spacing: -0.005em; color: var(--evergreen);
+    }
+    .mini-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .mini-section-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+    }
+    .mini-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .mini-chip {
+      padding: 5px 10px; border-radius: 100px; font-size: 11px; font-weight: 500;
+      background: var(--parchment-3); color: var(--charcoal);
+    }
+    .mini-chip.on { background: var(--evergreen); color: var(--parchment); }
+    .mini-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 11px 0; border-bottom: 1px solid var(--line-soft);
+      font-size: 13px; color: var(--muted);
+    }
+    .mini-row strong { color: var(--evergreen); font-family: var(--font-display); font-weight: 700; letter-spacing: 0; }
+
+    .mini-video { background: var(--parchment); border-radius: var(--radius-lg); padding: 16px; box-shadow: 0 30px 60px -30px rgba(15,42,36,0.18); border: 1px solid var(--line); }
+    .mini-video-thumb {
+      aspect-ratio: 16/10; border-radius: 10px;
+      background: linear-gradient(135deg, #1B3A33, #2C4F46 60%, #C8902E 200%);
+      position: relative; overflow: hidden;
+    }
+    .mini-thumb-pattern {
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.25) 0%, transparent 35%);
+      opacity: 0.3;
+    }
+    .mini-tip-badge {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(245, 241, 234, 0.95); color: var(--evergreen);
+      font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 100px;
+    }
+    .mini-play {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 48px; height: 48px; background: rgba(245, 241, 234, 0.92); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mini-play::before {
+      content: ""; border-style: solid; border-width: 8px 0 8px 13px;
+      border-color: transparent transparent transparent var(--evergreen); margin-left: 3px;
+    }
+    .mini-thumb-title {
+      position: absolute; bottom: 14px; left: 14px; right: 14px;
+      color: var(--parchment); font-family: var(--font-display); font-weight: 600;
+      font-size: 14px; line-height: 1.25; letter-spacing: 0;
+    }
+    .mini-video-meta {
+      font-size: 12px; color: var(--muted); margin-top: 12px; padding: 0 4px;
+    }
+
+    .tipjip-binary {
+      display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: stretch;
+    }
+    .binary-card {
+      padding: 32px 28px; border-radius: var(--radius-lg);
+      text-align: center; transition: transform 0.2s ease;
+    }
+    .binary-card:hover { transform: translateY(-4px); }
+    .binary-tip {
+      background: var(--evergreen); color: var(--parchment);
+    }
+    .binary-jip {
+      background: var(--parchment); color: var(--evergreen); border: 2px dashed var(--line);
+    }
+    .binary-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; margin-bottom: 14px;
+    }
+    .binary-tip .binary-label { color: var(--gold-soft); }
+    .binary-jip .binary-label { color: var(--muted); }
+    .binary-amount {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: 26px; letter-spacing: -0.01em; line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .binary-tip .binary-amount { color: var(--gold-soft); }
+    .binary-amount-2 {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 18px; letter-spacing: -0.005em;
+      margin-bottom: 18px; opacity: 0.85;
+    }
+    .binary-bottom {
+      font-size: 13px; line-height: 1.5; padding-top: 14px;
+      border-top: 1px solid currentColor;
+      opacity: 0.65;
+    }
+    .binary-tip .binary-bottom { border-color: rgba(245,241,234,0.15); }
+    .binary-jip .binary-bottom { border-color: var(--line); }
+    .binary-divider {
+      align-self: center; font-family: var(--font-display); font-weight: 600;
+      font-size: 18px; color: var(--muted); padding: 0 4px; text-transform: uppercase; letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 1024px) {
+      .story-row { grid-template-columns: 1fr; gap: 32px; padding: 40px 0; }
+      .story-row.reverse .story-text { order: 1; }
+      .story-row.reverse .story-visual { order: 2; }
+      .tipjip-binary { grid-template-columns: 1fr; }
+      .binary-divider { padding: 8px 0; text-align: center; }
+    }
+  </style>
+
+  <!-- ========================================================================
+       HOW TIPJIP MAKES MONEY
+       ======================================================================== -->
+  <div class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <div class="section-eyebrow">How we get paid</div>
+          <h2>We charge <em>advertisers,</em><br>not you. Not creators.</h2>
+        </div>
+        <p class="section-tagline">Plain numbers. No hidden cuts. The same fee schedule for the smallest indie advertiser as for the biggest brand.</p>
+      </div>
+
+      <div class="money-grid">
+        <div class="money-text">
+          <p class="money-lede">TipJip earns one thing only: a <strong>matched delivery fee</strong> from advertisers, added at the advertiser's checkout — never out of your jar, never out of the creator's tip. <strong style="color: var(--evergreen);">Viewers and creators only ever see the bid amount the advertiser chose, and they keep 100% of it.</strong></p>
+
+          <div class="money-rule">
+            <div class="money-rule-row">
+              <span class="money-rule-label">Advertiser's bid</span>
+              <span class="money-rule-arrow">→</span>
+              <span class="money-rule-value">paid in full to the viewer</span>
+            </div>
+            <div class="money-rule-row">
+              <span class="money-rule-label">Matched delivery</span>
+              <span class="money-rule-arrow">+</span>
+              <span class="money-rule-value">50% of bid · min $0.10 · max $0.50</span>
+            </div>
+            <div class="money-rule-row total">
+              <span class="money-rule-label">Advertiser pays</span>
+              <span class="money-rule-arrow">=</span>
+              <span class="money-rule-value">bid plus matched delivery</span>
+            </div>
+          </div>
+
+          <p class="money-note">The cap means premium advertisers pay a smaller effective rate as their bid grows — encouraging higher bids and richer audiences without runaway fees.</p>
+        </div>
+
+        <div class="money-examples">
+
+          <div class="money-perspective-header">
+            <div class="money-perspective-label">
+              <span class="money-perspective-dot" style="background: var(--gold);"></span>
+              What advertisers see
+            </div>
+            <div class="money-perspective-sublabel">Three example bids · matched delivery in the advertiser's checkout only</div>
+          </div>
+
+          <div class="money-card">
+            <div class="money-card-tag">Minimum video bid</div>
+            <div class="money-card-flow">
+              <div class="money-line">
+                <span>To viewer</span>
+                <strong class="money-amt">$0.50</strong>
+              </div>
+              <div class="money-line">
+                <span>+ Matched delivery (50%)</span>
+                <strong class="money-amt money-fee">$0.25</strong>
+              </div>
+              <div class="money-divider"></div>
+              <div class="money-line money-total-line">
+                <span>Advertiser pays</span>
+                <strong class="money-amt money-total">$0.75</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="money-card money-card-feature">
+            <div class="money-card-tag">Typical bid</div>
+            <div class="money-card-flow">
+              <div class="money-line">
+                <span>To viewer</span>
+                <strong class="money-amt">$1.00</strong>
+              </div>
+              <div class="money-line">
+                <span>+ Matched delivery (50%)</span>
+                <strong class="money-amt money-fee">$0.50</strong>
+              </div>
+              <div class="money-divider"></div>
+              <div class="money-line money-total-line">
+                <span>Advertiser pays</span>
+                <strong class="money-amt money-total">$1.50</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="money-card">
+            <div class="money-card-tag">Premium audience bid</div>
+            <div class="money-card-flow">
+              <div class="money-line">
+                <span>To viewer</span>
+                <strong class="money-amt">$2.50</strong>
+              </div>
+              <div class="money-line">
+                <span>+ Matched delivery (capped)</span>
+                <strong class="money-amt money-fee">$0.50</strong>
+              </div>
+              <div class="money-divider"></div>
+              <div class="money-line money-total-line">
+                <span>Advertiser pays</span>
+                <strong class="money-amt money-total">$3.00</strong>
+              </div>
+              <div class="money-card-note">Effective rate: 17% · the cap rewards premium advertisers</div>
+            </div>
+          </div>
+
+          <div class="money-perspective-divider">
+            <div class="money-perspective-label" style="margin-top: 8px;">
+              <span class="money-perspective-dot" style="background: var(--evergreen);"></span>
+              What viewers and creators see
+            </div>
+          </div>
+
+          <div class="money-viewer-card">
+            <div class="money-viewer-row">
+              <div class="money-viewer-line">
+                <span class="money-viewer-label">In this video's tip jar</span>
+                <strong class="money-viewer-amt">$0.50</strong>
+              </div>
+              <div class="money-viewer-arrow">·</div>
+              <div class="money-viewer-line">
+                <span class="money-viewer-label">In this one</span>
+                <strong class="money-viewer-amt">$1.00</strong>
+              </div>
+              <div class="money-viewer-arrow">·</div>
+              <div class="money-viewer-line">
+                <span class="money-viewer-label">And this one</span>
+                <strong class="money-viewer-amt">$2.50</strong>
+              </div>
+            </div>
+            <div class="money-viewer-note">No fees. No deductions. Just the bid the advertiser chose, sitting at the rim of the jar — yours to tip or jip.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="money-promise">
+        <div class="money-promise-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-12V5l-8-3-8 3v5c0 8 8 12 8 12z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div>
+          <h4 class="money-promise-title">No fee anywhere else.</h4>
+          <p class="money-promise-body">No fee on viewer cashouts. No platform cut on tips between viewers and creators — <strong>creators keep 100% of every coin dropped in their jar.</strong> TipJip absorbs the payment processing cost. The viewer keeps every coin that lands in their jar. The matched delivery fee is paid by advertisers at checkout — viewers and creators never see it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .money-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: 64px;
+      align-items: start;
+    }
+    .money-text { padding-top: 8px; }
+    .money-lede {
+      font-size: 17px;
+      line-height: 1.55;
+      color: var(--charcoal);
+      margin-bottom: 32px;
+    }
+    .money-lede strong { color: var(--evergreen); font-weight: 700; }
+    .money-rule {
+      background: var(--parchment-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+    .money-rule-row {
+      display: grid;
+      grid-template-columns: 130px 24px 1fr;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line-soft);
+      font-size: 14px;
+    }
+    .money-rule-row:last-child { border-bottom: none; }
+    .money-rule-row.total { padding-top: 14px; font-weight: 600; }
+    .money-rule-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .money-rule-arrow {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--gold-2);
+      font-size: 16px;
+    }
+    .money-rule-value {
+      color: var(--evergreen);
+      font-weight: 500;
+    }
+    .money-rule-row.total .money-rule-value { color: var(--evergreen); font-weight: 700; }
+    .money-note {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 440px;
+    }
+
+    .money-examples {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .money-perspective-header {
+      padding-bottom: 4px;
+    }
+    .money-perspective-divider {
+      padding: 16px 0 4px;
+      border-top: 1px dashed var(--line);
+      margin-top: 8px;
+    }
+    .money-perspective-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--evergreen);
+    }
+    .money-perspective-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .money-perspective-sublabel {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+      letter-spacing: 0;
+      text-transform: none;
+      font-weight: 400;
+    }
+    .money-viewer-card {
+      background: var(--evergreen);
+      color: var(--parchment);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+    }
+    .money-viewer-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .money-viewer-line {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .money-viewer-label {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--sage);
+      font-weight: 600;
+    }
+    .money-viewer-amt {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 28px;
+      letter-spacing: -0.01em;
+      color: var(--gold-soft);
+    }
+    .money-viewer-arrow {
+      color: var(--evergreen-3);
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .money-viewer-note {
+      font-size: 12px;
+      color: var(--sage);
+      text-align: center;
+      line-height: 1.55;
+      padding-top: 12px;
+      border-top: 1px solid rgba(245, 241, 234, 0.12);
+      font-style: italic;
+      font-family: var(--font-body);
+    }
+    .money-card {
+      background: var(--parchment);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      transition: all 0.2s ease;
+    }
+    .money-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px -16px rgba(15, 42, 36, 0.18);
+    }
+    .money-card-feature {
+      background: var(--evergreen);
+      color: var(--parchment);
+      border-color: transparent;
+    }
+    .money-card-feature .money-line { color: var(--sage); }
+    .money-card-feature .money-amt { color: var(--parchment); }
+    .money-card-feature .money-amt.money-total { color: var(--gold-soft); }
+    .money-card-feature .money-divider { border-color: rgba(245, 241, 234, 0.15); }
+
+    .money-card-tag {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-2);
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .money-card-feature .money-card-tag { color: var(--gold-soft); }
+
+    .money-card-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .money-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .money-amt {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+      color: var(--evergreen);
+    }
+    .money-amt.money-fee { color: var(--gold-2); }
+    .money-amt.money-total { color: var(--evergreen); font-size: 26px; }
+    .money-divider {
+      border-bottom: 1px solid var(--line);
+      margin: 4px 0;
+    }
+    .money-total-line { padding-top: 4px; }
+    .money-card-note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 10px;
+      font-style: italic;
+      font-family: var(--font-body);
+    }
+    .money-card-feature .money-card-note { color: var(--sage); }
+
+    .money-promise {
+      margin-top: 56px;
+      padding: 24px 28px;
+      background: var(--parchment-2);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+    .money-promise-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--evergreen);
+      color: var(--gold-soft);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .money-promise-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.005em;
+      color: var(--evergreen);
+      margin-bottom: 4px;
+    }
+    .money-promise-body {
+      font-size: 14px;
+      color: var(--charcoal);
+      line-height: 1.55;
+    }
+
+    @media (max-width: 1024px) {
+      .money-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+  </style>
+
+  <div class="section audiences">
+    <div class="audiences-tabs">
+      <div class="audiences-tab active" data-aud="viewer">
+        <span class="tab-label">For viewers</span>
+        <span class="tab-title">Get paid to learn.</span>
+      </div>
+      <div class="audiences-tab" data-aud="creator">
+        <span class="tab-label">For creators</span>
+        <span class="tab-title">Earn from value, not the algorithm.</span>
+      </div>
+      <div class="audiences-tab" data-aud="advertiser">
+        <span class="tab-label">For advertisers</span>
+        <span class="tab-title">Real attention, declared.</span>
+      </div>
+    </div>
+
+    <div class="audiences-content">
+      <div class="audiences-pane active" data-aud="viewer">
+        <div>
+          <div class="section-eyebrow">For viewers</div>
+          <h3>You hold the jar.<br><em>You decide</em> where the coin goes.</h3>
+          <p class="lede">Every video has a tip jar. The advertiser fills it with their bid — $0.50 minimum, often $1 to $3 for premium audiences — the moment you finish their ad. That money is already yours. Tip the creator's jar to thank them. Jip and keep the coin in your own jar with feedback for next time. Either action puts you in control of a transaction that used to live entirely between Google, Meta, and the data brokers.</p>
+          <ul class="aud-points">
+            <li>Earn $0.75 (or more) per ad you actually choose to watch</li>
+            <li>Drop coins direct into creator jars — no platform takes a cut</li>
+            <li>Jip and help creators sharpen the next video — anonymous feedback</li>
+            <li>Empty your jar to bank or PayPal at $20. No fees.</li>
+          </ul>
+        </div>
+        <div class="aud-card">
+          <div class="card-label">Sample viewer · 30 days</div>
+          <div class="aud-card-stat"><span>Ads watched</span><strong>34</strong></div>
+          <div class="aud-card-stat"><span>Total dropped in her jar</span><strong class="gold">$25.50</strong></div>
+          <div class="aud-card-stat"><span>Tipped to creator jars (24)</span><strong>$13.20</strong></div>
+          <div class="aud-card-stat"><span>Jipped &amp; kept (10)</span><strong>$7.50</strong></div>
+          <div class="aud-card-stat"><span>Her jar today</span><strong class="gold">$12.30</strong></div>
+        </div>
+      </div>
+
+      <div class="audiences-pane" data-aud="creator">
+        <div>
+          <div class="section-eyebrow">For creators</div>
+          <h3>The market <em>finally</em> rewards quality.</h3>
+          <p class="lede">No algorithm. No demonetization roulette. No middleman keeping half. Every coin in your jar came from a viewer who chose to drop it there — because you taught them something. Every jip is honest signal that the next video can be sharper. The tip jar tells the truth: it fills when the work earns it.</p>
+          <ul class="aud-points">
+            <li>Keep 100% of every coin dropped in your jar — flat, no thresholds, no platform cut</li>
+            <li>Read anonymous jip notes to sharpen the next video</li>
+            <li>Your tip rate is your reputation — display it on every thumbnail</li>
+            <li>Optional verified-practitioner status for licensed clinicians</li>
+          </ul>
+        </div>
+        <div class="aud-card">
+          <div class="card-label">Sample creator · 30 days</div>
+          <div class="aud-card-stat"><span>Videos published</span><strong>4</strong></div>
+          <div class="aud-card-stat"><span>Total watches</span><strong>14,290</strong></div>
+          <div class="aud-card-stat"><span>Tip rate</span><strong class="gold">87%</strong></div>
+          <div class="aud-card-stat"><span>Coins in her jar</span><strong class="gold">$3,490</strong></div>
+          <div class="aud-card-stat"><span>Avg. coin size</span><strong>$0.42</strong></div>
+        </div>
+      </div>
+
+      <div class="audiences-pane" data-aud="advertiser">
+        <div>
+          <div class="section-eyebrow">For advertisers</div>
+          <h3>Pay <em>the human</em> for their attention. Not a proxy.</h3>
+          <p class="lede">Every ad dollar you've spent for a decade went to a platform, an exchange, a data broker, a verification vendor, an attribution tool, and finally — a sliver — to the actual person who saw your ad. TipJip removes the stack. You pay the viewer. They watched. The transaction is complete. Higher intent, zero fraud, no proxies.</p>
+          <ul class="aud-points">
+            <li>Target only on declared traits (interests, lifestyle, demographics)</li>
+            <li>Pay only for verified watches with active attention checks</li>
+            <li>Zero invalid traffic — every viewer is a real, KYC'd human</li>
+            <li>Sensitive health attributes are locked at the data layer (MHMDA-compliant by design)</li>
+          </ul>
+        </div>
+        <div class="aud-card">
+          <div class="card-label">Sample campaign · 30 days</div>
+          <div class="aud-card-stat"><span>Bid per attention</span><strong>$0.75</strong></div>
+          <div class="aud-card-stat"><span>Verified watches</span><strong>1,840</strong></div>
+          <div class="aud-card-stat"><span>Click-through rate</span><strong class="gold">8.3%</strong></div>
+          <div class="aud-card-stat"><span>Cost per click</span><strong>$9.04</strong></div>
+          <div class="aud-card-stat"><span>Fraud rate</span><strong>0%</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section numbers">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <div class="section-eyebrow">The math</div>
+          <h2>The model only works if it works <em>for everyone.</em></h2>
+        </div>
+        <p class="section-tagline">Below are real numbers from our private beta — running with hand-picked health practitioners and a closed cohort of advertisers since March.</p>
+      </div>
+      <div class="numbers-grid">
+        <div class="number-card">
+          <div class="num">14<span>k</span></div>
+          <div class="label">verified watches per week in beta</div>
+        </div>
+        <div class="number-card">
+          <div class="num">$0.<span>75</span></div>
+          <div class="label">paid to viewer per ad watched</div>
+        </div>
+        <div class="number-card">
+          <div class="num">82<span>%</span></div>
+          <div class="label">tip rate · 18% jip rate</div>
+        </div>
+        <div class="number-card">
+          <div class="num">$2.<span>1M</span></div>
+          <div class="label">addressable health-creator economy</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <div class="section-eyebrow">Privacy by architecture</div>
+          <h2>We built consent <em>in,</em><br>not bolted it on.</h2>
+        </div>
+        <p class="section-tagline">Compliant with Washington's My Health My Data Act, California's CPRA, and the rest of the alphabet — by design, not by retrofit.</p>
+      </div>
+      <div class="trust-grid">
+        <div>
+          <p style="font-size:17px; line-height:1.6; color:var(--evergreen); margin-bottom:24px; font-family:var(--font-body); font-weight:500; letter-spacing:-0.005em; font-style: italic;">"Privacy is a feature, not a footer link. Every trait you share is opted in. Every share-out is logged. Every deletion request propagates within 45 days. The audit trail is the product."</p>
+          <p style="color:var(--muted); font-size:13px; letter-spacing:0.04em; text-transform:uppercase; font-weight:600;">— TipJip Privacy Charter</p>
+        </div>
+        <ul class="trust-list">
+          <li class="trust-item">
+            <div class="trust-item-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            </div>
+            <div>
+              <h4>Zero-party data only</h4>
+              <p>We never infer, scrape, or buy data about you. If we know it, you told us.</p>
+            </div>
+          </li>
+          <li class="trust-item">
+            <div class="trust-item-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+            </div>
+            <div>
+              <h4>Full deletion rights</h4>
+              <p>One click removes your profile from us and propagates to every advertiser who saw it.</p>
+            </div>
+          </li>
+          <li class="trust-item">
+            <div class="trust-item-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-12V5l-8-3-8 3v5c0 8 8 12 8 12z"/></svg>
+            </div>
+            <div>
+              <h4>HIPAA-aligned storage</h4>
+              <p>Health-adjacent traits are encrypted at rest and in transit, with strict role-based access.</p>
+            </div>
+          </li>
+          <li class="trust-item">
+            <div class="trust-item-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h6m6 0h6"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <div>
+              <h4>No third-party tracking</h4>
+              <p>No pixels, no fingerprinting, no Google or Meta SDKs. We turn the lights off on the surveillance graph.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="final-cta">
+    <div class="container">
+      <h2>Tip with thanks. Jip with feedback.<br><em>Get paid either&nbsp;way.</em></h2>
+      <p style="color:var(--sage); font-size:16px; max-width:560px; margin:0 auto 32px; line-height:1.55;">Private beta opens March 2026. Founding viewers earn 2× on every ad for the first year. Founding creators keep 100% of every coin dropped in their jar — forever. No platform cut, no thresholds.</p>
+      <div class="final-cta-form">
+        <input type="email" placeholder="you@example.com" />
+        <button class="btn btn-gold">Request access</button>
+      </div>
+      <p class="final-cta-note">Health-and-wellness focus · US launch · No credit card · Unsubscribe anytime</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================================
+     BROWSE VIEW
+     ======================================================================== -->
+<section class="view" data-view="browse">
+  <div class="browse-shell">
+    <aside class="browse-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-link active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>
+          Home
+        </div>
+        <div class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 12A10 10 0 1112 2"/><path d="M12 8v4l3 2"/></svg>
+          Watch later
+        </div>
+        <div class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"/></svg>
+          Saved
+        </div>
+        <div class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>
+          Subscriptions
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Following</div>
+        <div class="sidebar-link"><div class="creator-avatar" style="width:24px; height:24px; font-size:10px;">AH</div>Dr. Amelia Hart</div>
+        <div class="sidebar-link"><div class="creator-avatar" style="width:24px; height:24px; font-size:10px;">MR</div>Dr. Marcus Reeves</div>
+        <div class="sidebar-link"><div class="creator-avatar" style="width:24px; height:24px; font-size:10px;">SC</div>Dr. Sarah Chen</div>
+        <div class="sidebar-link"><div class="creator-avatar" style="width:24px; height:24px; font-size:10px;">JK</div>Jay Kettle, RD</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Your tip jar</div>
+        <div style="padding: 16px 14px; background: var(--evergreen); color: var(--parchment); border-radius: 10px; display: flex; gap: 14px; align-items: center;">
+          <svg viewBox="0 0 40 50" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 36px; flex-shrink: 0;">
+            <path d="M9 14 L9 44 Q9 47 12 47 L28 47 Q31 47 31 44 L31 14 Z" fill="rgba(245,241,234,0.06)" stroke="#ECC881" stroke-width="1.6"/>
+            <rect x="7" y="9" width="26" height="6" rx="1.5" fill="#ECC881"/>
+            <rect x="15" y="11.2" width="10" height="1.4" rx="0.7" fill="#0F2A24"/>
+            <circle cx="14" cy="40" r="2.4" fill="#C8902E"/>
+            <circle cx="22" cy="42" r="2.4" fill="#C8902E"/>
+            <circle cx="26" cy="38" r="2.4" fill="#ECC881"/>
+            <circle cx="18" cy="35" r="2.4" fill="#ECC881"/>
+          </svg>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-family:var(--font-display); font-size:24px; font-weight:700; color:var(--gold-soft); letter-spacing:-0.01em; line-height: 1;">$12.40</div>
+            <div style="font-size:11px; color:var(--sage); margin-top:6px;">$7.60 to cash out</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="browse-main">
+      <div class="browse-header">
+        <h2>Today on TipJip</h2>
+        <div class="search-bar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" placeholder="Search hormone health, sleep, longevity…" />
+        </div>
+      </div>
+
+      <div class="category-strip">
+        <div class="category-chip active">All</div>
+        <div class="category-chip">Hormone Health</div>
+        <div class="category-chip">Longevity</div>
+        <div class="category-chip">Sleep</div>
+        <div class="category-chip">Mental Wellness</div>
+        <div class="category-chip">Movement</div>
+        <div class="category-chip">Nutrition</div>
+        <div class="category-chip">Recovery</div>
+        <div class="category-chip">Cold Therapy</div>
+        <div class="category-chip">Breathwork</div>
+        <div class="category-chip">Hyperbaric</div>
+      </div>
+
+      <div class="video-grid">
+        <div class="video-card" data-action="watch">
+          <div class="thumb">
+            <div class="thumb-bg bg-1"></div>
+            <div class="thumb-pattern"></div>
+            <div class="thumb-overlay"></div>
+            <span class="thumb-tip-score"><span class="coin"></span>91% tip rate</span>
+            <span class="thumb-duration">14:22</span>
+            <div class="thumb-title">Hormones after 40: what really matters</div>
+          </div>
+          <h4>Hormones after 40: what really matters and what to ignore</h4>
+          <div class="creator">Dr. Amelia Hart · Endocrinologist</div>
+          <div class="meta">14k views · 3 days ago</div>
+        </div>
+
+        <div class="video-card" data-action="watch">
+          <div class="thumb">
+            <div class="thumb-bg bg-3"></div>
+            <div class="thumb-pattern"></div>
+            <div class="thumb-overlay"></div>
+            <span class="thumb-tip-score"><span class="coin"></span>88% tip rate</span>
+            <span class="thumb-duration">22:08</span>
+            <div class="thumb-title">VO2max: the longevity metric you're ignoring</div>
+          </div>
+          <h4>VO2max: the most important longevity metric you're not tracking</h4>
+          <div class="creator">Dr. Marcus Reeves · Cardiology</div>
+          <div class="meta">28k views · 1 week ago</div>
+        </div>
+
+        <div class="video-card" data-action="watch">
+          <div class="thumb">
+            <div class="thumb-bg bg-2"></div>
+            <div class="thumb-pattern"></div>
+            <div class="thumb-overlay"></div>
+            <span class="thumb-tip-score"><span class="coin"></span>94% tip rate</span>
+            <span class="thumb-duration">9:47</span>
+            <div class="thumb-title">Sleep architecture for high performers</div>
+          </div>
+          <h4>Sleep architecture: why your tracker is lying to you</h4>
+          <div class="creator">Dr. Sarah Chen · Sleep Medicine</div>
+          <div class="meta">42k views · 2 weeks ago</div>
+        </div>
+
+        <div class="video-card" data-action="watch">
+          <div class="thumb">
+            <div class="thumb-bg bg-4"></div>
+            <div class="thumb-pattern"></div>
+            <div class="thumb-overlay"></div>
+            <span class="thumb-tip-score"><span class="coin"></span>72% tip rate</span>
+            <span class="thumb-duration">18:33</span>
+            <div class="thumb-title">Cold plunges: separating science from hype</div>
+          </div>
+          <h4>Cold plunges: separating real science from social media hype</h4>
+          <div class="creator">Dr. James Okonkwo · Sports Medicine</div>
+          <div class="meta">19k views · 4 days ago</div>
+        </div>
+
+        <div class="video-card" data-action="watch">
+          <div class="thumb">
+            <div class="thumb-bg bg-5"></div>
+            <div class="thumb-pattern"></div>
+            <div class="thumb-overlay"></div>
+            <span class="thumb-tip-score"><span class="coin"></span>89% tip rate</span>
+            <span class="thumb-duration">11:04</span>
+            <div class="thumb-title">The TRT decision: when, why, and what to ask</div>
+          </div>
+          <h4>The TRT conversation: when to consider it, what to ask your doctor</h4>
+          <div class="creator">Dr. Amelia Hart · Endocrinologist</div>
+          <div class="meta">8k views · 1 day ago</div>
+        </div>
+
+        <div class="video-card" data-action="watch">
+          <div class="thumb">
+            <div class="thumb-bg bg-6"></div>
+            <div class="thumb-pattern"></div>
+            <div class="thumb-overlay"></div>
+            <span class="thumb-tip-score"><span class="coin"></span>95% tip rate</span>
+            <span class="thumb-duration">26:15</span>
+            <div class="thumb-title">Continuous glucose monitoring for non-diabetics</div>
+          </div>
+          <h4>What a CGM taught me about food I've eaten my entire life</h4>
+          <div class="creator">Jay Kettle, RD · Functional Nutrition</div>
+          <div class="meta">61k views · 3 weeks ago</div>
+        </div>
+
+        <div class="video-card" data-action="watch">
+          <div class="thumb">
+            <div class="thumb-bg bg-7"></div>
+            <div class="thumb-pattern"></div>
+            <div class="thumb-overlay"></div>
+            <span class="thumb-tip-score"><span class="coin"></span>83% tip rate</span>
+            <span class="thumb-duration">15:48</span>
+            <div class="thumb-title">IHHT: the altitude protocol most clinics miss</div>
+          </div>
+          <h4>IHHT explained: the altitude protocol most clinics still get wrong</h4>
+          <div class="creator">Randall S. · Certified Altitude Therapist</div>
+          <div class="meta">11k views · 5 days ago</div>
+        </div>
+
+        <div class="video-card" data-action="watch">
+          <div class="thumb">
+            <div class="thumb-bg bg-8"></div>
+            <div class="thumb-pattern"></div>
+            <div class="thumb-overlay"></div>
+            <span class="thumb-tip-score"><span class="coin"></span>78% tip rate</span>
+            <span class="thumb-duration">31:22</span>
+            <div class="thumb-title">Anxiety, vagus tone, and breath</div>
+          </div>
+          <h4>Anxiety, vagus tone, and the breath protocols that actually work</h4>
+          <div class="creator">Dr. Priya Lal · Integrative Psychiatry</div>
+          <div class="meta">34k views · 1 week ago</div>
+        </div>
+
+        <div class="video-card" data-action="watch">
+          <div class="thumb">
+            <div class="thumb-bg bg-9"></div>
+            <div class="thumb-pattern"></div>
+            <div class="thumb-overlay"></div>
+            <span class="thumb-tip-score"><span class="coin"></span>92% tip rate</span>
+            <span class="thumb-duration">12:19</span>
+            <div class="thumb-title">Strength training after 50</div>
+          </div>
+          <h4>Strength training after 50: the only programming framework you need</h4>
+          <div class="creator">Mara West · Movement Specialist</div>
+          <div class="meta">22k views · 2 days ago</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================================
+     WATCH VIEW
+     ======================================================================== -->
+<section class="view" data-view="watch">
+  <div class="watch-shell">
+    <div class="watch-main">
+      <div class="player" id="player">
+        <div class="player-bg-ad"></div>
+        <div class="player-bg-video"></div>
+
+        <div class="ad-banner">
+          <span class="ad-label">Sponsored by Atria Sleep</span>
+          <span class="ad-earn">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.4"/><text x="7" y="10" text-anchor="middle" font-size="8" font-weight="700" fill="currentColor" font-family="serif">$</text></svg>
+            You'll earn $0.75
+          </span>
+        </div>
+
+        <div class="player-content">
+          <div class="ad-content">
+            <div class="brand">— Atria Sleep —</div>
+            <h2>The first sleep tracker built for sleep architecture, not steps.</h2>
+            <p>Designed with sleep physicians. No subscription.</p>
+            <div class="ad-cta">Learn more
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+
+          <div class="video-content">
+            <div class="play-large"></div>
+            <h2>Hormones after 40: what really matters</h2>
+            <p>Dr. Amelia Hart · 14:22</p>
+          </div>
+        </div>
+
+        <div class="player-controls">
+          <div class="ctl">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+          </div>
+          <span class="time-display" id="time-display">0:08 / 0:30 (Ad)</span>
+          <div style="flex:1"></div>
+          <div class="ctl">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
+          </div>
+          <div class="ctl">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7V3h4M21 7V3h-4M3 17v4h4M21 17v4h-4"/></svg>
+          </div>
+        </div>
+
+        <div class="player-progress">
+          <div class="player-progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="video-info">
+        <h1>Hormones after 40: what really matters and what to ignore</h1>
+
+        <div class="video-meta-row">
+          <div class="creator-row">
+            <div class="creator-avatar">AH</div>
+            <div class="creator-info">
+              <div class="name">Dr. Amelia Hart <span class="verified"></span></div>
+              <div class="stats">182k subscribers · Endocrinologist</div>
+            </div>
+            <button class="btn btn-primary btn-sm" style="margin-left:16px;">Subscribe</button>
+          </div>
+
+          <div class="video-actions">
+            <div class="video-action primary">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
+              Tip Dr. Hart
+            </div>
+            <div class="video-action">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"/></svg>
+              Save
+            </div>
+            <div class="video-action">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              Share
+            </div>
+          </div>
+        </div>
+
+        <div class="video-description">
+          <div class="desc-meta">
+            <span>14,290 watches</span><span>·</span><span>3 days ago</span><span>·</span><span style="color:var(--gold-2)">91% tip rate</span>
+          </div>
+          <p>An endocrinologist's honest look at what hormone testing actually tells you in your 40s and 50s. We cover testosterone, thyroid, cortisol, DHEA, and the four lab markers most generalists skip — plus when supplementation makes sense and when it's a marketing answer to a real question.</p>
+          <p style="margin-top:12px;">This video was sponsored by Atria Sleep. Sponsorship does not influence editorial content. See our sponsorship policy for details.</p>
+        </div>
+      </div>
+    </div>
+
+    <aside class="watch-side">
+      <div class="tip-prompt" id="tip-prompt">
+
+        <!-- STATE A: Initial binary choice -->
+        <div class="tj-state tj-state-choice active" data-state="choice">
+          <div class="tip-prompt-eyebrow">⏤ A coin at the rim</div>
+          <h3>Where does this&nbsp;coin go?</h3>
+          <p>The Atria Sleep ad just put $0.75 at the rim of your tip jar. Drop it in <strong style="color: var(--parchment);">Dr. Hart's jar</strong> with a thanks. Or drop it in <strong style="color: var(--parchment);">your own jar</strong> with feedback for next time.</p>
+
+          <div class="tip-amount-display">
+            <div class="label">At the rim · waiting</div>
+            <div class="amount">$0.75</div>
+          </div>
+
+          <div class="tj-binary-buttons">
+            <button class="tj-btn tj-tip" id="choose-tip">
+              <span class="tj-btn-word">Tip</span>
+              <span class="tj-btn-sub">Drop in her jar</span>
+            </button>
+            <button class="tj-btn tj-jip" id="choose-jip">
+              <span class="tj-btn-word">Jip</span>
+              <span class="tj-btn-sub">Drop in yours</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- STATE B: Tip flow -->
+        <div class="tj-state tj-state-tip" data-state="tip">
+          <button class="tj-back" data-back>← Back</button>
+          <div class="tip-prompt-eyebrow">⏤ Dropping in Dr. Hart's jar</div>
+          <h3>How much of the coin?</h3>
+          <p>Drop the whole $0.75 in her jar, or split it — keep some in yours.</p>
+
+          <div class="tip-presets">
+            <div class="tip-preset" data-split="33">$0.25 → her</div>
+            <div class="tip-preset active" data-split="66">$0.50 → her</div>
+            <div class="tip-preset" data-split="100">All → her</div>
+          </div>
+
+          <div class="tip-slider-wrap">
+            <div class="tip-slider-labels">
+              <span>Your jar: 34%</span><span>Her jar: 66%</span>
+            </div>
+            <input type="range" min="0" max="100" value="66" class="slider" id="tip-slider" />
+          </div>
+
+          <div class="tip-split">
+            <div class="tip-split-item you">
+              <div class="label">In your jar</div>
+              <div class="value" id="you-amount">$0.26</div>
+            </div>
+            <div class="tip-split-item creator">
+              <div class="label">In her jar</div>
+              <div class="value" id="creator-amount">$0.49</div>
+            </div>
+          </div>
+
+          <div class="tip-actions">
+            <button class="btn btn-gold" id="confirm-tip">Drop the coin</button>
+          </div>
+        </div>
+
+        <!-- STATE C: Jip flow -->
+        <div class="tj-state tj-state-jip" data-state="jip">
+          <button class="tj-back" data-back>← Back</button>
+          <div class="tip-prompt-eyebrow">⏤ Coin to your jar · Note to hers</div>
+          <h3>The coin lands in your&nbsp;jar.</h3>
+          <p>Want to drop a note in Dr. Hart's jar too? Optional — anonymous feedback that helps her sharpen the next one.</p>
+
+          <div class="tip-amount-display">
+            <div class="label">Added to your jar</div>
+            <div class="amount">$0.75</div>
+          </div>
+
+          <div class="jip-feedback-wrap">
+            <label class="jip-feedback-label">A note for Dr. Hart's jar (optional)</label>
+            <textarea class="jip-feedback" placeholder="Specific. Honest. Constructive. Anonymous — Dr. Hart sees the note, not who sent it." rows="3"></textarea>
+          </div>
+
+          <div class="tip-actions">
+            <button class="btn btn-gold" id="confirm-jip">Drop the note</button>
+          </div>
+        </div>
+
+      </div>
+
+      <style>
+        .tj-state { display: none; }
+        .tj-state.active { display: block; animation: fadeIn 0.25s ease; }
+        .tj-binary-buttons {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+          margin-top: 4px;
+        }
+        .tj-btn {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 18px 8px;
+          border-radius: 12px;
+          cursor: pointer;
+          transition: all 0.18s ease;
+          border: 1px solid transparent;
+        }
+        .tj-btn:hover { transform: translateY(-2px); }
+        .tj-tip {
+          background: var(--gold);
+          color: var(--evergreen);
+        }
+        .tj-tip:hover { background: var(--gold-soft); }
+        .tj-jip {
+          background: rgba(245, 241, 234, 0.06);
+          color: var(--parchment);
+          border-color: rgba(245, 241, 234, 0.2);
+        }
+        .tj-jip:hover { background: rgba(245, 241, 234, 0.12); }
+        .tj-btn-word {
+          font-family: var(--font-display);
+          font-weight: 600;
+          font-size: 24px;
+          letter-spacing: -0.015em;
+          line-height: 1;
+        }
+        .tj-btn-sub {
+          font-size: 11px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          font-weight: 600;
+          opacity: 0.78;
+          margin-top: 4px;
+        }
+        .tj-back {
+          background: none;
+          border: none;
+          color: var(--sage);
+          font-size: 12px;
+          font-weight: 500;
+          cursor: pointer;
+          padding: 0;
+          margin-bottom: 14px;
+          display: inline-block;
+        }
+        .tj-back:hover { color: var(--gold-soft); }
+        .jip-feedback-wrap { margin-bottom: 16px; }
+        .jip-feedback-label {
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--sage);
+          display: block;
+          margin-bottom: 8px;
+        }
+        .jip-feedback {
+          width: 100%;
+          padding: 12px 14px;
+          background: var(--evergreen-2);
+          border: 1px solid rgba(245, 241, 234, 0.12);
+          border-radius: 10px;
+          color: var(--parchment);
+          font-family: inherit;
+          font-size: 13px;
+          line-height: 1.5;
+          resize: vertical;
+          outline: none;
+          transition: border-color 0.15s;
+        }
+        .jip-feedback:focus { border-color: var(--gold-soft); }
+        .jip-feedback::placeholder { color: var(--muted-2); }
+      </style>
+
+      <div class="up-next">
+        <h4>Up next</h4>
+        <div class="up-next-card">
+          <div class="un-thumb bg-3"></div>
+          <div>
+            <h5>VO2max: the longevity metric you're not tracking</h5>
+            <div class="un-meta">Dr. Marcus Reeves · 22:08</div>
+          </div>
+        </div>
+        <div class="up-next-card">
+          <div class="un-thumb bg-2"></div>
+          <div>
+            <h5>Sleep architecture: why your tracker is lying</h5>
+            <div class="un-meta">Dr. Sarah Chen · 9:47</div>
+          </div>
+        </div>
+        <div class="up-next-card">
+          <div class="un-thumb bg-5"></div>
+          <div>
+            <h5>The TRT decision: when, why, and what to ask</h5>
+            <div class="un-meta">Dr. Amelia Hart · 11:04</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ========================================================================
+     PROFILE VIEW (the trait file)
+     ======================================================================== -->
+<section class="view" data-view="profile">
+  <div class="profile-shell">
+    <div class="profile-header">
+      <div class="profile-header-left">
+        <div class="eyebrow">Your private profile</div>
+        <h1>Hello, Randall.</h1>
+        <p>This is the only place anyone learns about you on TipJip. You declare. You control. You delete. Advertisers can only target the traits you've explicitly opened up.</p>
+      </div>
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <div class="num gold">42</div>
+          <div class="label">traits shared</div>
+        </div>
+        <div class="profile-stat">
+          <div class="num">$12.40</div>
+          <div class="label">in your jar · $7.60 to cash out</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <div class="profile-section-header">
+        <h2>Health interests</h2>
+        <span class="privacy-toggle"><span class="dot"></span>Visible to advertisers</span>
+      </div>
+      <div class="trait-grid">
+        <div class="trait-chip selected"><span>Hormone health</span><div class="check"></div></div>
+        <div class="trait-chip selected"><span>Longevity</span><div class="check"></div></div>
+        <div class="trait-chip selected"><span>Sleep optimization</span><div class="check"></div></div>
+        <div class="trait-chip"><span>Mental wellness</span><div class="check"></div></div>
+        <div class="trait-chip selected"><span>Cold therapy</span><div class="check"></div></div>
+        <div class="trait-chip selected"><span>Breathwork</span><div class="check"></div></div>
+        <div class="trait-chip"><span>Mindfulness</span><div class="check"></div></div>
+        <div class="trait-chip selected"><span>Strength training</span><div class="check"></div></div>
+        <div class="trait-chip"><span>Endurance</span><div class="check"></div></div>
+        <div class="trait-chip selected"><span>Recovery / mobility</span><div class="check"></div></div>
+        <div class="trait-chip selected"><span>Functional nutrition</span><div class="check"></div></div>
+        <div class="trait-chip"><span>Plant-based diet</span><div class="check"></div></div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <div class="profile-section-header">
+        <h2>Lifestyle signals</h2>
+        <span class="privacy-toggle"><span class="dot"></span>Visible to advertisers</span>
+      </div>
+      <div class="trait-grid">
+        <div class="trait-chip selected"><span>Cigar enthusiast</span><div class="check"></div></div>
+        <div class="trait-chip"><span>Wine collector</span><div class="check"></div></div>
+        <div class="trait-chip selected"><span>Travel often</span><div class="check"></div></div>
+        <div class="trait-chip selected"><span>Home owner</span><div class="check"></div></div>
+        <div class="trait-chip selected"><span>Entrepreneur</span><div class="check"></div></div>
+        <div class="trait-chip"><span>Investor</span><div class="check"></div></div>
+        <div class="trait-chip selected"><span>Outdoor activities</span><div class="check"></div></div>
+        <div class="trait-chip"><span>Audiophile</span><div class="check"></div></div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <div class="profile-section-header">
+        <h2>Sensitive health (HIPAA-grade)</h2>
+        <span class="privacy-toggle private"><span class="dot"></span>Private — never shared</span>
+      </div>
+      <p style="font-size:13px; color:var(--muted); margin-bottom:16px;">These traits help us recommend better content, but are <strong>never</strong> exposed to advertisers — even if you toggle the section open. Encrypted at rest with row-level access controls.</p>
+      <div class="trait-grid">
+        <div class="trait-chip"><span>On TRT therapy</span><div class="check"></div></div>
+        <div class="trait-chip selected"><span>Sleep apnea diagnosis</span><div class="check"></div></div>
+        <div class="trait-chip"><span>Chronic pain</span><div class="check"></div></div>
+        <div class="trait-chip"><span>Pre-diabetic</span><div class="check"></div></div>
+        <div class="trait-chip selected"><span>Family history: heart disease</span><div class="check"></div></div>
+        <div class="trait-chip"><span>Family history: cancer</span><div class="check"></div></div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <div class="profile-section-header">
+        <h2>Demographics</h2>
+        <span class="privacy-toggle"><span class="dot"></span>Range only, never exact</span>
+      </div>
+      <div class="trait-input">
+        <div class="trait-field">
+          <label>Age range</label>
+          <select>
+            <option>35 – 44</option>
+            <option>45 – 54</option>
+            <option selected>55 – 64</option>
+            <option>65+</option>
+          </select>
+        </div>
+        <div class="trait-field">
+          <label>Region</label>
+          <select>
+            <option selected>Midwest US</option>
+            <option>Northeast US</option>
+            <option>Pacific US</option>
+            <option>Southern US</option>
+          </select>
+        </div>
+        <div class="trait-field">
+          <label>Household income (range)</label>
+          <select>
+            <option>$50k – 100k</option>
+            <option>$100k – 200k</option>
+            <option selected>$200k – 500k</option>
+            <option>$500k+</option>
+          </select>
+        </div>
+        <div class="trait-field">
+          <label>Decision-making for healthcare</label>
+          <select>
+            <option selected>Self only</option>
+            <option>Self + partner</option>
+            <option>Family</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:12px; padding-top:32px; border-top:1px solid var(--line);">
+      <button class="btn btn-primary">Save changes</button>
+      <button class="btn btn-ghost">Export my data</button>
+      <button style="margin-left:auto; background:none; border:none; color:var(--danger); font-size:13px; font-weight:600; cursor:pointer; padding: 12px 0;">Permanently delete profile</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================================
+     CREATOR STUDIO VIEW
+     ======================================================================== -->
+<section class="view" data-view="creator">
+  <div class="creator-shell">
+    <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom:32px;">
+      <div>
+        <div style="font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold-2); font-weight:600; margin-bottom:8px;">Creator studio</div>
+        <h1 style="font-family:var(--font-display); font-size:38px; letter-spacing:-0.015em; color:var(--evergreen); font-weight:700;">Dr. Amelia Hart</h1>
+        <p style="font-size:14px; color:var(--muted);">182,400 subscribers · Verified Practitioner ✓</p>
+      </div>
+      <button class="btn btn-primary btn-lg">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        Upload video
+      </button>
+    </div>
+
+    <div class="creator-hero">
+      <div class="metric-card primary">
+        <div class="label">In her jar — November</div>
+        <div class="value"><span class="currency">$</span>3,490</div>
+        <div class="delta positive">+ 18% vs October</div>
+
+        <div style="display:flex; gap:32px; margin-top:32px; padding-top:24px; border-top:1px solid rgba(245, 241, 234, 0.12);">
+          <div>
+            <div style="font-size:11px; color:var(--sage); letter-spacing:0.1em; text-transform:uppercase; font-weight:600; margin-bottom:6px;">Coins dropped (12,432)</div>
+            <div style="font-family:var(--font-display); font-size:24px; letter-spacing:-0.01em; color:var(--gold-soft); font-weight:700;">$3,490</div>
+          </div>
+          <div>
+            <div style="font-size:11px; color:var(--sage); letter-spacing:0.1em; text-transform:uppercase; font-weight:600; margin-bottom:6px;">Notes received (1,858 jips)</div>
+            <div style="font-family:var(--font-display); font-size:24px; letter-spacing:-0.01em; color:var(--sage); font-weight:700;">14 read</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-card score-card">
+        <div>
+          <div class="label">Tip rate</div>
+          <div class="score-circle"><span>87<sub>%</sub></span></div>
+        </div>
+        <div style="font-size:12px; color:var(--evergreen-3); font-weight:600;">Top 9% · 13% jip rate</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="label">Watches this month</div>
+        <div class="value">14,290</div>
+        <div class="delta positive">+ 24% vs October</div>
+        <div style="margin-top:24px; font-size:12px; color:var(--muted);">
+          <div style="display:flex; justify-content:space-between; padding: 6px 0;">
+            <span>Avg. tip size</span><strong style="color:var(--evergreen)">$0.42</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding: 6px 0;">
+            <span>Completion rate</span><strong style="color:var(--evergreen)">79%</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="creator-tabs">
+      <div class="creator-tab active">Videos</div>
+      <div class="creator-tab">Audience</div>
+      <div class="creator-tab">Earnings</div>
+      <div class="creator-tab">Comments</div>
+      <div class="creator-tab">Settings</div>
+    </div>
+
+    <table class="video-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">Video</th>
+          <th>Status</th>
+          <th>Watches</th>
+          <th>Tip rate</th>
+          <th>Earnings</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="vt-thumb bg-1"></div>
+            <div class="vt-title">
+              <strong>Hormones after 40: what really matters and what to ignore</strong>
+              <small>Published 3 days ago · 14:22</small>
+            </div>
+          </td>
+          <td><span style="display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--evergreen-3);"><span style="width:6px;height:6px;background:var(--gold);border-radius:50%;"></span>Live</span></td>
+          <td class="vt-num">14,290</td>
+          <td class="vt-num gold">91%</td>
+          <td class="vt-num">$1,082</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="vt-thumb bg-5"></div>
+            <div class="vt-title">
+              <strong>The TRT conversation: when to consider it</strong>
+              <small>Published 1 day ago · 11:04</small>
+            </div>
+          </td>
+          <td><span style="display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--evergreen-3);"><span style="width:6px;height:6px;background:var(--gold);border-radius:50%;"></span>Live</span></td>
+          <td class="vt-num">8,140</td>
+          <td class="vt-num gold">89%</td>
+          <td class="vt-num">$702</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="vt-thumb bg-3"></div>
+            <div class="vt-title">
+              <strong>Cortisol mythology: what stress is and isn't</strong>
+              <small>Published 12 days ago · 19:08</small>
+            </div>
+          </td>
+          <td><span style="display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--evergreen-3);"><span style="width:6px;height:6px;background:var(--gold);border-radius:50%;"></span>Live</span></td>
+          <td class="vt-num">21,440</td>
+          <td class="vt-num gold">85%</td>
+          <td class="vt-num">$1,401</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="vt-thumb bg-7"></div>
+            <div class="vt-title">
+              <strong>Thyroid optimization beyond TSH</strong>
+              <small>Draft · 16:42</small>
+            </div>
+          </td>
+          <td><span style="font-size:13px; color:var(--muted);">Draft</span></td>
+          <td class="vt-num">—</td>
+          <td class="vt-num">—</td>
+          <td class="vt-num">—</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="vt-thumb bg-2"></div>
+            <div class="vt-title">
+              <strong>DHEA: what your labs aren't telling you</strong>
+              <small>Published 28 days ago · 13:55</small>
+            </div>
+          </td>
+          <td><span style="display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--evergreen-3);"><span style="width:6px;height:6px;background:var(--gold);border-radius:50%;"></span>Live</span></td>
+          <td class="vt-num">9,820</td>
+          <td class="vt-num gold">83%</td>
+          <td class="vt-num">$305</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ========================================================================
+     ADVERTISER VIEW
+     ======================================================================== -->
+<section class="view" data-view="advertiser">
+  <div style="background: var(--evergreen); color: var(--parchment); padding: 36px 0; border-bottom: 1px solid var(--line);">
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <div style="font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold-soft); font-weight:600; margin-bottom:6px;">Advertiser dashboard</div>
+        <h1 style="font-family:var(--font-display); font-size:30px; letter-spacing:-0.01em; font-weight:700;">Atria Sleep · Wellness</h1>
+      </div>
+      <div style="display:flex; gap:32px;">
+        <div>
+          <div style="font-size:11px; color:var(--sage); letter-spacing:0.1em; text-transform:uppercase; font-weight:600;">Spend this month</div>
+          <div style="font-family:var(--font-display); font-size:24px; letter-spacing:-0.01em; font-weight:700; color:var(--gold-soft);">$1,380.50</div>
+        </div>
+        <div>
+          <div style="font-size:11px; color:var(--sage); letter-spacing:0.1em; text-transform:uppercase; font-weight:600;">Verified watches</div>
+          <div style="font-family:var(--font-display); font-size:24px; letter-spacing:-0.01em; font-weight:700;">1,840</div>
+        </div>
+        <div>
+          <div style="font-size:11px; color:var(--sage); letter-spacing:0.1em; text-transform:uppercase; font-weight:600;">CTR</div>
+          <div style="font-family:var(--font-display); font-size:24px; letter-spacing:-0.01em; font-weight:700; color:var(--gold-soft);">8.3%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="adv-shell">
+    <div class="adv-main">
+      <h2>New campaign</h2>
+      <p class="lede">Build your audience from declared traits. Pay only for verified, opted-in watches.</p>
+
+      <div class="adv-stepper">
+        <div class="adv-step done"><span class="step-n">01</span>Creative</div>
+        <div class="adv-step active"><span class="step-n">02</span>Targeting</div>
+        <div class="adv-step"><span class="step-n">03</span>Bid &amp; budget</div>
+        <div class="adv-step"><span class="step-n">04</span>Review</div>
+      </div>
+
+      <div class="adv-form-group">
+        <label class="adv-form-label">Campaign name</label>
+        <input class="adv-input" value="Atria Sleep — November Performance Sleepers" />
+      </div>
+
+      <div class="adv-form-group">
+        <label class="adv-form-label">Health interests</label>
+        <div class="adv-form-help">Target viewers who declared interest in any of these areas.</div>
+        <div>
+          <span class="adv-trait-pill">Sleep optimization <span class="x">×</span></span>
+          <span class="adv-trait-pill">Recovery / mobility <span class="x">×</span></span>
+          <span class="adv-trait-pill">Longevity <span class="x">×</span></span>
+          <span class="adv-trait-pill">Mental wellness <span class="x">×</span></span>
+          <button style="padding: 6px 14px; background: var(--parchment); border: 1px dashed var(--line); border-radius: 100px; font-size: 12px; color: var(--muted); cursor: pointer;">+ Add interest</button>
+        </div>
+      </div>
+
+      <div class="adv-form-group">
+        <label class="adv-form-label">Lifestyle signals</label>
+        <div class="adv-form-help">Layer demographic and lifestyle filters.</div>
+        <div>
+          <span class="adv-trait-pill">Travel often <span class="x">×</span></span>
+          <span class="adv-trait-pill">Home owner <span class="x">×</span></span>
+          <span class="adv-trait-pill">Entrepreneur <span class="x">×</span></span>
+          <button style="padding: 6px 14px; background: var(--parchment); border: 1px dashed var(--line); border-radius: 100px; font-size: 12px; color: var(--muted); cursor: pointer;">+ Add signal</button>
+        </div>
+      </div>
+
+      <div class="adv-form-group">
+        <label class="adv-form-label">Demographics</label>
+        <div class="bid-row">
+          <div>
+            <div class="adv-form-help">Age range</div>
+            <input class="adv-input" value="35 – 64" />
+          </div>
+          <div>
+            <div class="adv-form-help">Region</div>
+            <input class="adv-input" value="United States — all regions" />
+          </div>
+        </div>
+      </div>
+
+      <div class="adv-form-group" style="padding: 20px; background: var(--parchment); border-radius: var(--radius); border: 1px dashed var(--line);">
+        <label class="adv-form-label" style="display:flex; justify-content:space-between; align-items:center;">
+          <span>Sensitive-health restriction</span>
+          <span style="font-size:11px; color:var(--gold-2); font-weight:600; letter-spacing:0.04em; text-transform:uppercase;">Locked</span>
+        </label>
+        <div class="adv-form-help">Per platform policy and Washington MHMDA, sensitive health attributes (diagnoses, medications, conditions) are never available for ad targeting. This is enforced at the data layer, not by policy alone.</div>
+      </div>
+
+      <div class="adv-form-group">
+        <label class="adv-form-label">Bid &amp; budget</label>
+        <div class="bid-row">
+          <div>
+            <div class="adv-form-help">Bid per verified watch</div>
+            <input class="adv-input" value="$0.75" />
+          </div>
+          <div>
+            <div class="adv-form-help">Daily budget cap</div>
+            <input class="adv-input" value="$200.00" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="adv-side">
+      <div class="adv-summary">
+        <div class="label-sm">Estimated reach</div>
+        <h3>Sleep-aware professionals, 35–64, US</h3>
+
+        <div class="adv-reach">
+          <div class="num">3,420</div>
+          <div class="label">eligible viewers</div>
+        </div>
+
+        <div class="adv-est"><span>Bid per watch</span><strong>$0.75</strong></div>
+        <div class="adv-est"><span>Estimated daily watches</span><strong>240 – 290</strong></div>
+        <div class="adv-est"><span>Estimated daily spend</span><strong>$180 – 217</strong></div>
+        <div class="adv-est"><span>Avg. attention quality</span><strong style="color:var(--gold-soft)">94%</strong></div>
+        <div class="adv-est"><span>Fraud / IVT risk</span><strong>0.0%</strong></div>
+
+        <button class="btn btn-gold btn-lg adv-launch">Continue to review</button>
+      </div>
+
+      <div class="adv-active-list">
+        <h4>Active campaigns</h4>
+        <div class="adv-camp">
+          <div class="adv-camp-name"><span>Sleep Tracker — Performance</span><span class="vt-num">$1,380</span></div>
+          <div class="adv-camp-status"><span class="status-dot"></span>Live · 1,840 watches · 8.3% CTR</div>
+        </div>
+        <div class="adv-camp">
+          <div class="adv-camp-name"><span>Wellness Brand — Awareness</span><span class="vt-num">$640</span></div>
+          <div class="adv-camp-status"><span class="status-dot"></span>Live · 720 watches · 6.1% CTR</div>
+        </div>
+        <div class="adv-camp">
+          <div class="adv-camp-name"><span>Q3 Test — Longevity</span><span class="vt-num">$2,180</span></div>
+          <div class="adv-camp-status"><span class="status-dot paused"></span>Paused · 2,910 watches · 9.4% CTR</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+</main>
+
+<!-- ========================================================================
+     FOOTER
+     ======================================================================== -->
+<footer class="app-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="logo">
+          <svg class="logo-mark" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="9" y="16" width="62" height="58" rx="11" fill="none" stroke="#0F2A24" stroke-width="5" stroke-linejoin="round"/>
+            <rect x="17" y="3" width="46" height="13" rx="3" fill="#0F2A24"/>
+            <rect x="32" y="7" width="16" height="3" rx="1.5" fill="#F5F1EA"/>
+            <line x1="40" y1="16" x2="40" y2="29" stroke="#0F2A24" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="40" cy="35" r="6" fill="#C8902E"/>
+            <circle cx="40" cy="35" r="2" fill="#0F2A24"/>
+            <circle cx="40" cy="49" r="2" fill="#0F2A24"/>
+            <path d="M 22 56 Q 40 70 58 56" fill="none" stroke="#0F2A24" stroke-width="3.5" stroke-linecap="round"/>
+          </svg>
+          <span class="logo-word"><span class="tip-part">Tip</span><span class="jip-part">Jip</span></span>
+        </a>
+        <p>The tip jar — now for video. Health and wellness, where every video earns the viewer first. Built consent-first, US-launched, in private beta.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Platform</h5>
+        <a>Browse</a><a>Creators</a><a>For advertisers</a><a>Pricing</a><a>API (coming)</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a>About</a><a>Careers</a><a>Press</a><a>Contact</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a>Privacy charter</a><a>Health data policy</a><a>Terms of service</a><a>Cookie policy</a><a>Sponsorship policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 TipJip, Inc. · A consent-first marketplace.</span>
+      <span>Made with care in the United States.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+  <span id="toast-msg">Saved</span>
+</div>
+
+<script>
+/* ============================================================
+   View navigation
+   ============================================================ */
+function switchView(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const target = document.querySelector(`section.view[data-view="${view}"]`);
+  if (target) target.classList.add('active');
+
+  document.querySelectorAll('.nav-primary button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll(`.nav-primary button[data-view="${view}"]`).forEach(b => b.classList.add('active'));
+
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+document.querySelectorAll('[data-view]').forEach(el => {
+  if (el.tagName === 'SECTION') return;
+  el.addEventListener('click', e => {
+    e.preventDefault();
+    const view = el.dataset.view;
+    switchView(view);
+
+    // Special: when going to watch view, reset player to ad state
+    if (view === 'watch') {
+      document.getElementById('player').classList.remove('playing');
+      document.getElementById('time-display').textContent = '0:08 / 0:30 (Ad)';
+      // Reset Tip/Jip prompt to initial choice state
+      const tp = document.getElementById('tip-prompt');
+      if (tp) {
+        tp.querySelectorAll('.tj-state').forEach(s => s.classList.remove('active'));
+        const c = tp.querySelector('.tj-state[data-state="choice"]');
+        if (c) c.classList.add('active');
+      }
+    }
+  });
+});
+
+// Browse → watch (clicking video cards goes to watch view)
+document.querySelectorAll('[data-action="watch"]').forEach(card => {
+  card.addEventListener('click', () => switchView('watch'));
+});
+
+/* ============================================================
+   Audience tabs (landing page)
+   ============================================================ */
+document.querySelectorAll('.audiences-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const aud = tab.dataset.aud;
+    document.querySelectorAll('.audiences-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.audiences-pane').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelector(`.audiences-pane[data-aud="${aud}"]`).classList.add('active');
+  });
+});
+
+/* ============================================================
+   Watch view — Tip / Jip state machine
+   ============================================================ */
+const player = document.getElementById('player');
+const timeDisplay = document.getElementById('time-display');
+const slider = document.getElementById('tip-slider');
+const youAmt = document.getElementById('you-amount');
+const creatorAmt = document.getElementById('creator-amount');
+const sliderLabels = document.querySelector('.tip-slider-labels');
+const tipPrompt = document.getElementById('tip-prompt');
+
+function setState(state) {
+  if (!tipPrompt) return;
+  tipPrompt.querySelectorAll('.tj-state').forEach(s => s.classList.remove('active'));
+  const target = tipPrompt.querySelector(`.tj-state[data-state="${state}"]`);
+  if (target) target.classList.add('active');
+}
+
+document.getElementById('choose-tip')?.addEventListener('click', () => setState('tip'));
+document.getElementById('choose-jip')?.addEventListener('click', () => setState('jip'));
+document.querySelectorAll('[data-back]').forEach(b => {
+  b.addEventListener('click', () => setState('choice'));
+});
+
+function updateSplit(creatorPct) {
+  const total = 0.75;
+  const creatorShare = (total * creatorPct / 100);
+  const youShare = (total - creatorShare);
+  youAmt.textContent = '$' + youShare.toFixed(2);
+  creatorAmt.textContent = '$' + creatorShare.toFixed(2);
+  sliderLabels.innerHTML = `<span>You: ${100 - creatorPct}%</span><span>Creator: ${creatorPct}%</span>`;
+  document.querySelectorAll('.tip-preset').forEach(p => p.classList.remove('active'));
+  if (creatorPct === 33) document.querySelector('.tip-preset[data-split="33"]')?.classList.add('active');
+  else if (creatorPct === 66) document.querySelector('.tip-preset[data-split="66"]')?.classList.add('active');
+  else if (creatorPct === 100) document.querySelector('.tip-preset[data-split="100"]')?.classList.add('active');
+}
+slider?.addEventListener('input', e => updateSplit(parseInt(e.target.value)));
+document.querySelectorAll('.tip-preset').forEach(p => {
+  p.addEventListener('click', () => {
+    const pct = parseInt(p.dataset.split);
+    if (slider) slider.value = pct;
+    updateSplit(pct);
+  });
+});
+
+/* ============================================================
+   Player ad → video advance (clicking in player area or after delay)
+   ============================================================ */
+let adProgressInterval = null;
+function startAdProgress() {
+  let pct = 35;
+  if (adProgressInterval) clearInterval(adProgressInterval);
+  const fill = document.querySelector('.player-progress-fill');
+  adProgressInterval = setInterval(() => {
+    pct += 6;
+    if (pct >= 100) {
+      pct = 100;
+      clearInterval(adProgressInterval);
+      setTimeout(() => {
+        player.classList.add('playing');
+        timeDisplay.textContent = '0:00 / 14:22';
+        document.querySelector('.player-progress-fill').style.width = '0%';
+      }, 600);
+    }
+    if (fill && !player.classList.contains('playing')) fill.style.width = pct + '%';
+    if (timeDisplay) timeDisplay.textContent = `0:${(Math.round(pct * 0.30)).toString().padStart(2,'0')} / 0:30 (Ad)`;
+  }, 800);
+}
+
+player?.addEventListener('click', (e) => {
+  if (e.target.closest('.player-controls')) return;
+  if (!player.classList.contains('playing')) {
+    if (!adProgressInterval) startAdProgress();
+  }
+});
+
+/* ============================================================
+   Confirm tip / jip toasts
+   ============================================================ */
+const toast = document.getElementById('toast');
+const toastMsg = document.getElementById('toast-msg');
+
+function showToast(msg) {
+  toastMsg.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+document.getElementById('confirm-tip')?.addEventListener('click', () => {
+  const creatorAmount = creatorAmt.textContent;
+  showToast(`${creatorAmount} dropped in Dr. Hart's jar · ${youAmt.textContent} stayed in yours`);
+  setState('choice');
+});
+
+document.getElementById('confirm-jip')?.addEventListener('click', () => {
+  const fb = document.querySelector('.jip-feedback')?.value.trim();
+  const fbNote = fb ? ' · note dropped in hers' : '';
+  showToast(`$0.75 in your jar${fbNote}`);
+  if (document.querySelector('.jip-feedback')) document.querySelector('.jip-feedback').value = '';
+  setState('choice');
+});
+
+/* ============================================================
+   Trait chip toggling
+   ============================================================ */
+document.querySelectorAll('.trait-chip').forEach(chip => {
+  chip.addEventListener('click', () => chip.classList.toggle('selected'));
+});
+
+document.querySelectorAll('.category-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+  });
+});
+
+document.querySelectorAll('.creator-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.creator-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+
+document.querySelectorAll('.adv-trait-pill .x').forEach(x => {
+  x.addEventListener('click', e => {
+    e.stopPropagation();
+    x.parentElement.style.transition = 'all 0.2s';
+    x.parentElement.style.opacity = '0';
+    x.parentElement.style.transform = 'scale(0.7)';
+    setTimeout(() => x.parentElement.remove(), 200);
+  });
+});
+
+</script>
+</body>
+</html>
