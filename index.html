@@ -4125,6 +4125,1353 @@ input, textarea, select {
 }
 
 /* ========================================================================
+   ACTIVATE CREATOR VIEW — 3-step opt-in flow
+   ======================================================================== */
+.activate-shell {
+  min-height: calc(100vh - 65px);
+  background: var(--parchment);
+  padding: 32px 32px 80px;
+  position: relative;
+}
+.activate-shell::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse at center, rgba(200,144,46,0.10), transparent 60%);
+  pointer-events: none;
+}
+.activate-progress {
+  max-width: 580px;
+  margin: 24px auto 48px;
+  position: relative;
+}
+.activate-progress-bar {
+  position: relative;
+  height: 3px;
+  background: var(--line);
+  border-radius: 2px;
+  margin: 0 auto;
+  width: calc(100% - 32px);
+}
+.activate-progress-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+.activate-progress-steps {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+.activate-step-marker {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--muted);
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+.activate-step-marker.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--evergreen);
+}
+.activate-step-marker.complete {
+  background: var(--evergreen);
+  border-color: var(--evergreen);
+  color: var(--gold-soft);
+}
+.activate-step-marker.complete::after {
+  content: "✓";
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.activate-step-marker.complete > span { display: none; }
+
+.activate-step {
+  display: none;
+  max-width: 760px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  animation: activateFade 0.5s ease;
+}
+.activate-step.active { display: block; }
+@keyframes activateFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.activate-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.activate-headline {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--evergreen);
+  margin-bottom: 18px;
+}
+.activate-headline em {
+  color: var(--gold);
+  font-style: italic;
+}
+.activate-lede {
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin-bottom: 32px;
+  max-width: 640px;
+}
+
+/* Step 1 benefit grid */
+.activate-benefit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.activate-benefit {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px 20px;
+}
+.activate-benefit-num {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.activate-benefit-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.activate-benefit-text {
+  font-size: 13px;
+  color: var(--evergreen);
+  line-height: 1.5;
+}
+
+.activate-promise-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+.activate-promise-pill {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--evergreen);
+  color: var(--parchment);
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.activate-promise-pill strong {
+  color: var(--gold-soft);
+  font-weight: 700;
+}
+.activate-promise-icon {
+  width: 22px;
+  height: 22px;
+  background: var(--gold);
+  color: var(--evergreen);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 12px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.activate-btn {
+  width: 100%;
+  margin-top: 8px;
+  font-weight: 600;
+}
+.activate-skip {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 16px;
+  padding: 8px 16px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: inherit;
+}
+.activate-skip:hover { color: var(--evergreen); }
+
+/* Step 2 rule card */
+.activate-rule-card {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: 18px;
+  padding: 32px 36px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.activate-rule-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 6px; height: 100%;
+  background: var(--gold);
+}
+.activate-rule-header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.activate-rule-num {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.activate-rule-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold-soft);
+  margin-bottom: 8px;
+}
+.activate-rule-headers h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--parchment);
+  line-height: 1.2;
+}
+.activate-rule-body p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--sage);
+  margin-bottom: 12px;
+}
+.activate-rule-body p:last-child { margin-bottom: 0; }
+.activate-rule-link {
+  color: var(--gold-soft);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(236,200,129,0.4);
+}
+.activate-rule-link:hover { border-bottom-color: var(--gold-soft); }
+
+/* Consent checkbox */
+.activate-consent-row { margin-bottom: 24px; }
+.activate-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  cursor: pointer;
+  padding: 16px 18px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+.activate-checkbox:has(input:checked) {
+  border-color: var(--gold);
+  background: rgba(200,144,46,0.04);
+}
+.activate-checkbox input { display: none; }
+.activate-checkbox-box {
+  width: 22px; height: 22px;
+  border: 2px solid var(--line);
+  border-radius: 6px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+.activate-checkbox input:checked + .activate-checkbox-box {
+  border-color: var(--gold);
+  background: var(--gold);
+}
+.activate-checkbox input:checked + .activate-checkbox-box::after {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--evergreen);
+  font-weight: 800;
+  font-size: 14px;
+}
+.activate-checkbox-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--evergreen);
+}
+.activate-checkbox-text strong { font-weight: 700; }
+
+/* Step 3 handle picker */
+.activate-handle-input { margin-bottom: 20px; }
+.activate-input-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.activate-handle-wrap {
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+.activate-handle-wrap:focus-within {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(200,144,46,0.12);
+}
+.activate-handle-prefix {
+  padding: 14px 4px 14px 18px;
+  font-size: 15px;
+  color: var(--muted);
+  font-family: var(--font-display);
+  flex-shrink: 0;
+}
+.activate-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 14px 8px;
+  font-size: 16px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--evergreen);
+  background: transparent;
+  min-width: 0;
+}
+.activate-input::placeholder { color: var(--muted2); font-weight: 400; }
+.activate-handle-status {
+  padding: 0 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.activate-handle-status.available { color: #2D6E4D; }
+.activate-handle-status.taken { color: #9C2A2A; }
+.activate-input-help {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.activate-handle-suggestions { margin-bottom: 32px; }
+.activate-handle-suggestions-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.activate-handle-suggestions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.activate-handle-suggestion {
+  background: var(--white);
+  border: 1px solid var(--line);
+  padding: 8px 14px;
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--evergreen);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.activate-handle-suggestion:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* Mobile activate */
+@media (max-width: 760px) {
+  .activate-shell { padding: 16px 18px 60px; }
+  .activate-headline { font-size: 36px; }
+  .activate-benefit-grid { grid-template-columns: 1fr; gap: 12px; }
+  .activate-rule-card { padding: 24px 22px; }
+  .activate-rule-num { font-size: 40px; }
+  .activate-rule-headers h2 { font-size: 18px; }
+  .activate-handle-prefix { font-size: 13px; padding: 14px 2px 14px 14px; }
+  .activate-input { font-size: 15px; }
+}
+
+/* ========================================================================
+   STUDIO VIEW — Sidebar + main workspace
+   ======================================================================== */
+.studio-shell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: calc(100vh - 65px);
+  background: var(--parchment);
+}
+
+/* SIDEBAR */
+.studio-sidebar {
+  background: var(--evergreen);
+  color: var(--parchment);
+  padding: 24px 0 24px;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 65px;
+  height: calc(100vh - 65px);
+  overflow-y: auto;
+  min-width: 0;
+}
+.studio-sidebar-top {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid rgba(245,241,234,0.08);
+  margin-bottom: 16px;
+}
+.studio-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.studio-identity-avatar {
+  width: 50px;
+  height: 60px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+}
+.studio-identity-avatar svg { width: 100%; height: 100%; }
+.studio-identity-meta { min-width: 0; flex: 1; }
+.studio-identity-handle {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--parchment);
+  margin-bottom: 4px;
+}
+.studio-identity-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--sage);
+}
+.studio-identity-check {
+  width: 14px; height: 14px;
+  background: var(--gold);
+  color: var(--evergreen);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 9px;
+  flex-shrink: 0;
+}
+
+.studio-balance-mini {
+  background: rgba(245,241,234,0.05);
+  border: 1px solid rgba(245,241,234,0.08);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.studio-balance-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold-soft);
+  margin-bottom: 4px;
+}
+.studio-balance-amount {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--parchment);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.studio-balance-link {
+  background: none;
+  border: none;
+  font-size: 12px;
+  color: var(--gold-soft);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+}
+.studio-balance-link:hover { color: var(--gold); }
+
+.studio-nav {
+  flex: 1;
+  padding: 0 12px;
+}
+.studio-nav-group {
+  margin-bottom: 20px;
+}
+.studio-nav-group-label {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--muted2);
+  padding: 0 12px 8px;
+}
+.studio-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--sage);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: all 0.15s ease;
+  margin-bottom: 2px;
+}
+.studio-nav-item svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.studio-nav-item:hover {
+  background: rgba(245,241,234,0.06);
+  color: var(--parchment);
+}
+.studio-nav-item.active {
+  background: var(--gold);
+  color: var(--evergreen);
+  font-weight: 600;
+}
+.studio-nav-locked {
+  opacity: 0.55;
+}
+.studio-nav-locked .studio-nav-lock {
+  margin-left: auto;
+  background: rgba(245,241,234,0.1);
+  color: var(--gold-soft);
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+}
+.studio-nav-count {
+  margin-left: auto;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(245,241,234,0.06);
+  padding: 2px 8px;
+  border-radius: 100px;
+  color: var(--gold-soft);
+}
+.studio-nav-item.active .studio-nav-count {
+  background: var(--evergreen);
+  color: var(--gold-soft);
+}
+.studio-nav-tag {
+  margin-left: auto;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  background: var(--gold);
+  color: var(--evergreen);
+  padding: 2px 6px;
+  border-radius: 100px;
+}
+.studio-nav-upgrade {
+  border: 1px solid rgba(200,144,46,0.3);
+}
+.studio-nav-upgrade svg { color: var(--gold); }
+.studio-sidebar-bottom {
+  padding: 16px 12px 0;
+  border-top: 1px solid rgba(245,241,234,0.08);
+  margin-top: 16px;
+}
+
+/* MAIN */
+.studio-main {
+  padding: 24px 36px 80px;
+  min-width: 0;
+}
+.studio-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+.studio-breadcrumb {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--muted);
+}
+.studio-breadcrumb-current {
+  color: var(--evergreen);
+  font-weight: 700;
+}
+.studio-breadcrumb-sep {
+  margin: 0 8px;
+  color: var(--muted2);
+}
+.studio-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.studio-upload-btn svg { width: 16px; height: 16px; }
+
+/* DASHBOARD WELCOME BANNER */
+.studio-welcome-banner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: center;
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: 18px;
+  padding: 36px 40px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.studio-welcome-banner::before {
+  content: "";
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(200,144,46,0.15), transparent 60%);
+  pointer-events: none;
+}
+.studio-welcome-content { position: relative; }
+.studio-welcome-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--gold-soft);
+  margin-bottom: 12px;
+}
+.studio-welcome-banner h2 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--parchment);
+  margin-bottom: 12px;
+}
+.studio-welcome-banner h2 em {
+  color: var(--gold-soft);
+  font-style: italic;
+}
+.studio-welcome-banner p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--sage);
+  max-width: 580px;
+}
+.studio-welcome-illustration {
+  width: 200px;
+  flex-shrink: 0;
+  position: relative;
+}
+.studio-welcome-illustration svg {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.2));
+}
+
+/* QUICK STATS */
+.studio-quickstats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.studio-stat-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 22px;
+}
+.studio-stat-empty { opacity: 0.95; }
+.studio-stat-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.studio-stat-value {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--evergreen);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.studio-stat-empty .studio-stat-value { color: var(--muted2); }
+.studio-stat-sub {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* CHECKLIST */
+.studio-checklist {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 28px 32px;
+  margin-bottom: 32px;
+}
+.studio-checklist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.studio-checklist-header h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--evergreen);
+}
+.studio-checklist-header h3 em {
+  color: var(--gold);
+  font-style: italic;
+}
+.studio-checklist-progress {
+  font-size: 13px;
+  color: var(--muted);
+  font-family: var(--font-display);
+}
+.studio-checklist-progress-num {
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.studio-checklist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.studio-checklist-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 18px;
+  align-items: center;
+  padding: 18px 22px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--parchment);
+}
+.studio-checklist-item.complete {
+  background: rgba(45,110,77,0.04);
+  border-color: rgba(45,110,77,0.2);
+}
+.studio-checklist-item.active {
+  background: var(--white);
+  border-color: var(--gold);
+  box-shadow: 0 4px 16px rgba(200,144,46,0.08);
+}
+.studio-checklist-check {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--muted);
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.studio-checklist-item.complete .studio-checklist-check {
+  background: #2D6E4D;
+  border-color: #2D6E4D;
+  color: var(--white);
+  font-size: 18px;
+}
+.studio-checklist-item.active .studio-checklist-check {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--evergreen);
+}
+.studio-checklist-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--evergreen);
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+.studio-checklist-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.studio-checklist-desc strong { color: var(--evergreen); font-weight: 600; }
+.studio-checklist-action {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: #2D6E4D;
+  background: rgba(45,110,77,0.10);
+  padding: 6px 10px;
+  border-radius: 100px;
+}
+.studio-checklist-btn {
+  white-space: nowrap;
+  font-size: 13px;
+  padding: 10px 16px;
+}
+
+/* RESOURCES */
+.studio-resources { margin-bottom: 32px; }
+.studio-resources h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--evergreen);
+  margin-bottom: 16px;
+}
+.studio-resources-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.studio-resource-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px;
+  text-decoration: none;
+  display: block;
+  transition: all 0.2s ease;
+}
+.studio-resource-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15,42,36,0.06);
+}
+.studio-resource-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.studio-resource-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--evergreen);
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+.studio-resource-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* EMPTY STATES */
+.studio-empty {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 64px 48px;
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.studio-empty-illustration {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 24px;
+  background: var(--parchment-2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.studio-empty-illustration svg { width: 80px; height: 80px; }
+.studio-empty h2 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--evergreen);
+  margin-bottom: 12px;
+}
+.studio-empty h2 em { color: var(--gold); font-style: italic; }
+.studio-empty p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 540px;
+  margin: 0 auto 24px;
+}
+.studio-empty p em {
+  color: var(--evergreen);
+  font-style: normal;
+  font-weight: 600;
+}
+.studio-empty-tips {
+  margin-top: 36px;
+  padding: 24px 28px;
+  background: var(--parchment-2);
+  border-radius: 14px;
+  text-align: left;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.studio-empty-tips-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.studio-empty-tips ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.studio-empty-tips li {
+  padding: 8px 0 8px 22px;
+  font-size: 13px;
+  color: var(--evergreen);
+  line-height: 1.5;
+  position: relative;
+}
+.studio-empty-tips li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* PRACTITIONER PROMO */
+.studio-practitioner-promo {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: 18px;
+  padding: 48px 56px;
+  position: relative;
+  overflow: hidden;
+}
+.studio-practitioner-promo::before {
+  content: "";
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(200,144,46,0.18), transparent 60%);
+  pointer-events: none;
+}
+.studio-practitioner-content { position: relative; max-width: 720px; }
+.studio-practitioner-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold-soft);
+  margin-bottom: 12px;
+}
+.studio-practitioner-promo h2 {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--parchment);
+  margin-bottom: 16px;
+}
+.studio-practitioner-promo h2 em { color: var(--gold-soft); font-style: italic; }
+.studio-practitioner-promo p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--sage);
+  margin-bottom: 28px;
+}
+.studio-practitioner-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.studio-practitioner-benefit {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: rgba(245,241,234,0.05);
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  color: var(--sage);
+  line-height: 1.55;
+}
+.studio-practitioner-benefit strong { color: var(--gold-soft); font-weight: 700; }
+.studio-practitioner-benefit-icon {
+  font-size: 24px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* SETTINGS */
+.studio-settings { max-width: 720px; }
+.studio-settings h2 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--evergreen);
+  margin-bottom: 32px;
+}
+.studio-settings-section {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 16px;
+}
+.studio-settings-section h3 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--evergreen);
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+}
+.studio-settings-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.studio-settings-row:last-child { border-bottom: none; padding-bottom: 0; }
+.studio-settings-row:first-of-type { padding-top: 0; }
+.studio-settings-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.studio-settings-value {
+  font-size: 14px;
+  color: var(--evergreen);
+}
+.studio-settings-tag {
+  background: var(--parchment-2);
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 100px;
+  margin-left: 8px;
+}
+.studio-settings-edit {
+  font-size: 13px;
+  padding: 8px 14px;
+}
+.studio-settings-link {
+  color: var(--gold);
+  text-decoration: none;
+  font-weight: 600;
+}
+.studio-settings-danger {
+  font-size: 13px;
+  padding: 8px 14px;
+  color: #9C2A2A;
+  border-color: rgba(156,42,42,0.3);
+}
+.studio-settings-danger:hover {
+  background: rgba(156,42,42,0.08);
+}
+.studio-vh-mini {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+.studio-vh-check {
+  width: 16px; height: 16px;
+  background: var(--gold);
+  color: var(--evergreen);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+/* UPLOAD MODAL */
+.studio-upload-modal[hidden] { display: none !important; }
+.studio-upload-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: studioModalFade 0.2s ease;
+}
+@keyframes studioModalFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.studio-upload-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15,42,36,0.7);
+  backdrop-filter: blur(6px);
+}
+.studio-upload-card {
+  position: relative;
+  background: var(--white);
+  border-radius: 18px;
+  padding: 36px 40px;
+  max-width: 540px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+  animation: studioModalSlide 0.3s ease;
+}
+@keyframes studioModalSlide {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.studio-upload-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 36px; height: 36px;
+  background: var(--parchment-2);
+  border: none;
+  border-radius: 50%;
+  font-size: 22px;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 300;
+  line-height: 1;
+}
+.studio-upload-close:hover { color: var(--evergreen); background: var(--line); }
+.studio-upload-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.studio-upload-card h2 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--evergreen);
+  margin-bottom: 8px;
+}
+.studio-upload-sub {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.studio-upload-dropzone {
+  border: 2px dashed var(--line);
+  border-radius: 14px;
+  padding: 40px 24px;
+  text-align: center;
+  background: var(--parchment);
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.studio-upload-dropzone:hover, .studio-upload-dropzone.dragover {
+  border-color: var(--gold);
+  background: rgba(200,144,46,0.04);
+}
+.studio-upload-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.studio-upload-dropzone-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--evergreen);
+  margin-bottom: 4px;
+}
+.studio-upload-dropzone-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.studio-upload-browse {
+  background: none;
+  border: none;
+  color: var(--gold);
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(200,144,46,0.4);
+  padding: 0 0 1px;
+}
+.studio-upload-dropzone-hint {
+  font-size: 11px;
+  color: var(--muted);
+}
+.studio-upload-pledge {
+  margin-bottom: 20px;
+}
+.studio-upload-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+/* Mobile studio */
+@media (max-width: 900px) {
+  .studio-shell { grid-template-columns: 1fr; overflow-x: hidden; }
+  .studio-sidebar {
+    position: relative;
+    height: auto;
+    top: 0;
+    overflow: visible;
+    min-width: 0;
+  }
+  .studio-sidebar-top { min-width: 0; }
+  .studio-identity, .studio-balance-mini { min-width: 0; max-width: 100%; }
+  .studio-identity-meta { min-width: 0; overflow: hidden; }
+  .studio-nav {
+    display: flex;
+    overflow-x: auto;
+    padding: 0 16px;
+    gap: 4px;
+    -webkit-overflow-scrolling: touch;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .studio-main { min-width: 0; }
+  .studio-nav-group {
+    margin-bottom: 0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .studio-nav-group-label { display: none; }
+  .studio-nav-item {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    margin-bottom: 0;
+    font-size: 13px;
+  }
+  .studio-nav-item .studio-nav-count, .studio-nav-item .studio-nav-lock, .studio-nav-item .studio-nav-tag {
+    display: none;
+  }
+  .studio-sidebar-bottom { display: none; }
+  .studio-main { padding: 20px 16px 60px; }
+  .studio-welcome-banner { grid-template-columns: 1fr; padding: 28px 24px; gap: 20px; }
+  .studio-welcome-banner h2 { font-size: 24px; }
+  .studio-welcome-illustration { width: 140px; margin: 0 auto; }
+  .studio-quickstats { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .studio-stat-value { font-size: 28px; }
+  .studio-checklist { padding: 22px 20px; }
+  .studio-checklist-item { grid-template-columns: auto 1fr; padding: 14px 16px; }
+  .studio-checklist-action, .studio-checklist-btn { grid-column: 1 / -1; justify-self: stretch; margin-top: 8px; }
+  .studio-resources-grid { grid-template-columns: 1fr; }
+  .studio-empty { padding: 40px 24px; }
+  .studio-empty h2 { font-size: 24px; }
+  .studio-practitioner-promo { padding: 32px 24px; }
+  .studio-practitioner-promo h2 { font-size: 28px; }
+  .studio-settings-row { grid-template-columns: 1fr; gap: 8px; }
+}
+
+/* ========================================================================
    Identity panel — appears in profile, shows masked phone + birth year + ZIP + re-roll
    ======================================================================== */
 .identity-panel {
@@ -11329,7 +12676,7 @@ input, textarea, select {
             <div class="profile-stream-label">FROM CREATING</div>
             <div class="profile-stream-source">Become a creator to unlock</div>
           </div>
-          <button class="profile-stream-cta" data-view="creator">Activate →</button>
+          <button class="profile-stream-cta" data-view="activate-creator">Activate →</button>
         </div>
 
         <div class="profile-stream-card profile-stream-podcast profile-stream-empty">
@@ -11422,7 +12769,7 @@ input, textarea, select {
       </div>
 
       <div class="profile-grow-grid">
-        <div class="profile-grow-card" data-view="creator">
+        <div class="profile-grow-card" data-view="activate-creator">
           <div class="profile-grow-tag">CREATORS</div>
           <h3>Become a creator</h3>
           <p>Upload videos. Get tipped by other verified humans. Keep 100% of every tip.</p>
@@ -11510,6 +12857,610 @@ input, textarea, select {
 
   </div>
 </section>
+
+<!-- ========================================================================
+     ACTIVATE CREATOR VIEW — 3-step one-tap upgrade
+     Step 1: Welcome to creating
+     Step 2: Read the AI rule, agree
+     Step 3: Pick your creator handle
+     Then: redirect to Studio
+     ======================================================================== -->
+<section class="view" data-view="activate-creator">
+  <div class="activate-shell">
+
+    <!-- Progress indicator (3 dots) -->
+    <div class="activate-progress">
+      <div class="activate-progress-bar">
+        <div class="activate-progress-fill" id="activate-progress-fill" style="width: 33%"></div>
+      </div>
+      <div class="activate-progress-steps">
+        <div class="activate-step-marker active" data-step="1"><span>1</span></div>
+        <div class="activate-step-marker" data-step="2"><span>2</span></div>
+        <div class="activate-step-marker" data-step="3"><span>3</span></div>
+      </div>
+    </div>
+
+    <!-- ============= STEP 1: Welcome ============= -->
+    <div class="activate-step active" data-activate-step="1">
+      <div class="activate-step-content">
+        <div class="activate-eyebrow">⏤ Step 1 of 3 · Become a creator</div>
+        <h1 class="activate-headline">
+          Same jar.<br><em>One more way to fill it.</em>
+        </h1>
+        <p class="activate-lede">Your TipJar account becomes a creator account in 30 seconds. No new signup. No new login. No new wallet. Just one toggle, and you're a creator.</p>
+
+        <div class="activate-benefit-grid">
+          <div class="activate-benefit">
+            <div class="activate-benefit-num">100%</div>
+            <div class="activate-benefit-label">OF EVERY TIP</div>
+            <div class="activate-benefit-text">No platform cut on tips. Other verified humans tip you with thanks. Every cent lands in your jar.</div>
+          </div>
+          <div class="activate-benefit">
+            <div class="activate-benefit-num">$0.50–$3</div>
+            <div class="activate-benefit-label">ADVERTISER BIDS</div>
+            <div class="activate-benefit-text">Every ad on your videos pays. Half goes to the viewer, but bid percentages flow to your jar too.</div>
+          </div>
+          <div class="activate-benefit">
+            <div class="activate-benefit-num">∞</div>
+            <div class="activate-benefit-label">FOREVER YOURS</div>
+            <div class="activate-benefit-text">No demonetization. No algorithm punishment. No content strikes from a black-box. Verified humans pay verified humans.</div>
+          </div>
+        </div>
+
+        <div class="activate-promise-row">
+          <div class="activate-promise-pill">
+            <span class="activate-promise-icon">✓</span>
+            <span><strong>Same jar.</strong> Earnings from creating add to the jar you already have.</span>
+          </div>
+          <div class="activate-promise-pill">
+            <span class="activate-promise-icon">✓</span>
+            <span><strong>No upload required to activate.</strong> Become a creator now, post when you're ready.</span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg activate-btn" onclick="activateGoToStep(2)">
+          Continue to the rules →
+        </button>
+
+        <button class="activate-skip" data-view="profile">
+          ← Maybe later, take me back
+        </button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 2: Read the AI Rule ============= -->
+    <div class="activate-step" data-activate-step="2">
+      <div class="activate-step-content">
+        <div class="activate-eyebrow">⏤ Step 2 of 3 · The one rule that matters</div>
+        <h1 class="activate-headline">
+          Real humans only.<br><em>That's the deal.</em>
+        </h1>
+        <p class="activate-lede">Before you create anything on TipJip, you agree to the platform's only non-negotiable rule. It's short. It's serious. And it's why advertisers and viewers trust us.</p>
+
+        <!-- The rule card — bold, gold-accented -->
+        <div class="activate-rule-card">
+          <div class="activate-rule-header">
+            <div class="activate-rule-num">01</div>
+            <div class="activate-rule-headers">
+              <div class="activate-rule-eyebrow">THE 100% REAL HUMAN RULE</div>
+              <h2>The face on screen must be a real, consenting human. Yours.</h2>
+            </div>
+          </div>
+          <div class="activate-rule-body">
+            <p>No AI faces. No deepfakes. No synthetic performers. No voice cloning of yourself or anyone else. No face-swapping. No AI-generated patient testimonials. The human in your video must be the human who consented to be there.</p>
+            <p>You can use AI tools for editing, captions, music, supporting graphics, or B-roll — those just need to be disclosed in your video metadata. But the on-camera human is always real. <a href="#" data-view="standards" class="activate-rule-link">Read the full standards →</a></p>
+          </div>
+        </div>
+
+        <!-- Consent checkbox -->
+        <div class="activate-consent-row">
+          <label class="activate-checkbox">
+            <input type="checkbox" id="activate-rule-consent">
+            <span class="activate-checkbox-box"></span>
+            <span class="activate-checkbox-text">I understand and agree. The human face and voice in my content will always be a real, consenting person. Violations result in immediate account suspension and clawback of earnings.</span>
+          </label>
+        </div>
+
+        <button class="btn btn-primary btn-lg activate-btn" id="activate-step2-btn" onclick="activateGoToStep(3)" disabled>
+          I agree — continue →
+        </button>
+
+        <button class="activate-skip" onclick="activateGoToStep(1)">
+          ← Go back
+        </button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 3: Pick Handle ============= -->
+    <div class="activate-step" data-activate-step="3">
+      <div class="activate-step-content">
+        <div class="activate-eyebrow">⏤ Step 3 of 3 · Pick your handle</div>
+        <h1 class="activate-headline">
+          What should creators<br><em>call you?</em>
+        </h1>
+        <p class="activate-lede">Until now, you've been Tip Jar #<span class="activate-jarnum">4471</span> — anonymous as a viewer. As a creator, you need a handle. This is the only public name attached to your videos.</p>
+
+        <div class="activate-handle-input">
+          <label class="activate-input-label">Creator handle</label>
+          <div class="activate-handle-wrap">
+            <span class="activate-handle-prefix">tipjip.com/</span>
+            <input type="text" class="activate-input" id="activate-handle" placeholder="yourhandle" maxlength="24" autocomplete="off">
+            <span class="activate-handle-status" id="activate-handle-status"></span>
+          </div>
+          <div class="activate-input-help">Letters, numbers, dashes, underscores. 3–24 characters. Can't be changed once set.</div>
+        </div>
+
+        <!-- Suggestions -->
+        <div class="activate-handle-suggestions">
+          <div class="activate-handle-suggestions-label">SUGGESTIONS</div>
+          <div class="activate-handle-suggestions-list" id="activate-suggestions">
+            <button class="activate-handle-suggestion" onclick="activateUseSuggestion(this)">jar4471</button>
+            <button class="activate-handle-suggestion" onclick="activateUseSuggestion(this)">verified-jar-4471</button>
+            <button class="activate-handle-suggestion" onclick="activateUseSuggestion(this)">human-4471</button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg activate-btn" id="activate-step3-btn" onclick="activateComplete()" disabled>
+          Activate creator account →
+        </button>
+
+        <button class="activate-skip" onclick="activateGoToStep(2)">
+          ← Go back
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========================================================================
+     STUDIO VIEW — Unified workspace for creators, podcasters, advertisers
+     Adapts based on activated roles. Sidebar nav + main content.
+     ======================================================================== -->
+<section class="view" data-view="studio">
+  <div class="studio-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="studio-sidebar">
+      <div class="studio-sidebar-top">
+        <!-- User identity card -->
+        <div class="studio-identity">
+          <div class="studio-identity-avatar">
+            <svg viewBox="0 0 50 60" xmlns="http://www.w3.org/2000/svg">
+              <rect x="14" y="14" width="22" height="3" rx="0.75" fill="#0F2A24"/>
+              <rect x="20" y="14.5" width="10" height="0.8" rx="0.4" fill="#F5F1EA"/>
+              <rect x="12" y="17" width="26" height="36" rx="2.5" fill="#0F2A24"/>
+              <rect x="13.5" y="19" width="0.8" height="32" rx="0.4" fill="#F5F1EA" opacity="0.18"/>
+              <circle cx="20" cy="29" r="1.2" fill="#F5F1EA"/>
+              <circle cx="30" cy="29" r="1.2" fill="#F5F1EA"/>
+              <path d="M 19 35 Q 25 39 31 35" stroke="#F5F1EA" stroke-width="1" stroke-linecap="round" fill="none"/>
+              <circle cx="18" cy="48" r="1.6" fill="#C8902E"/>
+              <circle cx="22" cy="46.5" r="1.8" fill="#ECC881"/>
+              <circle cx="27" cy="48" r="1.8" fill="#C8902E"/>
+              <circle cx="32" cy="46.5" r="1.6" fill="#ECC881"/>
+            </svg>
+          </div>
+          <div class="studio-identity-meta">
+            <div class="studio-identity-handle">@<span id="studio-handle">jar4471</span></div>
+            <div class="studio-identity-badge">
+              <span class="studio-identity-check">✓</span>
+              <span>Verified human · Jar #<span class="studio-jar-num">4471</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick balance -->
+        <div class="studio-balance-mini">
+          <div class="studio-balance-label">JAR BALANCE</div>
+          <div class="studio-balance-amount">$<span id="studio-balance">12.40</span></div>
+          <button class="studio-balance-link" data-view="profile">View full jar →</button>
+        </div>
+      </div>
+
+      <!-- Nav items -->
+      <nav class="studio-nav">
+        <div class="studio-nav-group">
+          <div class="studio-nav-group-label">CREATE</div>
+          <button class="studio-nav-item active" data-studio-tab="dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            Dashboard
+          </button>
+          <button class="studio-nav-item" data-studio-tab="videos">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+            Videos <span class="studio-nav-count">0</span>
+          </button>
+          <button class="studio-nav-item studio-nav-locked" data-studio-locked="podcast">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2"/><path d="M12 19v3"/></svg>
+            Podcasts
+            <span class="studio-nav-lock">+</span>
+          </button>
+        </div>
+
+        <div class="studio-nav-group">
+          <div class="studio-nav-group-label">EARN</div>
+          <button class="studio-nav-item" data-studio-tab="tips">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Tips received <span class="studio-nav-count">$0.00</span>
+          </button>
+          <button class="studio-nav-item" data-studio-tab="analytics">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><polyline points="7,15 12,9 16,13 21,7"/></svg>
+            Analytics
+          </button>
+          <button class="studio-nav-item studio-nav-locked" data-studio-locked="advertiser">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+            Campaigns
+            <span class="studio-nav-lock">+</span>
+          </button>
+        </div>
+
+        <div class="studio-nav-group">
+          <div class="studio-nav-group-label">UPGRADE</div>
+          <button class="studio-nav-item studio-nav-upgrade" data-studio-tab="practitioner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L9.5 8.5 2 9.27l5.5 4.84L6 22l6-3.5 6 3.5-1.5-7.89L22 9.27l-7.5-.77L12 2z"/></svg>
+            Verified Practitioner
+            <span class="studio-nav-tag">NEW</span>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Bottom nav -->
+      <div class="studio-sidebar-bottom">
+        <button class="studio-nav-item studio-nav-secondary" data-studio-tab="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="studio-main">
+
+      <!-- Top bar with search + upload action -->
+      <div class="studio-topbar">
+        <div class="studio-breadcrumb">
+          <span class="studio-breadcrumb-label">Studio</span>
+          <span class="studio-breadcrumb-sep">›</span>
+          <span class="studio-breadcrumb-current" id="studio-breadcrumb-current">Dashboard</span>
+        </div>
+        <div class="studio-topbar-actions">
+          <button class="btn btn-primary studio-upload-btn" onclick="studioOpenUpload()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Upload video
+          </button>
+        </div>
+      </div>
+
+      <!-- DASHBOARD TAB (default) -->
+      <div class="studio-tab-content" data-studio-content="dashboard">
+
+        <!-- Welcome banner for first-time creators -->
+        <div class="studio-welcome-banner">
+          <div class="studio-welcome-content">
+            <div class="studio-welcome-eyebrow">⏤ WELCOME TO THE STUDIO</div>
+            <h2>You're a creator now, <em>@<span class="studio-handle-inline">jar4471</span>.</em></h2>
+            <p>Your jar can now fill from people tipping your videos. To get there: post your first video, share your handle with someone, watch a tip drop in. One clean loop.</p>
+          </div>
+          <div class="studio-welcome-illustration">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+              <!-- Camera + jar combo illustration -->
+              <rect x="40" y="60" width="80" height="56" rx="8" fill="#0F2A24"/>
+              <circle cx="80" cy="88" r="16" fill="#1B3A33" stroke="#C8902E" stroke-width="2"/>
+              <circle cx="80" cy="88" r="9" fill="#0F2A24"/>
+              <circle cx="80" cy="88" r="4" fill="#C8902E"/>
+              <rect x="100" y="68" width="14" height="6" rx="1" fill="#1B3A33"/>
+              <!-- arrow -->
+              <path d="M 130 90 L 150 90 M 144 84 L 150 90 L 144 96" stroke="#C8902E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <!-- Jar -->
+              <rect x="156" y="74" width="38" height="6" rx="1" fill="#0F2A24"/>
+              <rect x="154" y="80" width="42" height="58" rx="4" fill="#0F2A24"/>
+              <circle cx="167" cy="100" r="1.5" fill="#F5F1EA"/>
+              <circle cx="183" cy="100" r="1.5" fill="#F5F1EA"/>
+              <path d="M 165 110 Q 175 116 185 110" stroke="#F5F1EA" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+              <circle cx="165" cy="128" r="3" fill="#C8902E"/>
+              <circle cx="174" cy="125" r="3" fill="#ECC881"/>
+              <circle cx="184" cy="128" r="3" fill="#C8902E"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Quick stats grid (will fill in once they have content) -->
+        <div class="studio-quickstats">
+          <div class="studio-stat-card studio-stat-empty">
+            <div class="studio-stat-label">VIDEOS PUBLISHED</div>
+            <div class="studio-stat-value">0</div>
+            <div class="studio-stat-sub">Upload your first to get started</div>
+          </div>
+          <div class="studio-stat-card studio-stat-empty">
+            <div class="studio-stat-label">TIPS RECEIVED</div>
+            <div class="studio-stat-value">$0.00</div>
+            <div class="studio-stat-sub">Tips appear after your first watch</div>
+          </div>
+          <div class="studio-stat-card studio-stat-empty">
+            <div class="studio-stat-label">VERIFIED HUMAN VIEWS</div>
+            <div class="studio-stat-value">0</div>
+            <div class="studio-stat-sub">Real eyes, no bots, no impressions</div>
+          </div>
+          <div class="studio-stat-card studio-stat-empty">
+            <div class="studio-stat-label">TIP RATE</div>
+            <div class="studio-stat-value">—</div>
+            <div class="studio-stat-sub">% of viewers who tip vs jip</div>
+          </div>
+        </div>
+
+        <!-- 3-step getting started checklist -->
+        <div class="studio-checklist">
+          <div class="studio-checklist-header">
+            <h3>Get to your first tip in <em>15 minutes.</em></h3>
+            <div class="studio-checklist-progress">
+              <span class="studio-checklist-progress-num">1</span> of <span>3</span> complete
+            </div>
+          </div>
+
+          <div class="studio-checklist-items">
+            <div class="studio-checklist-item complete">
+              <div class="studio-checklist-check">✓</div>
+              <div class="studio-checklist-content">
+                <div class="studio-checklist-title">Activate creator account</div>
+                <div class="studio-checklist-desc">You're verified and your handle is locked in.</div>
+              </div>
+              <div class="studio-checklist-action">DONE</div>
+            </div>
+            <div class="studio-checklist-item active">
+              <div class="studio-checklist-check">2</div>
+              <div class="studio-checklist-content">
+                <div class="studio-checklist-title">Upload your first video</div>
+                <div class="studio-checklist-desc">Real human on camera. Health &amp; wellness focus. 60 seconds to 30 minutes.</div>
+              </div>
+              <button class="btn btn-primary studio-checklist-btn" onclick="studioOpenUpload()">Upload now →</button>
+            </div>
+            <div class="studio-checklist-item">
+              <div class="studio-checklist-check">3</div>
+              <div class="studio-checklist-content">
+                <div class="studio-checklist-title">Share your handle</div>
+                <div class="studio-checklist-desc">Send <strong>tipjip.com/<span class="studio-handle-inline">jar4471</span></strong> to one friend, your patient list, or a podcast guest. The first verified human watch starts the clock.</div>
+              </div>
+              <button class="btn btn-outline studio-checklist-btn" disabled>Locked until #2</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resources / quick help -->
+        <div class="studio-resources">
+          <h3>While you're here.</h3>
+          <div class="studio-resources-grid">
+            <a href="#" data-view="standards" class="studio-resource-card">
+              <div class="studio-resource-eyebrow">CONTENT STANDARDS</div>
+              <div class="studio-resource-title">The 100% Real Human Rule</div>
+              <div class="studio-resource-desc">What's allowed, what's not, and how it's enforced.</div>
+            </a>
+            <a href="#" class="studio-resource-card">
+              <div class="studio-resource-eyebrow">CREATOR GUIDE</div>
+              <div class="studio-resource-title">What works on TipJip</div>
+              <div class="studio-resource-desc">3-min read on the videos that earn the most tips.</div>
+            </a>
+            <a href="#" data-view="podcast" class="studio-resource-card">
+              <div class="studio-resource-eyebrow">UPGRADE PATH</div>
+              <div class="studio-resource-title">Run a video podcast</div>
+              <div class="studio-resource-desc">Three ad slots, longer-form content, separate revenue stream.</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIDEOS TAB -->
+      <div class="studio-tab-content" data-studio-content="videos" style="display:none;">
+        <div class="studio-empty">
+          <div class="studio-empty-illustration">
+            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+              <rect x="20" y="35" width="80" height="50" rx="6" fill="none" stroke="#C8902E" stroke-width="2" stroke-dasharray="6 4"/>
+              <polygon points="50,55 50,75 72,65" fill="#C8902E" opacity="0.4"/>
+              <line x1="60" y1="20" x2="60" y2="32" stroke="#C8902E" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="54" y1="26" x2="60" y2="20" stroke="#C8902E" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="66" y1="26" x2="60" y2="20" stroke="#C8902E" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h2>No videos yet.<br><em>Your studio's a clean slate.</em></h2>
+          <p>Upload your first video and TipJip will start sending verified human attention your way. Every clip pays — viewers earn from advertisers, and tip <em>you</em> if it's good.</p>
+          <button class="btn btn-primary btn-lg" onclick="studioOpenUpload()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;display:inline-block;vertical-align:-3px;margin-right:6px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Upload your first video
+          </button>
+
+          <div class="studio-empty-tips">
+            <div class="studio-empty-tips-label">FIRST UPLOAD TIPS</div>
+            <ul>
+              <li>60 seconds to 5 minutes is the sweet spot for first tips</li>
+              <li>Camera looking at you. Talk to the viewer.</li>
+              <li>Health &amp; wellness topic — your specialty, your voice</li>
+              <li>No need for fancy editing. Verified humans like real over polished.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- TIPS TAB -->
+      <div class="studio-tab-content" data-studio-content="tips" style="display:none;">
+        <div class="studio-empty">
+          <div class="studio-empty-illustration">
+            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+              <rect x="40" y="40" width="40" height="55" rx="3" fill="#0F2A24"/>
+              <rect x="42" y="42" width="2" height="49" rx="0.5" fill="#F5F1EA" opacity="0.18"/>
+              <circle cx="52" cy="62" r="2.5" fill="#F5F1EA"/>
+              <circle cx="68" cy="62" r="2.5" fill="#F5F1EA"/>
+              <path d="M 50 76 Q 60 84 70 76" stroke="#F5F1EA" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+          <h2>No tips yet.<br><em>The jar is waiting.</em></h2>
+          <p>Once you publish a video and a verified human watches it, every tip lands here. We'll show you who tipped, when, and what they said.</p>
+        </div>
+      </div>
+
+      <!-- ANALYTICS TAB -->
+      <div class="studio-tab-content" data-studio-content="analytics" style="display:none;">
+        <div class="studio-empty">
+          <div class="studio-empty-illustration">
+            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+              <line x1="20" y1="100" x2="100" y2="100" stroke="#C8902E" stroke-width="2"/>
+              <line x1="20" y1="100" x2="20" y2="20" stroke="#C8902E" stroke-width="2"/>
+              <polyline points="30,80 50,60 70,70 90,40" stroke="#C8902E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-dasharray="4 3"/>
+            </svg>
+          </div>
+          <h2>Analytics unlock <em>after your first video.</em></h2>
+          <p>Once you have content live, TipJip surfaces verified-human watch data: where viewers come from, what they watch through, what they tip vs jip, and what feedback they leave.</p>
+          <button class="btn btn-primary btn-lg" onclick="studioOpenUpload()">Upload first video →</button>
+        </div>
+      </div>
+
+      <!-- PRACTITIONER UPGRADE TAB -->
+      <div class="studio-tab-content" data-studio-content="practitioner" style="display:none;">
+        <div class="studio-practitioner-promo">
+          <div class="studio-practitioner-content">
+            <div class="studio-practitioner-eyebrow">⏤ UPGRADE · FOR LICENSED HEALTH PROFESSIONALS</div>
+            <h2>The gold practitioner badge.<br><em>Earned in 30 seconds.</em></h2>
+            <p>If you're a licensed health professional with an NPI (National Provider Identifier) — physician, chiropractor, NP, PA, RD, PT, mental health provider, or any other licensed clinician — you can verify in seconds. We hit the CMS NPPES registry directly to confirm your credential, and the gold badge appears on your profile and every video.</p>
+
+            <div class="studio-practitioner-benefits">
+              <div class="studio-practitioner-benefit">
+                <div class="studio-practitioner-benefit-icon">⭐</div>
+                <div>
+                  <strong>Premium ad inventory.</strong> Wellness brands pay 2–3× more for verified-practitioner audiences.
+                </div>
+              </div>
+              <div class="studio-practitioner-benefit">
+                <div class="studio-practitioner-benefit-icon">🛡️</div>
+                <div>
+                  <strong>Trust signal that compounds.</strong> The gold badge sits next to your handle on every video, comment, and search result.
+                </div>
+              </div>
+              <div class="studio-practitioner-benefit">
+                <div class="studio-practitioner-benefit-icon">📊</div>
+                <div>
+                  <strong>Pulse-eligible.</strong> Patient-cohort engagement data unlocks for your clinic. Track which content drives retention.
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary btn-lg" disabled>Verify with NPI (coming Turn 4) →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS TAB -->
+      <div class="studio-tab-content" data-studio-content="settings" style="display:none;">
+        <div class="studio-settings">
+          <h2>Studio settings</h2>
+
+          <div class="studio-settings-section">
+            <h3>Creator profile</h3>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Handle</div>
+              <div class="studio-settings-value">
+                @<span class="studio-handle-inline">jar4471</span>
+                <span class="studio-settings-tag">Permanent</span>
+              </div>
+            </div>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Verified human</div>
+              <div class="studio-settings-value">
+                <span class="studio-vh-mini"><span class="studio-vh-check">✓</span> Phone-verified · Jar #<span class="studio-jar-num">4471</span></span>
+              </div>
+            </div>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Bio</div>
+              <div class="studio-settings-value">
+                <button class="btn btn-outline studio-settings-edit">Add bio</button>
+              </div>
+            </div>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Avatar</div>
+              <div class="studio-settings-value">
+                <button class="btn btn-outline studio-settings-edit">Upload image</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="studio-settings-section">
+            <h3>Payouts</h3>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Cashout method</div>
+              <div class="studio-settings-value">
+                <button class="btn btn-outline studio-settings-edit">Set up</button>
+              </div>
+            </div>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Cashout threshold</div>
+              <div class="studio-settings-value">$20.00 (default)</div>
+            </div>
+          </div>
+
+          <div class="studio-settings-section">
+            <h3>Content standards</h3>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">100% Real Human Rule</div>
+              <div class="studio-settings-value">
+                <span class="studio-vh-mini"><span class="studio-vh-check">✓</span> Agreed · Locked in</span>
+              </div>
+            </div>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Read the full standards</div>
+              <div class="studio-settings-value">
+                <a href="#" data-view="standards" class="studio-settings-link">Open standards page →</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="studio-settings-section">
+            <h3>Danger zone</h3>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Deactivate creator role</div>
+              <div class="studio-settings-value">
+                <button class="btn btn-outline studio-settings-danger">Deactivate</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</section>
+
+<!-- ============================================
+     UPLOAD MODAL — overlays Studio
+     ============================================ -->
+<div class="studio-upload-modal" id="studio-upload-modal" hidden>
+  <div class="studio-upload-overlay" onclick="studioCloseUpload()"></div>
+  <div class="studio-upload-card">
+    <button class="studio-upload-close" onclick="studioCloseUpload()" aria-label="Close">×</button>
+    <div class="studio-upload-eyebrow">⏤ NEW VIDEO</div>
+    <h2>Upload a video to your jar.</h2>
+    <p class="studio-upload-sub">Drop a file below. Real human in frame. We'll handle the rest.</p>
+
+    <div class="studio-upload-dropzone" id="studio-upload-dropzone">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="studio-upload-icon">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      <div class="studio-upload-dropzone-title">Drop your video here</div>
+      <div class="studio-upload-dropzone-sub">or <button class="studio-upload-browse">browse files</button></div>
+      <div class="studio-upload-dropzone-hint">MP4, MOV, WebM · up to 2 GB · 60 seconds to 30 minutes</div>
+    </div>
+
+    <div class="studio-upload-pledge">
+      <label class="activate-checkbox">
+        <input type="checkbox" id="studio-upload-pledge-cb">
+        <span class="activate-checkbox-box"></span>
+        <span class="activate-checkbox-text">I confirm: <strong>the human in this video is real and has consented to appear.</strong> No AI-generated faces, deepfakes, voice clones, or synthetic performers. I understand violations result in account suspension.</span>
+      </label>
+    </div>
+
+    <div class="studio-upload-actions">
+      <button class="btn btn-outline" onclick="studioCloseUpload()">Cancel</button>
+      <button class="btn btn-primary" id="studio-upload-submit" disabled>Continue to details →</button>
+    </div>
+  </div>
+</div>
 
 <!-- ========================================================================
      CREATOR STUDIO VIEW
@@ -13824,7 +15775,7 @@ curl https://api.tipjip.com/v1/verify \
       </div>
       <div class="footer-col">
         <h5>Platform</h5>
-        <a data-view="browse">Browse</a><a data-view="creator">Creators</a><a data-view="podcast" style="color: var(--gold-soft);">Podcasters · NEW</a><a data-view="advertiser">For advertisers</a><a data-view="coach">Coach</a><a data-view="signup">Sign up</a>
+        <a data-view="browse">Browse</a><a data-view="creator">Creators</a><a data-view="studio">Studio</a><a data-view="podcast" style="color: var(--gold-soft);">Podcasters · NEW</a><a data-view="advertiser">For advertisers</a><a data-view="coach">Coach</a><a data-view="signup">Sign up</a>
       </div>
       <div class="footer-col">
         <h5>For business</h5>
@@ -15256,6 +17207,200 @@ document.querySelectorAll('.why-cta-btn').forEach(btn => {
     }
     // The data-view click on the button itself handles routing.
   };
+})();
+</script>
+<script>
+// ============================================
+// ACTIVATE CREATOR + STUDIO interactions
+// ============================================
+(function() {
+
+  // -------- ACTIVATE CREATOR FLOW --------
+  window.activateGoToStep = function(step) {
+    document.querySelectorAll('.activate-step').forEach(s => s.classList.remove('active'));
+    const target = document.querySelector('.activate-step[data-activate-step="' + step + '"]');
+    if (target) target.classList.add('active');
+
+    const fill = document.getElementById('activate-progress-fill');
+    if (fill) fill.style.width = (step / 3 * 100) + '%';
+
+    document.querySelectorAll('.activate-step-marker').forEach(m => {
+      const ms = parseInt(m.dataset.step);
+      m.classList.remove('active', 'complete');
+      if (ms < step) m.classList.add('complete');
+      else if (ms === step) m.classList.add('active');
+    });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // If on step 3, focus handle input
+    if (step === 3) {
+      setTimeout(() => {
+        const h = document.getElementById('activate-handle');
+        if (h) h.focus();
+      }, 300);
+    }
+  };
+
+  // Step 2 consent enables continue
+  document.addEventListener('change', function(e) {
+    if (e.target && e.target.id === 'activate-rule-consent') {
+      const btn = document.getElementById('activate-step2-btn');
+      if (btn) btn.disabled = !e.target.checked;
+    }
+    if (e.target && e.target.id === 'studio-upload-pledge-cb') {
+      const btn = document.getElementById('studio-upload-submit');
+      if (btn) btn.disabled = !e.target.checked;
+    }
+  });
+
+  // Step 3 handle validation + suggestions
+  document.addEventListener('input', function(e) {
+    if (e.target && e.target.id === 'activate-handle') {
+      const v = e.target.value.replace(/[^a-zA-Z0-9_-]/g, '').toLowerCase();
+      if (v !== e.target.value.toLowerCase()) e.target.value = v;
+      const status = document.getElementById('activate-handle-status');
+      const btn = document.getElementById('activate-step3-btn');
+      if (v.length < 3) {
+        if (status) { status.textContent = ''; status.className = 'activate-handle-status'; }
+        if (btn) btn.disabled = true;
+      } else {
+        // Mock — pretend "admin", "test", "tipjip" are taken
+        const taken = ['admin', 'test', 'tipjip', 'support', 'official'];
+        if (taken.includes(v)) {
+          if (status) { status.textContent = 'Taken'; status.className = 'activate-handle-status taken'; }
+          if (btn) btn.disabled = true;
+        } else {
+          if (status) { status.textContent = '✓ Available'; status.className = 'activate-handle-status available'; }
+          if (btn) btn.disabled = false;
+        }
+      }
+    }
+  });
+
+  window.activateUseSuggestion = function(btn) {
+    const input = document.getElementById('activate-handle');
+    if (input) {
+      input.value = btn.textContent;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.focus();
+    }
+  };
+
+  window.activateComplete = function() {
+    const handle = document.getElementById('activate-handle');
+    const finalHandle = handle ? handle.value : 'jar4471';
+
+    // Save handle to studio displays
+    document.querySelectorAll('.studio-handle-inline, #studio-handle').forEach(el => {
+      el.textContent = finalHandle;
+    });
+
+    // Switch to studio view
+    if (typeof switchView === 'function') {
+      switchView('studio');
+    }
+  };
+
+  // Update jar number references in activate view from prior signup
+  // Listen for view changes to refresh the activate-creator step 3 jar number
+  const updateJarReferences = function() {
+    // Look for an existing assigned jar number on the page
+    const existing = document.querySelector('.profile-jar-num');
+    if (existing && existing.textContent.trim()) {
+      const num = existing.textContent.trim();
+      document.querySelectorAll('.activate-jarnum').forEach(el => el.textContent = num);
+      // Also update suggestions
+      const sugList = document.getElementById('activate-suggestions');
+      if (sugList) {
+        sugList.innerHTML = '';
+        ['jar' + num, 'verified-jar-' + num, 'human-' + num].forEach(s => {
+          const b = document.createElement('button');
+          b.className = 'activate-handle-suggestion';
+          b.textContent = s;
+          b.onclick = function() { window.activateUseSuggestion(b); };
+          sugList.appendChild(b);
+        });
+      }
+    }
+  };
+  // Hook into view switches if switchView exists
+  const origSwitch = window.switchView;
+  if (origSwitch) {
+    window.switchView = function(v) {
+      origSwitch.apply(this, arguments);
+      if (v === 'activate-creator') setTimeout(updateJarReferences, 100);
+    };
+  }
+
+  // -------- STUDIO TAB SWITCHING --------
+  document.addEventListener('click', function(e) {
+    const tab = e.target.closest('[data-studio-tab]');
+    if (tab) {
+      const tabName = tab.dataset.studioTab;
+      // Update active state
+      document.querySelectorAll('[data-studio-tab]').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      // Show matching content
+      document.querySelectorAll('[data-studio-content]').forEach(c => {
+        c.style.display = c.dataset.studioContent === tabName ? '' : 'none';
+      });
+      // Update breadcrumb
+      const bc = document.getElementById('studio-breadcrumb-current');
+      if (bc) {
+        const labels = {
+          dashboard: 'Dashboard',
+          videos: 'Videos',
+          tips: 'Tips received',
+          analytics: 'Analytics',
+          practitioner: 'Verified Practitioner',
+          settings: 'Settings'
+        };
+        bc.textContent = labels[tabName] || tabName;
+      }
+    }
+
+    // Locked nav items show a tooltip-style alert
+    const locked = e.target.closest('.studio-nav-locked');
+    if (locked) {
+      const which = locked.dataset.studioLocked;
+      if (which === 'podcast') {
+        if (typeof switchView === 'function') switchView('podcast');
+      } else if (which === 'advertiser') {
+        if (typeof switchView === 'function') switchView('advertiser');
+      }
+    }
+  });
+
+  // -------- UPLOAD MODAL --------
+  window.studioOpenUpload = function() {
+    const m = document.getElementById('studio-upload-modal');
+    if (m) {
+      m.hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+  };
+  window.studioCloseUpload = function() {
+    const m = document.getElementById('studio-upload-modal');
+    if (m) {
+      m.hidden = true;
+      document.body.style.overflow = '';
+      // Reset checkbox
+      const cb = document.getElementById('studio-upload-pledge-cb');
+      if (cb) cb.checked = false;
+      const btn = document.getElementById('studio-upload-submit');
+      if (btn) btn.disabled = true;
+    }
+  };
+
+  // ESC closes modal
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const m = document.getElementById('studio-upload-modal');
+      if (m && !m.hidden) studioCloseUpload();
+    }
+  });
+
 })();
 </script>
 </body>
