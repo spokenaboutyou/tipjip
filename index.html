@@ -5472,6 +5472,1364 @@ input, textarea, select {
 }
 
 /* ========================================================================
+   ACTIVATE PODCAST VIEW — 4-step podcaster onboarding
+   ======================================================================== */
+.apod-shell {
+  min-height: calc(100vh - 65px);
+  background: var(--parchment);
+  padding: 32px 32px 80px;
+  position: relative;
+}
+.apod-shell::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse at center, rgba(200,144,46,0.10), transparent 60%);
+  pointer-events: none;
+}
+.apod-progress {
+  max-width: 760px;
+  margin: 24px auto 48px;
+  position: relative;
+}
+.apod-progress-bar {
+  position: relative;
+  height: 3px;
+  background: var(--line);
+  border-radius: 2px;
+  margin: 0 auto;
+  width: calc(100% - 32px);
+}
+.apod-progress-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+.apod-progress-steps {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+.apod-step-marker {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--muted);
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+.apod-step-marker.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--evergreen);
+}
+.apod-step-marker.complete {
+  background: var(--evergreen);
+  border-color: var(--evergreen);
+  color: var(--gold-soft);
+}
+.apod-step-marker.complete::after {
+  content: "✓";
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.apod-step-marker.complete > span { display: none; }
+
+.apod-step {
+  display: none;
+  max-width: 880px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  animation: apodFade 0.5s ease;
+}
+.apod-step.active { display: block; }
+@keyframes apodFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.apod-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.apod-headline {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--evergreen);
+  margin-bottom: 18px;
+}
+.apod-headline em {
+  color: var(--gold);
+  font-style: italic;
+}
+.apod-headline-center { text-align: center; }
+.apod-lede {
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin-bottom: 32px;
+  max-width: 720px;
+}
+.apod-lede-center { margin-left: auto; margin-right: auto; text-align: center; }
+
+.apod-btn { width: 100%; margin-top: 8px; font-weight: 600; }
+.apod-btn-narrow { width: auto; min-width: 240px; display: block; margin-left: auto; margin-right: auto; }
+.apod-skip {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 16px;
+  padding: 8px 16px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: inherit;
+}
+.apod-skip:hover { color: var(--evergreen); }
+
+/* Step 1 three-up */
+.apod-three-up {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.apod-three-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px 22px;
+}
+.apod-three-card-featured {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-color: var(--evergreen);
+}
+.apod-three-num {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.apod-three-card-featured .apod-three-num { color: var(--gold-soft); }
+.apod-three-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.apod-three-card-featured .apod-three-label { color: var(--gold-soft); }
+.apod-three-text {
+  font-size: 13px;
+  color: var(--evergreen);
+  line-height: 1.5;
+}
+.apod-three-card-featured .apod-three-text { color: var(--sage); }
+
+/* Step 1 eligibility */
+.apod-eligibility {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: 14px;
+  padding: 20px 26px;
+  margin-bottom: 32px;
+}
+.apod-eligibility-label {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--gold-soft);
+  margin-bottom: 12px;
+}
+.apod-eligibility-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
+}
+.apod-eligibility-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--sage);
+}
+.apod-check {
+  width: 18px;
+  height: 18px;
+  background: var(--gold);
+  color: var(--evergreen);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.apod-x {
+  width: 18px;
+  height: 18px;
+  background: var(--parchment-2);
+  color: var(--muted);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* Step 2 path picker */
+.apod-path-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+.apod-path-card {
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  padding: 28px 30px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.apod-path-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(15,42,36,0.08);
+}
+.apod-path-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: var(--evergreen);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.apod-path-icon svg { width: 28px; height: 28px; }
+.apod-path-tag {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.apod-path-card h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--evergreen);
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+.apod-path-card p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin-bottom: 18px;
+  flex: 1;
+}
+.apod-path-detail {
+  font-size: 13px;
+  color: var(--evergreen);
+  background: var(--parchment-2);
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+.apod-path-detail strong { color: var(--evergreen); font-weight: 700; }
+.apod-path-cta {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+/* Step 3 form */
+.apod-form-section { margin-bottom: 24px; }
+.apod-form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.apod-form-row-2 .apod-form-section { margin-bottom: 0; }
+.apod-form-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: block;
+}
+.apod-form-label-gold { color: var(--gold); }
+.apod-form-label-mini {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 6px;
+  display: block;
+}
+.apod-input {
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--evergreen);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.apod-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(200,144,46,0.12);
+}
+.apod-input-block { display: block; width: 100%; }
+.apod-input-textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.55;
+}
+.apod-input-mini {
+  padding: 8px 12px;
+  font-size: 13px;
+  width: 100%;
+  max-width: 280px;
+}
+.apod-input-help {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.apod-rss-input-wrap {
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+.apod-rss-input-wrap:focus-within {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(200,144,46,0.12);
+}
+.apod-rss-prefix {
+  padding: 14px 4px 14px 16px;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.apod-rss-input-wrap .apod-input {
+  border: none;
+  flex: 1;
+  outline: none;
+  box-shadow: none !important;
+}
+.apod-rss-validate {
+  border: none;
+  background: var(--evergreen);
+  color: var(--gold-soft);
+  padding: 0 18px;
+  align-self: stretch;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.apod-rss-validate:hover { background: #1B3A33; }
+.apod-rss-result {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 0;
+}
+.apod-rss-result.success {
+  color: #2D6E4D;
+  background: rgba(45,110,77,0.08);
+  padding: 12px 14px;
+  border-radius: 10px;
+}
+.apod-rss-result.error {
+  color: #9C2A2A;
+  background: rgba(156,42,42,0.08);
+  padding: 12px 14px;
+  border-radius: 10px;
+}
+
+/* Three-slot configurator */
+.apod-slots-section {
+  margin-top: 36px;
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
+  margin-bottom: 32px;
+}
+.apod-slots-header h3 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--evergreen);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.apod-slots-header p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.55;
+  max-width: 620px;
+  margin-bottom: 20px;
+}
+.apod-slot-card {
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+.apod-slot-card:has(.apod-slot-checkbox:checked) {
+  border-color: var(--gold);
+}
+.apod-slot-card-featured:has(.apod-slot-checkbox:checked) {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-color: var(--evergreen);
+}
+.apod-slot-label {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  padding: 22px 26px;
+  cursor: pointer;
+  align-items: flex-start;
+}
+.apod-slot-checkbox { display: none; }
+.apod-slot-toggle {
+  width: 44px;
+  height: 24px;
+  background: var(--line);
+  border-radius: 100px;
+  position: relative;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.apod-slot-toggle::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: var(--white);
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.apod-slot-checkbox:checked + .apod-slot-toggle { background: var(--gold); }
+.apod-slot-checkbox:checked + .apod-slot-toggle::after { transform: translateX(20px); }
+.apod-slot-card-featured .apod-slot-checkbox:checked + .apod-slot-toggle::after {
+  background: var(--evergreen);
+}
+
+.apod-slot-content { flex: 1; min-width: 0; }
+.apod-slot-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.apod-slot-tag {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 6px;
+  display: inline-block;
+}
+.apod-slot-card-featured .apod-slot-tag { color: var(--gold-soft); }
+.apod-slot-tag-gold { color: var(--gold); }
+.apod-slot-card-featured .apod-slot-tag-gold { color: var(--gold); }
+.apod-slot-content h4 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--evergreen);
+  letter-spacing: -0.01em;
+}
+.apod-slot-card-featured h4 { color: var(--parchment); }
+.apod-slot-econ {
+  text-align: right;
+  flex-shrink: 0;
+}
+.apod-slot-econ-num {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: -0.01em;
+}
+.apod-slot-econ-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.apod-slot-card-featured .apod-slot-econ-label { color: var(--gold-soft); }
+.apod-slot-content p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+.apod-slot-card-featured .apod-slot-content p { color: var(--sage); }
+
+.apod-slot-detail {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(245,241,234,0.1);
+}
+.apod-slot-card:not(.apod-slot-card-featured) .apod-slot-detail { border-top-color: var(--line); }
+.apod-slot-card-featured .apod-input-mini {
+  background: rgba(245,241,234,0.05);
+  border-color: rgba(245,241,234,0.15);
+  color: var(--parchment);
+}
+.apod-slot-card-featured .apod-form-label-mini { color: var(--gold-soft); }
+
+.apod-slots-estimate {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: 14px;
+  padding: 22px 28px;
+  margin-top: 16px;
+  text-align: center;
+}
+.apod-slots-estimate-label {
+  font-size: 12px;
+  color: var(--gold-soft);
+  margin-bottom: 6px;
+}
+.apod-slots-estimate-amount {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.apod-slots-estimate-detail {
+  font-size: 12px;
+  color: var(--sage);
+}
+
+/* Step 4 review */
+.apod-review-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+}
+.apod-review-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 18px;
+}
+.apod-review-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.apod-review-row:last-child { border-bottom: none; padding-bottom: 0; }
+.apod-review-row:first-of-type { padding-top: 0; }
+.apod-review-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.apod-review-value {
+  font-size: 14px;
+  color: var(--evergreen);
+  line-height: 1.5;
+}
+.apod-review-value-mono {
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+  word-break: break-all;
+}
+.apod-review-vh {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.apod-review-check {
+  width: 18px;
+  height: 18px;
+  background: var(--gold);
+  color: var(--evergreen);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.apod-after-section { margin-bottom: 28px; }
+.apod-after-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  counter-reset: apod-after;
+}
+.apod-after-list li {
+  counter-increment: apod-after;
+  padding: 14px 0 14px 48px;
+  font-size: 14px;
+  color: var(--evergreen);
+  line-height: 1.55;
+  position: relative;
+  border-bottom: 1px solid var(--line);
+}
+.apod-after-list li:last-child { border-bottom: none; }
+.apod-after-list li::before {
+  content: counter(apod-after);
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 32px;
+  height: 32px;
+  background: var(--gold);
+  color: var(--evergreen);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+}
+.apod-after-list strong { color: var(--evergreen); font-weight: 700; }
+
+/* Success state */
+.apod-success-content { text-align: center; max-width: 580px; margin: 0 auto; }
+.apod-success-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+  animation: apodSuccessPop 0.6s ease;
+}
+@keyframes apodSuccessPop {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.apod-success-position {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 24px 0;
+}
+.apod-success-position-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold-soft);
+  margin-bottom: 8px;
+}
+.apod-success-position-num {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.apod-success-position-detail {
+  font-size: 13px;
+  color: var(--sage);
+}
+
+/* Mobile activate-podcast */
+@media (max-width: 760px) {
+  .apod-shell { padding: 16px 18px 60px; }
+  .apod-headline { font-size: 36px; }
+  .apod-three-up { grid-template-columns: 1fr; gap: 12px; }
+  .apod-eligibility-grid { grid-template-columns: 1fr; }
+  .apod-path-grid { grid-template-columns: 1fr; gap: 12px; }
+  .apod-form-row-2 { grid-template-columns: 1fr; gap: 16px; }
+  .apod-slot-row { gap: 8px; }
+  .apod-review-row { grid-template-columns: 1fr; gap: 4px; }
+  .apod-success-position-num { font-size: 32px; }
+}
+
+/* ========================================================================
+   STUDIO PODCAST TAB CONTENT (post-activation view)
+   ======================================================================== */
+.podtab-show-header {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 24px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 28px 32px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.podtab-show-art {
+  width: 100px;
+  height: 100px;
+  border-radius: 14px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.podtab-show-art svg { width: 100%; height: 100%; }
+.podtab-show-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.podtab-show-name {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--evergreen);
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.podtab-show-detail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.podtab-show-handle { color: var(--gold); font-weight: 700; }
+.podtab-show-dot { color: var(--muted2); }
+.podtab-show-stats {
+  display: flex;
+  gap: 24px;
+  font-size: 12px;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+.podtab-show-stats strong {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--evergreen);
+}
+.podtab-show-actions { flex-shrink: 0; }
+.podtab-publish-btn { display: inline-flex; align-items: center; gap: 8px; }
+
+/* Sub-nav */
+.podtab-subnav {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 28px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.podtab-subnav-item {
+  background: none;
+  border: none;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  font-family: inherit;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.podtab-subnav-item:hover { color: var(--evergreen); }
+.podtab-subnav-item.active {
+  color: var(--evergreen);
+  border-bottom-color: var(--gold);
+}
+.podtab-subnav-count {
+  display: inline-block;
+  margin-left: 6px;
+  background: var(--parchment-2);
+  color: var(--muted);
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+.podtab-subnav-item.active .podtab-subnav-count {
+  background: var(--gold);
+  color: var(--evergreen);
+}
+
+/* Stats strip */
+.podtab-stats-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.podtab-stat {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+.podtab-stat-num {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.podtab-stat-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+/* Episodes section */
+.podtab-section { margin-bottom: 24px; }
+.podtab-section h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--evergreen);
+  margin-bottom: 6px;
+}
+.podtab-section p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.55;
+  max-width: 720px;
+}
+.podtab-episodes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.podtab-episodes-tools {
+  display: flex;
+  gap: 8px;
+}
+.podtab-search,
+.podtab-filter {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--evergreen);
+  font-family: inherit;
+  outline: none;
+}
+.podtab-search { width: 220px; }
+.podtab-search:focus, .podtab-filter:focus { border-color: var(--gold); }
+
+.podtab-episodes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.podtab-episode-row {
+  display: grid;
+  grid-template-columns: 56px 1fr auto auto;
+  gap: 18px;
+  align-items: center;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 18px;
+  transition: all 0.15s ease;
+}
+.podtab-episode-row:hover { border-color: var(--gold-soft); }
+.podtab-episode-cover {
+  width: 56px;
+  height: 56px;
+  background: var(--evergreen);
+  color: var(--gold);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+.podtab-episode-cover-draft {
+  background: var(--parchment-2);
+  color: var(--muted);
+  border: 1px dashed var(--line);
+}
+.podtab-episode-meta { min-width: 0; }
+.podtab-episode-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--evergreen);
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+.podtab-episode-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+.podtab-episode-tag {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 100px;
+}
+.podtab-episode-tag-live { background: rgba(45,110,77,0.10); color: #2D6E4D; }
+.podtab-episode-tag-draft { background: var(--parchment-2); color: var(--muted); }
+.podtab-episode-stats {
+  display: flex;
+  gap: 18px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.podtab-episode-stats strong {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--evergreen);
+}
+.podtab-episode-stats-empty {
+  font-style: italic;
+  color: var(--muted);
+}
+.podtab-episode-menu {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--muted);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+}
+.podtab-episode-menu:hover { background: var(--parchment-2); color: var(--evergreen); }
+.podtab-episode-publish {
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+.podtab-loadmore {
+  background: none;
+  border: 1px solid var(--line);
+  padding: 12px 24px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: inherit;
+  margin: 16px auto 0;
+  display: block;
+}
+.podtab-loadmore:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Slots configuration tab */
+.podtab-slots-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.podtab-slot-config {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 22px;
+}
+.podtab-slot-config-featured {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-color: var(--evergreen);
+}
+.podtab-slot-config-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.podtab-toggle {
+  cursor: pointer;
+  position: relative;
+}
+.podtab-toggle input { display: none; }
+.podtab-toggle-track {
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  background: var(--line);
+  border-radius: 100px;
+  position: relative;
+  transition: background 0.2s ease;
+}
+.podtab-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: var(--white);
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.podtab-toggle input:checked + .podtab-toggle-track {
+  background: var(--gold);
+}
+.podtab-toggle input:checked + .podtab-toggle-track .podtab-toggle-thumb {
+  transform: translateX(16px);
+}
+.podtab-slot-config-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.podtab-slot-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 8px;
+}
+.podtab-slot-line:last-child { border-bottom: none; padding-bottom: 0; }
+.podtab-slot-config-featured .podtab-slot-line { border-bottom-color: rgba(245,241,234,0.1); }
+.podtab-slot-line span { color: var(--muted); }
+.podtab-slot-config-featured .podtab-slot-line span { color: var(--sage); }
+.podtab-slot-line strong {
+  color: var(--evergreen);
+  font-weight: 600;
+  font-family: var(--font-display);
+}
+.podtab-slot-config-featured .podtab-slot-line strong { color: var(--gold-soft); }
+
+.podtab-slot-revenue {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: 14px;
+  padding: 24px 28px;
+}
+.podtab-slot-revenue-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold-soft);
+  margin-bottom: 10px;
+}
+.podtab-slot-revenue h4 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--gold);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+.podtab-slot-revenue p {
+  font-size: 13px;
+  color: var(--sage);
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+.podtab-slot-revenue-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px solid rgba(245,241,234,0.08);
+  font-size: 14px;
+}
+.podtab-slot-revenue-row span { color: var(--sage); }
+.podtab-slot-revenue-row strong {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--parchment);
+}
+.podtab-slot-revenue-row-gold { background: rgba(200,144,46,0.12); padding: 12px 16px; margin: 8px -16px 0; border-radius: 8px; border-top: none; }
+.podtab-slot-revenue-row-gold strong { color: var(--gold); }
+
+/* Analytics chart */
+.podtab-chart-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+}
+.podtab-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.podtab-chart-header h4 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--evergreen);
+  letter-spacing: -0.01em;
+}
+.podtab-chart-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--parchment-2);
+  padding: 4px;
+  border-radius: 100px;
+}
+.podtab-chart-tab {
+  border: none;
+  background: none;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  border-radius: 100px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.podtab-chart-tab.active {
+  background: var(--evergreen);
+  color: var(--gold-soft);
+}
+.podtab-chart-svg {
+  width: 100%;
+  height: 240px;
+}
+
+/* Insights */
+.podtab-insights-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.podtab-insight-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 22px;
+}
+.podtab-insight-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.podtab-insight-card h5 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--evergreen);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+.podtab-insight-card p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* RSS / Distribution */
+.podtab-form-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.podtab-rss-card {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+}
+.podtab-rss-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.podtab-rss-url {
+  font-family: ui-monospace, monospace;
+  font-size: 14px;
+  color: var(--gold-soft);
+  word-break: break-all;
+  margin-top: 4px;
+}
+.podtab-rss-help {
+  font-size: 13px;
+  color: var(--sage);
+  line-height: 1.55;
+}
+.podtab-distribution-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.podtab-distribution-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.podtab-distribution-card-empty { background: var(--parchment-2); }
+.podtab-distribution-platform {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--evergreen);
+}
+.podtab-distribution-status {
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.podtab-distribution-status-connected { color: #2D6E4D; }
+.podtab-distribution-detail {
+  font-size: 12px;
+  color: var(--muted);
+}
+.podtab-rss-add {
+  align-self: flex-start;
+  font-size: 12px;
+  padding: 6px 12px;
+  margin-top: 4px;
+}
+.podtab-distribution-note {
+  background: var(--parchment-2);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.podtab-distribution-note strong { color: var(--evergreen); }
+
+/* Mobile podcast tab */
+@media (max-width: 900px) {
+  .podtab-show-header {
+    grid-template-columns: 64px 1fr;
+    gap: 16px;
+    padding: 18px 20px;
+  }
+  .podtab-show-art { width: 64px; height: 64px; }
+  .podtab-show-name { font-size: 22px; }
+  .podtab-show-actions { grid-column: 1 / -1; }
+  .podtab-publish-btn { width: 100%; justify-content: center; }
+  .podtab-stats-strip { grid-template-columns: repeat(2, 1fr); }
+  .podtab-episode-row { grid-template-columns: 48px 1fr; gap: 12px; padding: 12px 14px; }
+  .podtab-episode-cover { width: 48px; height: 48px; font-size: 18px; }
+  .podtab-episode-stats { grid-column: 1 / -1; padding-top: 8px; border-top: 1px dashed var(--line); }
+  .podtab-episode-menu, .podtab-episode-publish { grid-column: 1 / -1; justify-self: stretch; }
+  .podtab-slots-grid { grid-template-columns: 1fr; }
+  .podtab-insights-grid { grid-template-columns: 1fr; }
+  .podtab-distribution-grid { grid-template-columns: 1fr; }
+  .podtab-chart-svg { height: 180px; }
+  .podtab-search { width: 100%; }
+}
+
+/* ========================================================================
    Identity panel — appears in profile, shows masked phone + birth year + ZIP + re-roll
    ======================================================================== */
 .identity-panel {
@@ -10431,7 +11789,7 @@ input, textarea, select {
     </div>
 
     <!-- Podcaster callout -->
-    <div class="three-roles-podcaster-callout" data-view="podcast">
+    <div class="three-roles-podcaster-callout" data-view="activate-podcast">
       <div class="callout-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <rect x="9" y="2" width="6" height="11" rx="3"/>
@@ -12687,7 +14045,7 @@ input, textarea, select {
             <div class="profile-stream-label">FROM PODCASTS</div>
             <div class="profile-stream-source">Run a video podcast on TipJip</div>
           </div>
-          <button class="profile-stream-cta" data-view="podcast">Apply →</button>
+          <button class="profile-stream-cta" data-view="activate-podcast">Apply →</button>
         </div>
 
         <div class="profile-stream-card profile-stream-ads profile-stream-empty">
@@ -12776,7 +14134,7 @@ input, textarea, select {
           <div class="profile-grow-cta">One-tap activate →</div>
         </div>
 
-        <div class="profile-grow-card profile-grow-card-featured" data-view="podcast">
+        <div class="profile-grow-card profile-grow-card-featured" data-view="activate-podcast">
           <div class="profile-grow-tag profile-grow-tag-gold">PODCASTERS · NEW</div>
           <h3>Launch a video podcast</h3>
           <p>Three ad slots, your call. 0% platform cut from ads. Founding 25 spots open for health &amp; wellness shows.</p>
@@ -13006,6 +14364,392 @@ input, textarea, select {
 
         <button class="activate-skip" onclick="activateGoToStep(2)">
           ← Go back
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========================================================================
+     ACTIVATE PODCAST VIEW — 4-step podcast onboarding
+     Step 1: Welcome to video podcasting on TipJip
+     Step 2: Choose intake path (Import RSS / Start native)
+     Step 3: Show details + 3-slot ad configuration
+     Step 4: Review + submit application
+     ======================================================================== -->
+<section class="view" data-view="activate-podcast">
+  <div class="apod-shell">
+
+    <!-- Progress -->
+    <div class="apod-progress">
+      <div class="apod-progress-bar">
+        <div class="apod-progress-fill" id="apod-progress-fill" style="width: 25%"></div>
+      </div>
+      <div class="apod-progress-steps">
+        <div class="apod-step-marker active" data-step="1"><span>1</span></div>
+        <div class="apod-step-marker" data-step="2"><span>2</span></div>
+        <div class="apod-step-marker" data-step="3"><span>3</span></div>
+        <div class="apod-step-marker" data-step="4"><span>4</span></div>
+      </div>
+    </div>
+
+    <!-- ============= STEP 1: Welcome ============= -->
+    <div class="apod-step active" data-apod-step="1">
+      <div class="apod-step-content">
+        <div class="apod-eyebrow">⏤ Step 1 of 4 · Video podcasts on TipJip</div>
+        <h1 class="apod-headline">
+          Three ad slots.<br><em>0% platform cut.</em>
+        </h1>
+        <p class="apod-lede">You're applying to TipJip's founding 25 video podcasters. Health &amp; wellness focus, real human hosts, episodes from 10 to 90 minutes. If accepted, your show goes live with all three ad slots configurable, and you keep the same jar — earnings from podcast ads add to it.</p>
+
+        <div class="apod-three-up">
+          <div class="apod-three-card">
+            <div class="apod-three-num">$11K</div>
+            <div class="apod-three-label">PER EPISODE</div>
+            <div class="apod-three-text">Modeled at 8K verified listeners with 67% completion. Your numbers may vary, but the math is real.</div>
+          </div>
+          <div class="apod-three-card apod-three-card-featured">
+            <div class="apod-three-num">3.4×</div>
+            <div class="apod-three-label">VS SPOTIFY</div>
+            <div class="apod-three-text">Same audience, 3.4× the revenue. Spotify takes 50% of ad revenue. We take 0% from ads.</div>
+          </div>
+          <div class="apod-three-card">
+            <div class="apod-three-num">25</div>
+            <div class="apod-three-label">FOUNDING SPOTS</div>
+            <div class="apod-three-text">Only 25 podcasters get the founding deal. Free for life, locked-in revenue terms, equity-eligible.</div>
+          </div>
+        </div>
+
+        <div class="apod-eligibility">
+          <div class="apod-eligibility-label">YOU NEED</div>
+          <div class="apod-eligibility-grid">
+            <div class="apod-eligibility-item"><span class="apod-check">✓</span> A video podcast (audio-only not eligible — yet)</div>
+            <div class="apod-eligibility-item"><span class="apod-check">✓</span> Health &amp; wellness focus (any sub-niche)</div>
+            <div class="apod-eligibility-item"><span class="apod-check">✓</span> Real human host on camera (no AI faces, ever)</div>
+            <div class="apod-eligibility-item"><span class="apod-check">✓</span> At least 5 published episodes OR a clear plan to launch</div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg apod-btn" onclick="apodGoToStep(2)">
+          I'm eligible — continue →
+        </button>
+
+        <button class="apod-skip" data-view="studio">
+          ← Maybe later, back to Studio
+        </button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 2: Choose Intake Path ============= -->
+    <div class="apod-step" data-apod-step="2">
+      <div class="apod-step-content">
+        <div class="apod-eyebrow">⏤ Step 2 of 4 · Bring your show in</div>
+        <h1 class="apod-headline">
+          Already have a show?<br><em>Or starting fresh?</em>
+        </h1>
+        <p class="apod-lede">Two ways to get your podcast on TipJip. Both keep your same jar, your verified-human badge, and your @handle. Pick whichever path matches where you are.</p>
+
+        <div class="apod-path-grid">
+          <!-- RSS import path -->
+          <button class="apod-path-card" onclick="apodSelectPath('rss')">
+            <div class="apod-path-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 11a9 9 0 0 1 9 9"/>
+                <path d="M4 4a16 16 0 0 1 16 16"/>
+                <circle cx="5" cy="19" r="1"/>
+              </svg>
+            </div>
+            <div class="apod-path-tag">PATH A</div>
+            <h3>Import an existing show</h3>
+            <p>Paste your show's RSS feed URL. We ingest the back catalog. You claim ownership with a verification step. Episodes start playing on TipJip with their three-slot ad config within 24 hours.</p>
+            <div class="apod-path-detail">
+              <strong>Best for:</strong> Established podcasters with at least 5 episodes published elsewhere.
+            </div>
+            <div class="apod-path-cta">Import via RSS →</div>
+          </button>
+
+          <!-- Native start path -->
+          <button class="apod-path-card" onclick="apodSelectPath('native')">
+            <div class="apod-path-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="16"/>
+                <line x1="8" y1="12" x2="16" y2="12"/>
+              </svg>
+            </div>
+            <div class="apod-path-tag">PATH B</div>
+            <h3>Start a new show</h3>
+            <p>Create your podcast natively on TipJip from episode one. Upload artwork, write the show bio, set ad slot defaults, and publish your first episode through the Studio. We handle hosting, distribution, monetization.</p>
+            <div class="apod-path-detail">
+              <strong>Best for:</strong> New shows, exclusive TipJip launches, or migrating fully to TipJip-only distribution.
+            </div>
+            <div class="apod-path-cta">Start native →</div>
+          </button>
+        </div>
+
+        <button class="apod-skip" onclick="apodGoToStep(1)">
+          ← Go back
+        </button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 3: Show Details ============= -->
+    <div class="apod-step" data-apod-step="3">
+      <div class="apod-step-content">
+        <div class="apod-eyebrow">⏤ Step 3 of 4 · Show details</div>
+        <h1 class="apod-headline">
+          Tell us about<br><em>your show.</em>
+        </h1>
+        <p class="apod-lede" id="apod-step3-sub">Show details first, then the part that pays — your three ad slot configuration.</p>
+
+        <!-- RSS-only field (shown when path = rss) -->
+        <div class="apod-form-section" id="apod-rss-section" style="display:none;">
+          <div class="apod-form-label">RSS feed URL</div>
+          <div class="apod-rss-input-wrap">
+            <span class="apod-rss-prefix">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+            </span>
+            <input type="url" class="apod-input" id="apod-rss-url" placeholder="https://yourpodcast.com/feed.xml">
+            <button class="apod-rss-validate" onclick="apodValidateRSS()">Validate</button>
+          </div>
+          <div class="apod-rss-result" id="apod-rss-result"></div>
+        </div>
+
+        <!-- Show identity -->
+        <div class="apod-form-section">
+          <div class="apod-form-label">Show name</div>
+          <input type="text" class="apod-input apod-input-block" id="apod-show-name" placeholder="The Sleep Lab" maxlength="60">
+          <div class="apod-input-help">As it appears on TipJip and to listeners. Up to 60 characters.</div>
+        </div>
+
+        <div class="apod-form-section">
+          <div class="apod-form-label">Show description</div>
+          <textarea class="apod-input apod-input-block apod-input-textarea" id="apod-show-desc" placeholder="A weekly conversation with sleep researchers, clinicians, and unusual experts. The science behind why we rest, how to do it better, and what's still mysterious." maxlength="400" rows="4"></textarea>
+          <div class="apod-input-help">2–3 sentences. What's the show, who's it for, why now?</div>
+        </div>
+
+        <div class="apod-form-row-2">
+          <div class="apod-form-section">
+            <div class="apod-form-label">Primary topic</div>
+            <select class="apod-input apod-input-block" id="apod-show-topic">
+              <option value="">Pick one...</option>
+              <option>Sleep &amp; circadian health</option>
+              <option>Nutrition &amp; metabolism</option>
+              <option>Mental health &amp; stress</option>
+              <option>Movement &amp; fitness</option>
+              <option>Longevity &amp; biohacking</option>
+              <option>Functional &amp; integrative medicine</option>
+              <option>Pain &amp; recovery</option>
+              <option>Hormones &amp; women's health</option>
+              <option>Pediatric wellness</option>
+              <option>Other (specify in description)</option>
+            </select>
+          </div>
+          <div class="apod-form-section">
+            <div class="apod-form-label">Episode cadence</div>
+            <select class="apod-input apod-input-block" id="apod-show-cadence">
+              <option value="">Pick one...</option>
+              <option>Weekly (most common)</option>
+              <option>Twice a week</option>
+              <option>Bi-weekly</option>
+              <option>Monthly</option>
+              <option>Seasonal (8–12 episodes per season)</option>
+              <option>Sporadic / when inspired</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- THE THREE-SLOT CONFIGURATOR -->
+        <div class="apod-slots-section">
+          <div class="apod-slots-header">
+            <div>
+              <div class="apod-form-label apod-form-label-gold">CONFIGURE YOUR THREE AD SLOTS</div>
+              <h3>Pick which slots run on every episode.</h3>
+              <p>You can change these anytime from the podcast settings. Each enabled slot adds to the listener's tip jar — they tip you with thanks, or jip and keep it themselves. Three slots earn 3× per listener.</p>
+            </div>
+          </div>
+
+          <div class="apod-slot-card">
+            <label class="apod-slot-label">
+              <input type="checkbox" class="apod-slot-checkbox" id="apod-slot-pre" checked>
+              <span class="apod-slot-toggle"></span>
+              <div class="apod-slot-content">
+                <div class="apod-slot-row">
+                  <div>
+                    <div class="apod-slot-tag">SLOT 1 · PRE-ROLL</div>
+                    <h4>Before the episode begins</h4>
+                  </div>
+                  <div class="apod-slot-econ">
+                    <div class="apod-slot-econ-num">$0.50–$3</div>
+                    <div class="apod-slot-econ-label">listener earns</div>
+                  </div>
+                </div>
+                <p>Highest engagement. Lowest skip. Most podcasters keep this on by default — the listener hasn't committed to the episode yet, so the ad value sets the tone.</p>
+              </div>
+            </label>
+          </div>
+
+          <div class="apod-slot-card apod-slot-card-featured">
+            <label class="apod-slot-label">
+              <input type="checkbox" class="apod-slot-checkbox" id="apod-slot-mid" checked>
+              <span class="apod-slot-toggle"></span>
+              <div class="apod-slot-content">
+                <div class="apod-slot-row">
+                  <div>
+                    <div class="apod-slot-tag apod-slot-tag-gold">SLOT 2 · MID-STREAM · MOST VALUABLE</div>
+                    <h4>You set the timestamp</h4>
+                  </div>
+                  <div class="apod-slot-econ">
+                    <div class="apod-slot-econ-num">$1–$5</div>
+                    <div class="apod-slot-econ-label">listener earns</div>
+                  </div>
+                </div>
+                <p>Highest CPM in conventional podcasting ($30–$50). Listeners who reach mid-stream are committed. Skip if your show flows better without an interruption — but most shows benefit from this slot.</p>
+                <div class="apod-slot-detail" id="apod-mid-detail">
+                  <label class="apod-form-label-mini">Default mid-stream timestamp (you can override per episode)</label>
+                  <input type="text" class="apod-input apod-input-mini" id="apod-mid-time" placeholder="e.g., 31:00" value="At episode midpoint">
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="apod-slot-card">
+            <label class="apod-slot-label">
+              <input type="checkbox" class="apod-slot-checkbox" id="apod-slot-post" checked>
+              <span class="apod-slot-toggle"></span>
+              <div class="apod-slot-content">
+                <div class="apod-slot-row">
+                  <div>
+                    <div class="apod-slot-tag">SLOT 3 · POST-ROLL</div>
+                    <h4>After the episode ends</h4>
+                  </div>
+                  <div class="apod-slot-econ">
+                    <div class="apod-slot-econ-num">$0.50–$2</div>
+                    <div class="apod-slot-econ-label">listener earns</div>
+                  </div>
+                </div>
+                <p>Highest-intent inventory. Listeners who finish the episode are your committed audience — niche advertisers convert here. Cheaper per impression but quality conversions.</p>
+              </div>
+            </label>
+          </div>
+
+          <!-- Total estimate strip -->
+          <div class="apod-slots-estimate">
+            <div class="apod-slots-estimate-label">Estimated total per completed listen:</div>
+            <div class="apod-slots-estimate-amount" id="apod-estimate-total">$2.00 – $10.00</div>
+            <div class="apod-slots-estimate-detail">All three slots enabled. Adds to listener jar; you receive their tips and jipped-bid percentages.</div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg apod-btn" id="apod-step3-btn" onclick="apodGoToStep(4)">
+          Continue to review →
+        </button>
+
+        <button class="apod-skip" onclick="apodGoToStep(2)">
+          ← Go back
+        </button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 4: Review + Submit ============= -->
+    <div class="apod-step" data-apod-step="4">
+      <div class="apod-step-content">
+        <div class="apod-eyebrow">⏤ Step 4 of 4 · Review &amp; apply</div>
+        <h1 class="apod-headline">
+          Looks right?<br><em>Submit your application.</em>
+        </h1>
+        <p class="apod-lede">Founding 25 spots are reviewed by hand within 5–7 days. We'll email you with a yes / let's chat / not yet decision. While you wait, you can keep using TipJip as a creator.</p>
+
+        <!-- Review card -->
+        <div class="apod-review-card">
+          <div class="apod-review-eyebrow">YOUR APPLICATION</div>
+
+          <div class="apod-review-row">
+            <div class="apod-review-label">Path</div>
+            <div class="apod-review-value" id="apod-review-path">Importing existing show via RSS</div>
+          </div>
+          <div class="apod-review-row" id="apod-review-rss-row" style="display:none;">
+            <div class="apod-review-label">RSS feed</div>
+            <div class="apod-review-value apod-review-value-mono" id="apod-review-rss"></div>
+          </div>
+          <div class="apod-review-row">
+            <div class="apod-review-label">Show name</div>
+            <div class="apod-review-value" id="apod-review-name">—</div>
+          </div>
+          <div class="apod-review-row">
+            <div class="apod-review-label">Topic</div>
+            <div class="apod-review-value" id="apod-review-topic">—</div>
+          </div>
+          <div class="apod-review-row">
+            <div class="apod-review-label">Cadence</div>
+            <div class="apod-review-value" id="apod-review-cadence">—</div>
+          </div>
+          <div class="apod-review-row">
+            <div class="apod-review-label">Ad slots enabled</div>
+            <div class="apod-review-value" id="apod-review-slots">Pre-roll, Mid-stream, Post-roll</div>
+          </div>
+          <div class="apod-review-row">
+            <div class="apod-review-label">Host identity</div>
+            <div class="apod-review-value">
+              <span class="apod-review-vh"><span class="apod-review-check">✓</span> @<span class="apod-review-handle">drsarah</span> · Verified human · Jar #<span class="apod-review-jar">4471</span></span>
+            </div>
+          </div>
+          <div class="apod-review-row">
+            <div class="apod-review-label">Content rule</div>
+            <div class="apod-review-value">
+              <span class="apod-review-vh"><span class="apod-review-check">✓</span> Agreed · 100% Real Human Rule applies to all episodes</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="apod-after-section">
+          <div class="apod-form-label">WHAT HAPPENS NEXT</div>
+          <ol class="apod-after-list">
+            <li><strong>5–7 days:</strong> One of us reviews your application personally. We listen to a recent episode, look at your show's vibe, and decide.</li>
+            <li><strong>Email decision:</strong> Yes (welcome to the founding 25), let's chat (we want a 15-min call), or not yet (here's why, here's what to fix).</li>
+            <li><strong>If yes — onboard:</strong> Within 14 days of approval, your show is live with all three ad slots configured, listeners can subscribe, the jar starts filling.</li>
+          </ol>
+        </div>
+
+        <button class="btn btn-primary btn-lg apod-btn" onclick="apodSubmit()">
+          Submit application →
+        </button>
+
+        <button class="apod-skip" onclick="apodGoToStep(3)">
+          ← Edit details
+        </button>
+      </div>
+    </div>
+
+    <!-- ============= SUCCESS STATE ============= -->
+    <div class="apod-step" data-apod-step="success">
+      <div class="apod-step-content apod-success-content">
+        <div class="apod-success-icon">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="40" r="36" fill="#0F2A24"/>
+            <circle cx="40" cy="40" r="36" fill="none" stroke="#C8902E" stroke-width="2"/>
+            <path d="M 26 40 L 36 50 L 56 30" stroke="#C8902E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+
+        <div class="apod-eyebrow">⏤ APPLICATION SUBMITTED</div>
+        <h1 class="apod-headline apod-headline-center">
+          You're in the queue,<br><em>@<span class="apod-review-handle">drsarah</span>.</em>
+        </h1>
+        <p class="apod-lede apod-lede-center">We received your podcast application. Expect an email within 5–7 days. While you wait, you can keep creating videos and earning tips — your jar doesn't pause.</p>
+
+        <div class="apod-success-position">
+          <div class="apod-success-position-label">YOUR POSITION</div>
+          <div class="apod-success-position-num"><span id="apod-success-position">#7</span> of 25</div>
+          <div class="apod-success-position-detail">Founding spots are filling fast. Decisions go out in the order received.</div>
+        </div>
+
+        <button class="btn btn-primary btn-lg apod-btn apod-btn-narrow" data-view="studio">
+          Back to Studio →
+        </button>
+        <button class="apod-skip" data-view="profile">
+          View my jar
         </button>
       </div>
     </div>
@@ -13343,6 +15087,440 @@ input, textarea, select {
             <button class="btn btn-primary btn-lg" disabled>Verify with NPI (coming Turn 4) →</button>
           </div>
         </div>
+      </div>
+
+<!-- ========================================================================
+     STUDIO PODCAST TAB CONTENT
+     Shows after podcast is activated. Manage shows, episodes, slot config.
+     Inserted as <div class="studio-tab-content" data-studio-content="podcasts">
+     ======================================================================== -->
+      <div class="studio-tab-content" data-studio-content="podcasts" style="display:none;">
+
+        <!-- Show header -->
+        <div class="podtab-show-header">
+          <div class="podtab-show-art">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" rx="14" fill="#0F2A24"/>
+              <circle cx="50" cy="50" r="28" fill="none" stroke="#C8902E" stroke-width="2"/>
+              <circle cx="50" cy="50" r="20" fill="none" stroke="#ECC881" stroke-width="1.5" opacity="0.6"/>
+              <rect x="46" y="36" width="8" height="16" rx="4" fill="#C8902E"/>
+              <path d="M 38 48 v3 a 12 12 0 0 0 24 0 v-3" stroke="#C8902E" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <line x1="50" y1="63" x2="50" y2="68" stroke="#C8902E" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="podtab-show-meta">
+            <div class="podtab-show-eyebrow">⏤ FOUNDING PODCASTER · #07</div>
+            <h2 class="podtab-show-name">The Sleep Lab</h2>
+            <div class="podtab-show-detail">
+              <span class="podtab-show-handle">@drsarah</span>
+              <span class="podtab-show-dot">·</span>
+              <span>Sleep &amp; circadian health</span>
+              <span class="podtab-show-dot">·</span>
+              <span>Weekly</span>
+            </div>
+            <div class="podtab-show-stats">
+              <div><strong>47</strong> episodes</div>
+              <div><strong>8,140</strong> verified subscribers</div>
+              <div><strong>67%</strong> avg completion</div>
+              <div><strong>76%</strong> tip rate</div>
+            </div>
+          </div>
+          <div class="podtab-show-actions">
+            <button class="btn btn-primary podtab-publish-btn" onclick="podtabOpenPublish()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              New episode
+            </button>
+          </div>
+        </div>
+
+        <!-- Sub-tabs: Episodes / Slots / Analytics / Settings -->
+        <div class="podtab-subnav">
+          <button class="podtab-subnav-item active" data-podtab="episodes">Episodes <span class="podtab-subnav-count">47</span></button>
+          <button class="podtab-subnav-item" data-podtab="slots">Ad slots</button>
+          <button class="podtab-subnav-item" data-podtab="analytics">Analytics</button>
+          <button class="podtab-subnav-item" data-podtab="rss">Distribution</button>
+          <button class="podtab-subnav-item" data-podtab="show-settings">Show settings</button>
+        </div>
+
+        <!-- ======== Episodes sub-tab ======== -->
+        <div class="podtab-content" data-podtab-content="episodes">
+
+          <!-- Stats strip -->
+          <div class="podtab-stats-strip">
+            <div class="podtab-stat">
+              <div class="podtab-stat-num">$11,420</div>
+              <div class="podtab-stat-label">EPISODE 47 EARNINGS</div>
+            </div>
+            <div class="podtab-stat">
+              <div class="podtab-stat-num">$543K</div>
+              <div class="podtab-stat-label">YEAR-TO-DATE</div>
+            </div>
+            <div class="podtab-stat">
+              <div class="podtab-stat-num">3.4×</div>
+              <div class="podtab-stat-label">VS SPOTIFY MODEL</div>
+            </div>
+            <div class="podtab-stat">
+              <div class="podtab-stat-num">+12%</div>
+              <div class="podtab-stat-label">SUBSCRIBER GROWTH (30D)</div>
+            </div>
+          </div>
+
+          <!-- Episodes list -->
+          <div class="podtab-episodes-header">
+            <h3>Recent episodes</h3>
+            <div class="podtab-episodes-tools">
+              <input type="search" class="podtab-search" placeholder="Search episodes..." aria-label="Search episodes">
+              <select class="podtab-filter">
+                <option>All episodes</option>
+                <option>Published</option>
+                <option>Drafts</option>
+                <option>Unpublished</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="podtab-episodes-list">
+            <!-- Episode 47 -->
+            <div class="podtab-episode-row">
+              <div class="podtab-episode-cover">47</div>
+              <div class="podtab-episode-meta">
+                <div class="podtab-episode-title">Why your aura ring is lying to you about REM sleep</div>
+                <div class="podtab-episode-detail">
+                  <span>62 min</span>
+                  <span class="podtab-show-dot">·</span>
+                  <span>Published 3 days ago</span>
+                  <span class="podtab-show-dot">·</span>
+                  <span class="podtab-episode-tag podtab-episode-tag-live">LIVE</span>
+                </div>
+              </div>
+              <div class="podtab-episode-stats">
+                <div><strong>5,452</strong> listens</div>
+                <div><strong>$11,420</strong> earned</div>
+                <div><strong>78%</strong> tip rate</div>
+              </div>
+              <button class="podtab-episode-menu" aria-label="Actions">⋯</button>
+            </div>
+            <!-- Episode 46 -->
+            <div class="podtab-episode-row">
+              <div class="podtab-episode-cover">46</div>
+              <div class="podtab-episode-meta">
+                <div class="podtab-episode-title">The myth of "8 hours" — what the data actually shows about sleep need</div>
+                <div class="podtab-episode-detail">
+                  <span>58 min</span>
+                  <span class="podtab-show-dot">·</span>
+                  <span>Published 10 days ago</span>
+                  <span class="podtab-show-dot">·</span>
+                  <span class="podtab-episode-tag podtab-episode-tag-live">LIVE</span>
+                </div>
+              </div>
+              <div class="podtab-episode-stats">
+                <div><strong>6,212</strong> listens</div>
+                <div><strong>$13,180</strong> earned</div>
+                <div><strong>81%</strong> tip rate</div>
+              </div>
+              <button class="podtab-episode-menu" aria-label="Actions">⋯</button>
+            </div>
+            <!-- Episode 45 -->
+            <div class="podtab-episode-row">
+              <div class="podtab-episode-cover">45</div>
+              <div class="podtab-episode-meta">
+                <div class="podtab-episode-title">Stress, cortisol, and why bedtime feels harder in your 40s</div>
+                <div class="podtab-episode-detail">
+                  <span>71 min</span>
+                  <span class="podtab-show-dot">·</span>
+                  <span>Published 17 days ago</span>
+                  <span class="podtab-show-dot">·</span>
+                  <span class="podtab-episode-tag podtab-episode-tag-live">LIVE</span>
+                </div>
+              </div>
+              <div class="podtab-episode-stats">
+                <div><strong>5,891</strong> listens</div>
+                <div><strong>$12,030</strong> earned</div>
+                <div><strong>74%</strong> tip rate</div>
+              </div>
+              <button class="podtab-episode-menu" aria-label="Actions">⋯</button>
+            </div>
+            <!-- Draft -->
+            <div class="podtab-episode-row podtab-episode-draft">
+              <div class="podtab-episode-cover podtab-episode-cover-draft">48</div>
+              <div class="podtab-episode-meta">
+                <div class="podtab-episode-title">[Draft] Light therapy beyond SAD — the Andrew Huberman conversation</div>
+                <div class="podtab-episode-detail">
+                  <span>Recording uploaded</span>
+                  <span class="podtab-show-dot">·</span>
+                  <span>Last edited yesterday</span>
+                  <span class="podtab-show-dot">·</span>
+                  <span class="podtab-episode-tag podtab-episode-tag-draft">DRAFT</span>
+                </div>
+              </div>
+              <div class="podtab-episode-stats">
+                <div class="podtab-episode-stats-empty">Not yet published</div>
+              </div>
+              <button class="btn btn-outline podtab-episode-publish">Publish →</button>
+            </div>
+          </div>
+
+          <button class="podtab-loadmore">Load older episodes</button>
+
+        </div>
+
+        <!-- ======== Ad Slots sub-tab ======== -->
+        <div class="podtab-content" data-podtab-content="slots" style="display:none;">
+          <div class="podtab-section">
+            <h3>Show-level ad slots</h3>
+            <p>These are the defaults applied to every new episode. You can override per-episode in the episode editor. Listener earnings flow into their jar; you receive tips when they tip you, and a percentage of jipped bids.</p>
+          </div>
+
+          <div class="podtab-slots-grid">
+            <div class="podtab-slot-config">
+              <div class="podtab-slot-config-header">
+                <div class="apod-slot-tag">SLOT 1 · PRE-ROLL</div>
+                <label class="podtab-toggle">
+                  <input type="checkbox" checked>
+                  <span class="podtab-toggle-track"><span class="podtab-toggle-thumb"></span></span>
+                </label>
+              </div>
+              <div class="podtab-slot-config-body">
+                <div class="podtab-slot-line"><span>Default bid range</span><strong>$0.50–$3</strong></div>
+                <div class="podtab-slot-line"><span>Sponsor pre-vet</span><strong>Health &amp; wellness only</strong></div>
+                <div class="podtab-slot-line"><span>Episode 47 sponsor</span><strong>Eight Sleep · $1.50</strong></div>
+              </div>
+            </div>
+
+            <div class="podtab-slot-config podtab-slot-config-featured">
+              <div class="podtab-slot-config-header">
+                <div class="apod-slot-tag apod-slot-tag-gold">SLOT 2 · MID-STREAM</div>
+                <label class="podtab-toggle">
+                  <input type="checkbox" checked>
+                  <span class="podtab-toggle-track"><span class="podtab-toggle-thumb"></span></span>
+                </label>
+              </div>
+              <div class="podtab-slot-config-body">
+                <div class="podtab-slot-line"><span>Default timestamp</span><strong>Episode midpoint</strong></div>
+                <div class="podtab-slot-line"><span>Default bid range</span><strong>$1–$5</strong></div>
+                <div class="podtab-slot-line"><span>Sponsor pre-vet</span><strong>Health &amp; wellness only</strong></div>
+                <div class="podtab-slot-line"><span>Episode 47 sponsor</span><strong>Manta Sleep · $2.50</strong></div>
+              </div>
+            </div>
+
+            <div class="podtab-slot-config">
+              <div class="podtab-slot-config-header">
+                <div class="apod-slot-tag">SLOT 3 · POST-ROLL</div>
+                <label class="podtab-toggle">
+                  <input type="checkbox" checked>
+                  <span class="podtab-toggle-track"><span class="podtab-toggle-thumb"></span></span>
+                </label>
+              </div>
+              <div class="podtab-slot-config-body">
+                <div class="podtab-slot-line"><span>Default bid range</span><strong>$0.50–$2</strong></div>
+                <div class="podtab-slot-line"><span>Sponsor pre-vet</span><strong>Health &amp; wellness only</strong></div>
+                <div class="podtab-slot-line"><span>Episode 47 sponsor</span><strong>Hatch Restore · $1.00</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="podtab-slot-revenue">
+            <div class="podtab-slot-revenue-eyebrow">SHOW-LEVEL REVENUE MODEL</div>
+            <h4>You're earning $11,420 per episode at current performance.</h4>
+            <p>5,452 listens × 67% completion × $5.00 average jar add (3 slots enabled) = $18,243 in advertiser bids per episode. 78% tip rate to you = ~$11,420 in tips. Plus jipped-bid percentages flowing to your jar.</p>
+            <div class="podtab-slot-revenue-row">
+              <span>Year-to-date earnings</span><strong>$543,140</strong>
+            </div>
+            <div class="podtab-slot-revenue-row">
+              <span>Spotify Partner equivalent</span><strong>~$160K</strong>
+            </div>
+            <div class="podtab-slot-revenue-row podtab-slot-revenue-row-gold">
+              <span>Difference</span><strong>+$383K (3.4×)</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- ======== Analytics sub-tab ======== -->
+        <div class="podtab-content" data-podtab-content="analytics" style="display:none;">
+          <div class="podtab-section">
+            <h3>Show analytics</h3>
+            <p>Verified-human listening data, by definition. Every number here is a real person who phone-verified. No estimated reach, no bot impressions.</p>
+          </div>
+
+          <!-- Big chart placeholder -->
+          <div class="podtab-chart-card">
+            <div class="podtab-chart-header">
+              <h4>Listens over time · Last 90 days</h4>
+              <div class="podtab-chart-tabs">
+                <button class="podtab-chart-tab active">Listens</button>
+                <button class="podtab-chart-tab">Earnings</button>
+                <button class="podtab-chart-tab">Tip rate</button>
+                <button class="podtab-chart-tab">Subscribers</button>
+              </div>
+            </div>
+            <svg viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg" class="podtab-chart-svg">
+              <!-- Grid -->
+              <line x1="0" y1="60" x2="800" y2="60" stroke="#E8E2D4" stroke-width="1" stroke-dasharray="3 3"/>
+              <line x1="0" y1="120" x2="800" y2="120" stroke="#E8E2D4" stroke-width="1" stroke-dasharray="3 3"/>
+              <line x1="0" y1="180" x2="800" y2="180" stroke="#E8E2D4" stroke-width="1" stroke-dasharray="3 3"/>
+
+              <!-- Data line - growing trend -->
+              <path d="M 20 180 Q 100 170, 140 165 T 240 145 Q 320 140, 360 125 T 460 105 Q 540 100, 580 85 T 680 65 L 780 50" stroke="#C8902E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <!-- Area under -->
+              <path d="M 20 180 Q 100 170, 140 165 T 240 145 Q 320 140, 360 125 T 460 105 Q 540 100, 580 85 T 680 65 L 780 50 L 780 220 L 20 220 Z" fill="#C8902E" opacity="0.08"/>
+
+              <!-- Data points -->
+              <circle cx="140" cy="165" r="4" fill="#C8902E"/>
+              <circle cx="240" cy="145" r="4" fill="#C8902E"/>
+              <circle cx="360" cy="125" r="4" fill="#C8902E"/>
+              <circle cx="460" cy="105" r="4" fill="#C8902E"/>
+              <circle cx="580" cy="85" r="4" fill="#C8902E"/>
+              <circle cx="680" cy="65" r="4" fill="#C8902E"/>
+
+              <!-- X-axis labels -->
+              <text x="20" y="234" font-family="system-ui" font-size="10" fill="#8B8478">90d ago</text>
+              <text x="380" y="234" font-family="system-ui" font-size="10" fill="#8B8478" text-anchor="middle">45d ago</text>
+              <text x="780" y="234" font-family="system-ui" font-size="10" fill="#8B8478" text-anchor="end">Today</text>
+            </svg>
+          </div>
+
+          <!-- Three insight cards -->
+          <div class="podtab-insights-grid">
+            <div class="podtab-insight-card">
+              <div class="podtab-insight-eyebrow">DROP-OFF POINT</div>
+              <h5>Most listeners stop around 38 minutes.</h5>
+              <p>About 22% of subscribers don't finish episodes longer than 60 minutes. Your mid-stream slot at 31:00 is hitting before this drop-off, which is why it converts well.</p>
+            </div>
+            <div class="podtab-insight-card">
+              <div class="podtab-insight-eyebrow">TOP TIPPED EPISODE</div>
+              <h5>Episode 46 — "The myth of 8 hours"</h5>
+              <p>81% tip rate. The framing — challenging conventional wisdom backed by data — got the most "thanks for the explanation" jip notes too. Pattern worth repeating.</p>
+            </div>
+            <div class="podtab-insight-card">
+              <div class="podtab-insight-eyebrow">JIP FEEDBACK THEME</div>
+              <h5>"Felt like sponsor read"</h5>
+              <p>3 jips this month called out mid-stream sponsor reads as feeling overscripted. Consider keeping the read in your voice but improvising more.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ======== Distribution / RSS sub-tab ======== -->
+        <div class="podtab-content" data-podtab-content="rss" style="display:none;">
+          <div class="podtab-section">
+            <h3>External distribution</h3>
+            <p>By default, your show plays inside TipJip — that's where the verified-human guarantee, the three-slot mechanic, and the listener earnings work. You can also publish out to Apple Podcasts and Spotify via an RSS feed for distribution. Listens on those external apps don't earn for listeners and don't enable the tip/jip mechanic.</p>
+          </div>
+
+          <div class="podtab-rss-card">
+            <div class="podtab-rss-header">
+              <div>
+                <div class="podtab-form-label">YOUR TIPJIP RSS FEED</div>
+                <div class="podtab-rss-url">https://tipjip.com/podcast/<span class="apod-review-handle">drsarah</span>/feed.xml</div>
+              </div>
+              <button class="btn btn-outline podtab-rss-copy">Copy URL</button>
+            </div>
+            <p class="podtab-rss-help">Use this URL to submit your show to Apple Podcasts, Spotify, Pocket Casts, Overcast, or any other podcast directory. The feed updates automatically when you publish a new episode.</p>
+          </div>
+
+          <div class="podtab-distribution-grid">
+            <div class="podtab-distribution-card">
+              <div class="podtab-distribution-platform">Apple Podcasts</div>
+              <div class="podtab-distribution-status podtab-distribution-status-connected">
+                <span class="apod-check">✓</span> Connected · Published 2 weeks ago
+              </div>
+              <div class="podtab-distribution-detail">
+                Show ID: 1729384756 · Latest episode synced.
+              </div>
+            </div>
+            <div class="podtab-distribution-card">
+              <div class="podtab-distribution-platform">Spotify</div>
+              <div class="podtab-distribution-status podtab-distribution-status-connected">
+                <span class="apod-check">✓</span> Connected · Synced 4 days ago
+              </div>
+              <div class="podtab-distribution-detail">
+                Spotify URI: spotify:show:abc123def · Latest synced.
+              </div>
+            </div>
+            <div class="podtab-distribution-card podtab-distribution-card-empty">
+              <div class="podtab-distribution-platform">Pocket Casts</div>
+              <div class="podtab-distribution-status">
+                <span class="apod-x">+</span> Submit your RSS feed to publish
+              </div>
+              <button class="btn btn-outline podtab-rss-add">Set up</button>
+            </div>
+            <div class="podtab-distribution-card podtab-distribution-card-empty">
+              <div class="podtab-distribution-platform">Overcast</div>
+              <div class="podtab-distribution-status">
+                <span class="apod-x">+</span> Submit your RSS feed to publish
+              </div>
+              <button class="btn btn-outline podtab-rss-add">Set up</button>
+            </div>
+          </div>
+
+          <div class="podtab-distribution-note">
+            <strong>Reminder:</strong> Listens on external platforms don't fill listener jars or trigger the tip/jip mechanic — those rely on TipJip's verified-human ad infrastructure. External listens still pay you a smaller standard sponsor read fee through your existing podcast ad provider, if you have one. RSS-distributed listens are bonus reach, not your primary revenue channel.
+          </div>
+        </div>
+
+        <!-- ======== Show settings sub-tab ======== -->
+        <div class="podtab-content" data-podtab-content="show-settings" style="display:none;">
+          <div class="podtab-section">
+            <h3>Show settings</h3>
+            <p>Edit the things that affect every episode. Show artwork, name, description, primary topic, and host details. Episode-specific settings live inside each episode's editor.</p>
+          </div>
+
+          <div class="studio-settings-section">
+            <h3>Show identity</h3>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Show name</div>
+              <div class="studio-settings-value">The Sleep Lab <button class="studio-settings-edit btn btn-outline">Edit</button></div>
+            </div>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Description</div>
+              <div class="studio-settings-value">A weekly conversation with sleep researchers, clinicians, and unusual experts. <button class="studio-settings-edit btn btn-outline">Edit</button></div>
+            </div>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Show artwork</div>
+              <div class="studio-settings-value">3000×3000 image · Updated 2 months ago <button class="studio-settings-edit btn btn-outline">Replace</button></div>
+            </div>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Primary topic</div>
+              <div class="studio-settings-value">Sleep &amp; circadian health <button class="studio-settings-edit btn btn-outline">Change</button></div>
+            </div>
+          </div>
+
+          <div class="studio-settings-section">
+            <h3>Hosts &amp; co-hosts</h3>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Primary host</div>
+              <div class="studio-settings-value">@drsarah · Verified human · You</div>
+            </div>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Co-hosts</div>
+              <div class="studio-settings-value">None added <button class="studio-settings-edit btn btn-outline">Add co-host</button></div>
+            </div>
+          </div>
+
+          <div class="studio-settings-section">
+            <h3>Compliance</h3>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">100% Real Human Rule</div>
+              <div class="studio-settings-value"><span class="studio-vh-mini"><span class="studio-vh-check">✓</span> Agreed · Applies to all episodes</span></div>
+            </div>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Health claims policy</div>
+              <div class="studio-settings-value"><span class="studio-vh-mini"><span class="studio-vh-check">✓</span> Acknowledged · No diagnostic claims, no individual medical advice</span></div>
+            </div>
+          </div>
+
+          <div class="studio-settings-section">
+            <h3>Danger zone</h3>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Pause podcast</div>
+              <div class="studio-settings-value"><button class="btn btn-outline studio-settings-danger">Pause</button></div>
+            </div>
+            <div class="studio-settings-row">
+              <div class="studio-settings-label">Delete show</div>
+              <div class="studio-settings-value"><button class="btn btn-outline studio-settings-danger">Delete (irreversible)</button></div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- SETTINGS TAB -->
@@ -15358,7 +17536,7 @@ curl https://api.tipjip.com/v1/verify \
       <h1>Health &amp; wellness podcasters,<br><em>finally paid like creators.</em></h1>
       <p class="podcast-lede">Three ad slots. Your show, your rules. Pre-roll, mid-stream, post-roll — pick any combination. Verified human listeners pay you directly. No 50% platform tax. No ads from sketchy supplement brands. The first podcast platform built for the verified-human era.</p>
       <div class="podcast-cta">
-        <button class="btn btn-gold btn-lg" data-view="signup">Apply as a podcaster</button>
+        <button class="btn btn-gold btn-lg" data-view="activate-podcast">Apply as a podcaster</button>
         <button class="btn btn-outline-light btn-lg" data-view="standards">Read content standards</button>
       </div>
     </div>
@@ -15557,7 +17735,7 @@ curl https://api.tipjip.com/v1/verify \
         <h2>We're approving the first 25<br><em>health &amp; wellness video podcasters.</em></h2>
         <p>Application requirements: a video podcast (not audio-only), health &amp; wellness focus, real human host on camera, content standards compliance. Approval timeline: 5–7 days. Once approved, your show is live within 14 days with all three slots configurable.</p>
         <div class="podcast-apply-buttons">
-          <button class="btn btn-gold btn-lg" data-view="signup">Apply now — founding 25 spots</button>
+          <button class="btn btn-gold btn-lg" data-view="activate-podcast">Apply now — founding 25 spots</button>
           <button class="btn btn-outline-light btn-lg" data-view="standards">Read content standards first</button>
         </div>
       </div>
@@ -17400,6 +19578,186 @@ document.querySelectorAll('.why-cta-btn').forEach(btn => {
       if (m && !m.hidden) studioCloseUpload();
     }
   });
+
+})();
+</script>
+<script>
+// ============================================
+// ACTIVATE PODCAST + STUDIO PODCAST TAB interactions
+// ============================================
+(function() {
+  let apodSelectedPath = null;
+
+  window.apodGoToStep = function(step) {
+    document.querySelectorAll('.apod-step').forEach(s => s.classList.remove('active'));
+    const target = document.querySelector('.apod-step[data-apod-step="' + step + '"]');
+    if (target) target.classList.add('active');
+
+    const fill = document.getElementById('apod-progress-fill');
+    if (fill && typeof step === 'number') {
+      fill.style.width = (step / 4 * 100) + '%';
+    }
+    document.querySelectorAll('.apod-step-marker').forEach(m => {
+      const ms = parseInt(m.dataset.step);
+      m.classList.remove('active', 'complete');
+      if (typeof step === 'number') {
+        if (ms < step) m.classList.add('complete');
+        else if (ms === step) m.classList.add('active');
+      }
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Populate review when entering step 4
+    if (step === 4) populateApodReview();
+  };
+
+  function populateApodReview() {
+    const name = document.getElementById('apod-show-name')?.value?.trim() || 'Your Show';
+    const topicEl = document.getElementById('apod-show-topic');
+    const cadenceEl = document.getElementById('apod-show-cadence');
+    const topic = topicEl?.value?.trim() || 'Health & wellness';
+    const cadence = cadenceEl?.value?.trim() || 'Weekly';
+    const rssUrl = document.getElementById('apod-rss-url')?.value?.trim() || '';
+    const pre = document.getElementById('apod-slot-pre')?.checked;
+    const mid = document.getElementById('apod-slot-mid')?.checked;
+    const post = document.getElementById('apod-slot-post')?.checked;
+    const slotsList = [];
+    if (pre) slotsList.push('Pre-roll');
+    if (mid) slotsList.push('Mid-stream');
+    if (post) slotsList.push('Post-roll');
+
+    const setIf = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    };
+    setIf('apod-review-path', apodSelectedPath === 'rss' ? 'Importing existing show via RSS' : 'Starting fresh on TipJip');
+    const rssRow = document.getElementById('apod-review-rss-row');
+    if (rssRow) rssRow.style.display = (apodSelectedPath === 'rss' && rssUrl) ? '' : 'none';
+    if (rssUrl) setIf('apod-review-rss', rssUrl);
+    setIf('apod-review-name', name);
+    setIf('apod-review-topic', topic);
+    setIf('apod-review-cadence', cadence);
+    setIf('apod-review-slots', slotsList.length ? slotsList.join(', ') : 'No slots enabled');
+  }
+
+  window.apodSelectPath = function(path) {
+    apodSelectedPath = path;
+    const rssSection = document.getElementById('apod-rss-section');
+    const sub = document.getElementById('apod-step3-sub');
+    if (path === 'rss') {
+      if (rssSection) rssSection.style.display = '';
+      if (sub) sub.textContent = 'First, paste your existing RSS feed so we can ingest your back catalog. Then show details and the part that pays — your three ad slot configuration.';
+    } else {
+      if (rssSection) rssSection.style.display = 'none';
+      if (sub) sub.textContent = 'Show details first, then the part that pays — your three ad slot configuration.';
+    }
+    apodGoToStep(3);
+  };
+
+  window.apodValidateRSS = function() {
+    const input = document.getElementById('apod-rss-url');
+    const result = document.getElementById('apod-rss-result');
+    if (!input || !result) return;
+    const url = input.value.trim();
+    if (!url) {
+      result.className = 'apod-rss-result error';
+      result.textContent = 'Paste a URL first.';
+      return;
+    }
+    if (!/^https?:\/\/.+/i.test(url)) {
+      result.className = 'apod-rss-result error';
+      result.textContent = 'URL must start with http:// or https://';
+      return;
+    }
+    // Mock: pretend we validated. In production, hit a server endpoint that fetches and parses the feed.
+    result.className = 'apod-rss-result success';
+    result.innerHTML = '✓ RSS feed valid. Found <strong>47 episodes</strong> · "The Sleep Lab" · 8,140 subscribers detected. Ready to ingest.';
+  };
+
+  // Update slot estimate when slot toggles change
+  document.addEventListener('change', function(e) {
+    if (e.target && e.target.classList && e.target.classList.contains('apod-slot-checkbox')) {
+      const pre = document.getElementById('apod-slot-pre');
+      const mid = document.getElementById('apod-slot-mid');
+      const post = document.getElementById('apod-slot-post');
+      const estEl = document.getElementById('apod-estimate-total');
+      if (!estEl) return;
+      let lo = 0, hi = 0;
+      if (pre && pre.checked) { lo += 0.50; hi += 3; }
+      if (mid && mid.checked) { lo += 1.00; hi += 5; }
+      if (post && post.checked) { lo += 0.50; hi += 2; }
+      estEl.textContent = '$' + lo.toFixed(2) + ' – $' + hi.toFixed(2);
+    }
+  });
+
+  window.apodSubmit = function() {
+    populateApodReview();
+
+    // Random position #5–25
+    const pos = Math.floor(5 + Math.random() * 20);
+    const posEl = document.getElementById('apod-success-position');
+    if (posEl) posEl.textContent = '#' + pos;
+
+    apodGoToStep('success');
+  };
+
+  // Sync handle from studio if available
+  const syncApodHandle = function() {
+    const sh = document.getElementById('studio-handle');
+    if (sh && sh.textContent) {
+      document.querySelectorAll('.apod-review-handle').forEach(el => el.textContent = sh.textContent);
+    }
+    const jn = document.querySelector('.profile-jar-num, .studio-jar-num');
+    if (jn && jn.textContent) {
+      document.querySelectorAll('.apod-review-jar').forEach(el => el.textContent = jn.textContent);
+    }
+  };
+  // Hook into view switches
+  const _origSwitch = window.switchView;
+  if (_origSwitch && !window._apodSwitchHooked) {
+    window._apodSwitchHooked = true;
+    window.switchView = function(v) {
+      _origSwitch.apply(this, arguments);
+      if (v === 'activate-podcast') setTimeout(syncApodHandle, 100);
+    };
+  }
+
+  // -------- STUDIO PODCAST SUB-TAB SWITCHING --------
+  document.addEventListener('click', function(e) {
+    const sub = e.target.closest('[data-podtab]');
+    if (sub && sub.classList.contains('podtab-subnav-item')) {
+      const tabName = sub.dataset.podtab;
+      // Update active state
+      document.querySelectorAll('.podtab-subnav-item').forEach(t => t.classList.remove('active'));
+      sub.classList.add('active');
+      // Show matching content
+      document.querySelectorAll('[data-podtab-content]').forEach(c => {
+        c.style.display = c.dataset.podtabContent === tabName ? '' : 'none';
+      });
+    }
+  });
+
+  window.podtabOpenPublish = function() {
+    // Hook for new-episode upload — for now show the existing upload modal
+    if (typeof studioOpenUpload === 'function') studioOpenUpload();
+  };
+
+  // -------- UNLOCK STUDIO PODCAST TAB AFTER ACTIVATION --------
+  // For demo: treat the user as already-podcaster when navigating to studio
+  // by listening for a flag set on submit. The Podcasts nav item becomes active.
+  window._tipjipUnlockPodcast = function() {
+    const lockedItem = document.querySelector('.studio-nav-item[data-studio-locked="podcast"]');
+    if (lockedItem) {
+      lockedItem.classList.remove('studio-nav-locked');
+      lockedItem.removeAttribute('data-studio-locked');
+      lockedItem.setAttribute('data-studio-tab', 'podcasts');
+      const lock = lockedItem.querySelector('.studio-nav-lock');
+      if (lock) lock.remove();
+    }
+  };
+
+  // Wire up the activate-creator button on Profile to point to activate-podcast as well
+  // (already done in HTML via data-view attributes — nothing needed here)
 
 })();
 </script>
