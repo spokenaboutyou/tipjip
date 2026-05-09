@@ -296,7 +296,7 @@ input, textarea, select {
 .hero-real-human-promise {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
   background: var(--evergreen);
   color: var(--parchment);
@@ -306,7 +306,7 @@ input, textarea, select {
   font-weight: 500;
   margin-bottom: 24px;
   line-height: 1.4;
-  max-width: 620px;
+  max-width: 720px;
 }
 .hero-real-human-promise .check {
   display: inline-flex;
@@ -335,6 +335,38 @@ input, textarea, select {
 }
 .hero-real-human-promise .standards-link:hover {
   border-bottom-color: var(--gold-soft);
+}
+
+/* Mobile: convert pill to card layout */
+@media (max-width: 720px) {
+  .hero-real-human-promise {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    align-items: start;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 14px;
+    line-height: 1.5;
+    width: 100%;
+    max-width: none;
+  }
+  .hero-real-human-promise .check {
+    width: 22px;
+    height: 22px;
+    margin-top: 2px;
+  }
+  .hero-real-human-promise .promise-text {
+    display: block;
+  }
+  .hero-real-human-promise .promise-text strong {
+    display: block;
+    margin-bottom: 4px;
+  }
+  .hero-real-human-promise .standards-link {
+    display: inline-block;
+    margin-top: 6px;
+    margin-left: 0;
+  }
 }
 .hero-h1-jar {
   flex-shrink: 0;
@@ -1631,78 +1663,6 @@ input, textarea, select {
 /* ========================================================================
    PROFILE VIEW (the trait file)
    ======================================================================== */
-.profile-shell {
-  max-width: 920px;
-  margin: 0 auto;
-  padding: 56px 32px 80px;
-}
-.profile-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 48px;
-  padding-bottom: 28px;
-  border-bottom: 1px solid var(--line);
-}
-.profile-header-left .eyebrow {
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--gold-2);
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-.profile-header h1 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 42px;
-  letter-spacing: -0.015em;
-  color: var(--evergreen);
-  line-height: 1.05;
-  margin-bottom: 8px;
-}
-.profile-header p {
-  font-size: 15px;
-  color: var(--muted);
-  max-width: 520px;
-}
-.profile-stats {
-  display: flex;
-  gap: 32px;
-  text-align: right;
-}
-.profile-stat .num {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 28px;
-  letter-spacing: -0.015em;
-  color: var(--evergreen);
-}
-.profile-stat .num.gold { color: var(--gold-2); }
-.profile-stat .label {
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 600;
-  margin-top: 2px;
-}
-.profile-section {
-  margin-bottom: 48px;
-}
-.profile-section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.profile-section h2 {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: 22px;
-  letter-spacing: -0.015em;
-  color: var(--evergreen);
-}
 .privacy-toggle {
   display: inline-flex;
   align-items: center;
@@ -3003,212 +2963,1166 @@ input, textarea, select {
 /* ========================================================================
    Signup view (new) — phone → details → reveal
    ======================================================================== */
+/* ========================================================================
+   SIGNUP VIEW V2 — 4-step phone-verified anonymous onboarding
+   ======================================================================== */
 .signup-shell {
   min-height: calc(100vh - 65px);
-  background: linear-gradient(180deg, var(--parchment) 0%, #EBE5D8 100%);
+  background: var(--parchment);
+  padding: 32px 32px 80px;
+  position: relative;
+}
+.signup-shell::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse at center, rgba(200,144,46,0.10), transparent 60%);
+  pointer-events: none;
+}
+
+/* Progress indicator */
+.signup-progress {
+  max-width: 760px;
+  margin: 24px auto 48px;
+  position: relative;
+}
+.signup-progress-bar {
+  position: relative;
+  height: 3px;
+  background: var(--line);
+  border-radius: 2px;
+  overflow: visible;
+  margin: 0 auto;
+  width: calc(100% - 48px);
+}
+.signup-progress-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+.signup-progress-steps {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+.signup-step-marker {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--line);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 24px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--muted);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
 }
-.signup-card {
-  width: min(100%, 520px);
-  background: white;
-  border-radius: var(--radius-xl);
-  padding: 44px 36px;
-  box-shadow: 0 30px 60px -20px rgba(15,42,36,0.18), 0 0 0 1px rgba(15,42,36,0.05);
+.signup-step-marker.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--evergreen);
+}
+.signup-step-marker.complete {
+  background: var(--evergreen);
+  border-color: var(--evergreen);
+  color: var(--gold-soft);
+}
+.signup-step-marker.complete::after {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.signup-step-marker.complete > span { display: none; }
+
+/* Steps */
+.signup-step {
+  display: none;
+  max-width: 1040px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.signup-step.active {
+  display: grid;
+  grid-template-columns: 1fr 0.7fr;
+  gap: 64px;
+  align-items: center;
+  animation: signupFadeIn 0.5s ease;
+}
+@keyframes signupFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.signup-step-narrow.active,
+.signup-step-reveal {
+  grid-template-columns: 1fr;
+  max-width: 580px;
+  text-align: center;
+}
+.signup-step-content { min-width: 0; }
+
+.signup-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.signup-headline {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--evergreen);
+  margin-bottom: 18px;
+}
+.signup-headline em {
+  color: var(--gold);
+  font-style: italic;
+}
+.signup-headline-center { text-align: center; }
+.signup-lede {
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin-bottom: 28px;
+  max-width: 560px;
+}
+.signup-lede-center { margin-left: auto; margin-right: auto; }
+.signup-lede strong { color: var(--evergreen); font-weight: 600; }
+
+/* Promise grid (step 1) */
+.signup-promise-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.signup-promise {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 18px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.signup-promise-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--evergreen);
+  color: var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 16px;
+}
+.signup-promise-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.signup-promise-text strong {
+  color: var(--evergreen);
+  font-weight: 600;
+}
+
+/* Phone input */
+.signup-phone-input { margin-bottom: 24px; }
+.signup-input-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.signup-phone-wrap {
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+.signup-phone-wrap:focus-within {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(200,144,46,0.12);
+}
+.signup-phone-flag {
+  padding: 14px 14px 14px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--evergreen);
+  border-right: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.signup-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 14px 18px;
+  font-size: 16px;
+  font-family: inherit;
+  color: var(--evergreen);
+  background: transparent;
+  min-width: 0;
+}
+.signup-input::placeholder { color: var(--muted2); }
+.signup-input-help {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* Buttons */
+.signup-btn {
+  width: 100%;
+  margin-top: 8px;
+  font-weight: 600;
+}
+.signup-btn-wide { width: 100%; max-width: 380px; margin: 0 auto; }
+.signup-fineprint {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 16px;
+  line-height: 1.55;
+}
+.signup-fineprint a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(200,144,46,0.4);
+}
+
+.signup-back, .signup-skip {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 16px;
+  padding: 8px 16px;
+  font-family: inherit;
+}
+.signup-back:hover, .signup-skip:hover { color: var(--evergreen); }
+
+/* Step 1 jar illustration (right side) */
+.signup-jar-illustration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.signup-jar-svg {
+  width: 220px;
+  height: 264px;
+  filter: drop-shadow(0 12px 24px rgba(15,42,36,0.12));
+}
+.signup-coin-1 {
+  animation: signupCoinDrop 2.4s infinite ease-in-out;
+}
+@keyframes signupCoinDrop {
+  0%, 100% { opacity: 0; transform: translateY(-30px); }
+  20% { opacity: 1; transform: translateY(-30px); }
+  60% { opacity: 1; transform: translateY(0px); }
+  70%, 100% { opacity: 0; }
+}
+.signup-jar-caption {
+  margin-top: 24px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 240px;
+}
+.signup-jar-caption strong {
+  color: var(--evergreen);
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Step 2: Code input */
+.signup-code-input-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 32px 0 16px;
+}
+.signup-code-digit {
+  width: 56px;
+  height: 64px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--white);
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--evergreen);
+  outline: none;
+  transition: all 0.2s ease;
+}
+.signup-code-digit:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(200,144,46,0.12);
+}
+.signup-code-digit.filled {
+  background: var(--evergreen);
+  color: var(--gold-soft);
+  border-color: var(--evergreen);
+}
+.signup-code-dash {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  color: var(--muted2);
+  margin: 0 4px;
+}
+.signup-code-help {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.signup-code-help a {
+  color: var(--gold);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(200,144,46,0.4);
+}
+.signup-resend-timer { font-variant-numeric: tabular-nums; }
+
+/* Step 3: Jar reveal */
+.signup-jar-reveal {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 24px;
   position: relative;
 }
-.signup-eyebrow {
+.signup-jar-big {
+  width: 240px;
+  height: 288px;
+  filter: drop-shadow(0 16px 32px rgba(15,42,36,0.18));
+  animation: signupJarReveal 0.8s ease;
+}
+@keyframes signupJarReveal {
+  0% { opacity: 0; transform: scale(0.5); }
+  70% { opacity: 1; transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+.signup-sparkles circle {
+  animation: signupSparkle 1.6s infinite ease-in-out;
+  transform-origin: center;
+}
+.signup-sparkles circle:nth-child(2) { animation-delay: 0.2s; }
+.signup-sparkles circle:nth-child(3) { animation-delay: 0.4s; }
+.signup-sparkles circle:nth-child(4) { animation-delay: 0.6s; }
+.signup-sparkles circle:nth-child(5) { animation-delay: 0.8s; }
+.signup-sparkles circle:nth-child(6) { animation-delay: 1.0s; }
+@keyframes signupSparkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+.signup-jar-number-display {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.signup-jar-number-label {
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold-2);
-  font-weight: 600;
-  margin-bottom: 14px;
-  text-align: center;
-}
-.signup-card h2 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 28px;
-  letter-spacing: -0.015em;
-  color: var(--evergreen);
-  text-align: center;
-  margin-bottom: 8px;
-}
-.signup-card .signup-sub {
-  font-size: 14px;
   color: var(--muted);
-  text-align: center;
-  margin-bottom: 32px;
-  line-height: 1.5;
-}
-
-.signup-progress {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 32px;
-  justify-content: center;
-}
-.signup-progress-dot {
-  width: 32px;
-  height: 4px;
-  border-radius: 100px;
-  background: var(--line);
-  transition: background 0.3s ease;
-}
-.signup-progress-dot.done { background: var(--gold); }
-.signup-progress-dot.active { background: var(--evergreen); }
-
-.signup-step { display: none; }
-.signup-step.active { display: block; animation: fadeIn 0.35s ease; }
-
-.signup-input {
-  width: 100%;
-  padding: 14px 16px;
-  font-size: 16px;
-  font-family: var(--font-body);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--parchment);
-  color: var(--evergreen);
-  margin-bottom: 12px;
-  transition: border-color 0.2s ease, background 0.2s ease;
-}
-.signup-input:focus {
-  outline: none;
-  border-color: var(--gold);
-  background: white;
-}
-.signup-input.code {
-  font-family: var(--font-display);
   font-weight: 700;
-  font-size: 24px;
-  letter-spacing: 0.4em;
-  text-align: center;
-  padding-right: 0;
-}
-.signup-input-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.signup-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--evergreen);
   margin-bottom: 6px;
-  letter-spacing: -0.005em;
-  display: block;
 }
-.signup-help {
-  font-size: 11px;
-  color: var(--muted-2);
-  margin-bottom: 14px;
-  line-height: 1.5;
+.signup-jar-number {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--gold);
+  line-height: 1;
 }
-.signup-help.optional::before {
-  content: "Optional · ";
-  color: var(--gold-2);
-  font-weight: 600;
+.signup-verified-badge-display {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
 }
-
-.signup-btn {
-  width: 100%;
-  padding: 14px;
+.signup-vbadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--evergreen);
+  color: var(--parchment);
+  padding: 12px 22px 12px 16px;
+  border-radius: 100px;
+  text-align: left;
+}
+.signup-vbadge-check {
+  width: 28px;
+  height: 28px;
   background: var(--gold);
   color: var(--evergreen);
-  border: none;
-  border-radius: 10px;
-  font-family: var(--font-display);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 16px;
+}
+.signup-vbadge-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
   font-weight: 700;
-  font-size: 15px;
-  cursor: pointer;
-  margin-top: 8px;
-  transition: background 0.2s ease, transform 0.15s ease;
+  color: var(--gold-soft);
 }
-.signup-btn:hover { background: var(--gold-soft); transform: translateY(-1px); }
-.signup-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
-.signup-trust {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid var(--line);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--muted);
-}
-.signup-trust-row {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  line-height: 1.5;
-}
-.signup-trust-row svg {
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
-  color: var(--gold-2);
+.signup-vbadge-detail {
+  font-size: 13px;
+  color: var(--sage);
   margin-top: 2px;
 }
 
-/* Reveal step — the big "your jar is Marlow" moment */
-.signup-reveal {
+/* Step 4: First earn moment */
+.signup-first-earn {
   text-align: center;
+  margin: 24px 0;
+  padding: 32px 24px;
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
 }
-.signup-reveal .jar-avatar-lg {
-  margin: 0 auto 24px;
-  animation: jarReveal 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+.signup-first-earn::before {
+  content: "";
+  position: absolute;
+  top: -50px; left: 50%;
+  transform: translateX(-50%);
+  width: 300px; height: 200px;
+  background: radial-gradient(ellipse at center, rgba(200,144,46,0.20), transparent 60%);
+  pointer-events: none;
 }
-@keyframes jarReveal {
-  from { opacity: 0; transform: scale(0.6) translateY(20px); }
-  to   { opacity: 1; transform: scale(1) translateY(0); }
-}
-.signup-reveal-name {
+.signup-first-earn-amount {
   font-family: var(--font-display);
+  font-size: 72px;
   font-weight: 700;
-  font-size: 38px;
-  letter-spacing: -0.02em;
-  color: var(--evergreen);
-  margin-bottom: 4px;
+  color: var(--gold);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 8px;
+  position: relative;
+  animation: signupCoinAppear 0.8s ease;
 }
-.signup-reveal-num {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 16px;
-  color: var(--gold-2);
-  letter-spacing: 0;
-  margin-bottom: 22px;
+@keyframes signupCoinAppear {
+  0% { opacity: 0; transform: scale(0.4); }
+  60% { opacity: 1; transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
-.signup-reveal-line {
+.signup-earn-currency { font-size: 56px; vertical-align: top; }
+.signup-first-earn-source {
   font-size: 14px;
-  color: var(--muted);
-  line-height: 1.55;
-  max-width: 360px;
-  margin: 0 auto 24px;
+  color: var(--sage);
+  position: relative;
 }
-.signup-reroll {
+.signup-first-earn-source strong {
+  color: var(--gold-soft);
+  font-weight: 700;
+}
+.signup-jar-balance-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  background: transparent;
-  border: 1px solid var(--line);
+  gap: 12px;
+  background: var(--white);
+  border: 1.5px solid var(--gold);
+  padding: 10px 20px;
   border-radius: 100px;
+  margin-bottom: 24px;
+}
+.signup-jar-balance-label {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--muted);
+}
+.signup-jar-balance-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--evergreen);
+}
+.signup-milestone {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+.signup-milestone-icon {
+  font-size: 32px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.signup-milestone-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.signup-milestone-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--evergreen);
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+.signup-milestone-detail {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Mobile signup */
+@media (max-width: 760px) {
+  .signup-shell { padding: 16px 18px 60px; }
+  .signup-step.active { grid-template-columns: 1fr; gap: 24px; }
+  .signup-jar-illustration { display: none; } /* Hide right-side jar on mobile */
+  .signup-headline { font-size: 36px; }
+  .signup-lede { font-size: 15px; }
+  .signup-jar-number { font-size: 44px; }
+  .signup-first-earn-amount { font-size: 56px; }
+  .signup-earn-currency { font-size: 40px; }
+  .signup-jar-big { width: 180px; height: 216px; }
+  .signup-code-digit { width: 44px; height: 56px; font-size: 24px; }
+  .signup-progress { margin-bottom: 32px; }
+  .signup-progress-steps { padding: 0; }
+}
+
+/* ========================================================================
+   PROFILE VIEW V2 — The Unified Jar Dashboard
+   ======================================================================== */
+.profile-shell-v2 {
+  background: var(--parchment);
+  min-height: calc(100vh - 65px);
+  padding: 24px 32px 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Top bar */
+.profile-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+.profile-topbar-left { flex: 1; }
+.profile-vh-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--evergreen);
+  color: var(--parchment);
+  padding: 8px 18px 8px 10px;
+  border-radius: 100px;
+}
+.profile-vh-check {
+  width: 24px;
+  height: 24px;
+  background: var(--gold);
+  color: var(--evergreen);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.profile-vh-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold-soft);
+  line-height: 1;
+}
+.profile-vh-num {
+  font-size: 12px;
+  color: var(--sage);
+  margin-top: 2px;
+  line-height: 1;
+}
+.profile-topbar-right {
+  display: flex;
+  gap: 8px;
+}
+.profile-icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 1px solid var(--line);
+  color: var(--evergreen);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+.profile-icon-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.profile-icon-btn svg { width: 18px; height: 18px; }
+.profile-icon-dot {
+  position: absolute;
+  top: 8px; right: 9px;
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  border: 2px solid var(--white);
+}
+
+/* Jar Hero — the centerpiece */
+.profile-jar-hero {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 48px;
+  align-items: center;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 40px 48px;
+  margin-bottom: 48px;
+  position: relative;
+  overflow: hidden;
+}
+.profile-jar-hero::before {
+  content: "";
+  position: absolute;
+  top: -100px; right: -50px;
+  width: 400px; height: 300px;
+  background: radial-gradient(ellipse at center, rgba(200,144,46,0.10), transparent 60%);
+  pointer-events: none;
+}
+.profile-jar-visual {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+.profile-jar-big {
+  width: 240px;
+  height: 280px;
+  filter: drop-shadow(0 16px 32px rgba(15,42,36,0.15));
+}
+.profile-falling-coin {
+  animation: profileCoinDrop 3s infinite ease-in-out;
+}
+@keyframes profileCoinDrop {
+  0%, 100% { opacity: 0; transform: translateY(-30px); }
+  20% { opacity: 1; transform: translateY(-30px); }
+  60% { opacity: 1; transform: translateY(0); }
+  70%, 100% { opacity: 0; }
+}
+.profile-jar-coins circle {
+  animation: profileCoinSettle 0.6s ease backwards;
+}
+.profile-jar-coins circle:nth-child(1) { animation-delay: 0.05s; }
+.profile-jar-coins circle:nth-child(2) { animation-delay: 0.1s; }
+.profile-jar-coins circle:nth-child(3) { animation-delay: 0.15s; }
+@keyframes profileCoinSettle {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.profile-jar-stats { position: relative; }
+.profile-balance-label {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.profile-balance-amount {
+  font-family: var(--font-display);
+  font-size: 88px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--evergreen);
+  line-height: 0.95;
+  margin-bottom: 12px;
+}
+.profile-balance-currency {
+  font-size: 56px;
+  vertical-align: top;
+  margin-right: -4px;
+  color: var(--gold);
+}
+.profile-balance-growth {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 28px;
+  font-family: var(--font-display);
+}
+.profile-growth-arrow {
+  display: inline-flex;
+  width: 20px; height: 20px;
+  background: rgba(45, 110, 77, 0.12);
+  color: #2D6E4D;
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: 12px;
+  align-items: center;
+  justify-content: center;
+}
+.profile-growth-amount {
+  color: #2D6E4D;
+  font-weight: 700;
+}
+.profile-growth-window { color: var(--muted); }
+
+.profile-cashout-progress { margin-bottom: 24px; }
+.profile-cashout-bar {
+  height: 8px;
+  background: var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.profile-cashout-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.profile-cashout-text {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--muted);
+}
+.profile-cashout-text strong { color: var(--evergreen); font-weight: 600; }
+.profile-cashout-pct { color: var(--gold); font-weight: 700; }
+
+.profile-action-row {
+  display: flex;
+  gap: 12px;
+}
+.profile-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.profile-action-btn svg { width: 14px; height: 14px; }
+
+/* Sections */
+.profile-section { margin-bottom: 48px; }
+.profile-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.profile-section-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.profile-section-h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--evergreen);
+  line-height: 1.2;
+}
+.profile-section-h2 em {
+  color: var(--gold);
+  font-style: italic;
+}
+.profile-section-sub {
+  font-size: 15px;
+  color: var(--muted);
+  margin-top: 8px;
+  line-height: 1.55;
+  max-width: 640px;
+}
+.profile-section-tools {
+  display: flex;
+  gap: 4px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  padding: 4px;
+  border-radius: 100px;
+}
+.profile-pill-btn {
+  border: none;
+  background: none;
+  padding: 6px 14px;
   font-size: 12px;
   font-weight: 600;
   color: var(--muted);
+  border-radius: 100px;
   cursor: pointer;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-family: inherit;
   transition: all 0.2s ease;
-  margin-bottom: 20px;
 }
-.signup-reroll:hover { border-color: var(--gold); color: var(--evergreen); }
-.signup-reroll svg { width: 12px; height: 12px; }
+.profile-pill-btn.active {
+  background: var(--evergreen);
+  color: var(--gold-soft);
+}
+.profile-pill-btn:hover:not(.active) { color: var(--evergreen); }
+
+.profile-link-btn {
+  border: none;
+  background: none;
+  font-size: 13px;
+  color: var(--gold);
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Stream grid */
+.profile-stream-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.profile-stream-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 24px;
+  transition: all 0.2s ease;
+}
+.profile-stream-card:not(.profile-stream-empty):hover {
+  border-color: var(--gold);
+  box-shadow: 0 8px 20px rgba(200,144,46,0.10);
+}
+.profile-stream-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: var(--evergreen);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.profile-stream-icon svg { width: 20px; height: 20px; }
+.profile-stream-empty .profile-stream-icon {
+  background: var(--parchment-2);
+  color: var(--muted);
+}
+.profile-stream-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.profile-stream-source {
+  font-size: 14px;
+  color: var(--evergreen);
+  font-weight: 500;
+}
+.profile-stream-empty .profile-stream-source {
+  color: var(--muted);
+  font-style: italic;
+}
+.profile-stream-amount {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: -0.02em;
+}
+.profile-stream-cta {
+  border: 1.5px solid var(--gold);
+  background: transparent;
+  color: var(--gold);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: 100px;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.profile-stream-cta:hover {
+  background: var(--gold);
+  color: var(--evergreen);
+}
+
+/* Badges grid */
+.profile-badges-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.profile-badge {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 16px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+.profile-badge-earned {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-color: var(--evergreen);
+  position: relative;
+  overflow: hidden;
+}
+.profile-badge-earned::before {
+  content: "";
+  position: absolute;
+  top: -20px; right: -20px;
+  width: 80px; height: 80px;
+  background: radial-gradient(circle, rgba(200,144,46,0.20), transparent 70%);
+  pointer-events: none;
+}
+.profile-badge-upcoming {
+  border-color: var(--gold);
+  background: rgba(200,144,46,0.04);
+}
+.profile-badge-locked {
+  opacity: 0.5;
+}
+.profile-badge-icon {
+  font-size: 32px;
+  line-height: 1;
+  margin-bottom: 10px;
+  display: block;
+  position: relative;
+}
+.profile-badge-locked .profile-badge-icon { filter: grayscale(80%); }
+.profile-badge-name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--evergreen);
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+  position: relative;
+}
+.profile-badge-earned .profile-badge-name { color: var(--parchment); }
+.profile-badge-detail {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+  position: relative;
+}
+.profile-badge-earned .profile-badge-detail { color: var(--gold-soft); }
+
+/* Grow grid (role activation) */
+.profile-grow-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.profile-grow-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px 28px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.profile-grow-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(15,42,36,0.08);
+}
+.profile-grow-card-featured {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-color: var(--evergreen);
+}
+.profile-grow-card-featured::before {
+  content: "";
+  position: absolute;
+  top: -50px; right: -50px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(200,144,46,0.18), transparent 70%);
+  pointer-events: none;
+}
+.profile-grow-tag {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  background: var(--parchment-2);
+  color: var(--muted);
+  padding: 4px 10px;
+  border-radius: 100px;
+  margin-bottom: 14px;
+  position: relative;
+}
+.profile-grow-tag-gold { background: var(--gold); color: var(--evergreen); }
+.profile-grow-tag-evergreen { background: var(--evergreen); color: var(--gold-soft); }
+.profile-grow-card h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--evergreen);
+  margin-bottom: 10px;
+  line-height: 1.2;
+  position: relative;
+}
+.profile-grow-card-featured h3 { color: var(--parchment); }
+.profile-grow-card p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 16px;
+  position: relative;
+}
+.profile-grow-card-featured p { color: var(--sage); }
+.profile-grow-cta {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gold);
+  position: relative;
+}
+
+/* Activity list */
+.profile-activity-list {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.profile-activity-row {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 20px;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.profile-activity-row:last-child { border-bottom: none; }
+.profile-activity-time {
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.profile-activity-desc {
+  color: var(--evergreen);
+  line-height: 1.5;
+}
+.profile-activity-desc strong {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--gold);
+  margin-right: 4px;
+}
+.profile-activity-desc em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--evergreen);
+}
+.profile-activity-desc a {
+  color: var(--evergreen);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--muted);
+}
+.profile-activity-desc a:hover { border-bottom-color: var(--gold); color: var(--gold); }
+.profile-activity-tag {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+.profile-activity-tag-in { background: rgba(45,110,77,0.10); color: #2D6E4D; }
+.profile-activity-tag-tip { background: rgba(200,144,46,0.12); color: var(--gold); }
+.profile-activity-tag-jip { background: rgba(15,42,36,0.08); color: var(--evergreen); }
+.profile-activity-tag-summary { background: var(--parchment-2); color: var(--muted); }
+
+/* Mobile profile */
+@media (max-width: 900px) {
+  .profile-shell-v2 { padding: 16px 18px 60px; }
+  .profile-jar-hero { grid-template-columns: 1fr; gap: 24px; padding: 28px 24px; text-align: center; }
+  .profile-jar-stats { display: flex; flex-direction: column; align-items: center; }
+  .profile-balance-amount { font-size: 64px; }
+  .profile-balance-currency { font-size: 40px; }
+  .profile-jar-big { width: 180px; height: 210px; }
+  .profile-cashout-progress { width: 100%; max-width: 320px; }
+  .profile-action-row { width: 100%; max-width: 320px; }
+  .profile-action-btn { flex: 1; justify-content: center; }
+  .profile-stream-grid { grid-template-columns: 1fr; }
+  .profile-stream-card { padding: 16px 18px; gap: 12px; }
+  .profile-stream-amount { font-size: 22px; }
+  .profile-badges-grid { grid-template-columns: repeat(2, 1fr); }
+  .profile-grow-grid { grid-template-columns: 1fr; }
+  .profile-activity-row { grid-template-columns: 1fr; gap: 4px; padding: 14px 16px; }
+  .profile-activity-time { font-size: 11px; order: 2; }
+  .profile-activity-desc { order: 1; font-size: 14px; }
+  .profile-activity-tag { order: 3; align-self: flex-start; }
+  .profile-section-h2 { font-size: 22px; }
+  .profile-section-tools { display: none; }
+}
 
 /* ========================================================================
    Identity panel — appears in profile, shows masked phone + birth year + ZIP + re-roll
@@ -8032,7 +8946,7 @@ input, textarea, select {
           </div>
         </div>
         <p class="hero-brand-def"><strong>TipJip</strong> — the tip jar, now for video. Watch ads. Pay creators with a tip. Or skip with feedback.</p>
-        <p class="hero-real-human-promise"><span class="check">✓</span> <strong>100% real humans on screen.</strong> No AI faces. No deepfakes. No synthetic performers. <a href="#" data-view="standards" class="standards-link">Read the rule →</a></p>
+        <p class="hero-real-human-promise"><span class="check">✓</span> <span class="promise-text"><strong>100% real humans on screen.</strong> No AI faces. No deepfakes. No synthetic performers. <a href="#" data-view="standards" class="standards-link">Read the rule →</a></span></p>
         <p class="lede"><strong>The first video platform that pays you, not Big Tech.</strong> Phone-verify in 30 seconds — no name needed — and every ad you finish drops $0.50 to $3 in your jar. Reward creators who teach you something. Skip the rest. Cash out at $20.</p>
         <div class="hero-cta">
           <button class="btn btn-primary btn-lg" data-view="signup">Claim your tip jar — free</button>
@@ -10043,818 +10957,557 @@ input, textarea, select {
   </div>
 </section>
 
+<!-- ========================================================================
+     SIGNUP VIEW — 4-step phone-verified anonymous onboarding
+     Step 1: Welcome / Why TipJip / Phone entry
+     Step 2: SMS code verification
+     Step 3: Jar reveal (your jar number is assigned)
+     Step 4: First action — watch a video to start filling your jar
+     ======================================================================== -->
 <section class="view" data-view="signup">
   <div class="signup-shell">
-    <div class="signup-card">
 
-      <div class="signup-progress">
-        <div class="signup-progress-dot active" data-step-dot="1"></div>
-        <div class="signup-progress-dot" data-step-dot="2"></div>
-        <div class="signup-progress-dot" data-step-dot="3"></div>
-        <div class="signup-progress-dot" data-step-dot="4"></div>
+    <!-- Progress indicator -->
+    <div class="signup-progress">
+      <div class="signup-progress-bar">
+        <div class="signup-progress-fill" id="signup-progress-fill" style="width: 25%"></div>
       </div>
-
-      <!-- STEP 1: Phone -->
-      <div class="signup-step active" data-step="1">
-        <div class="signup-eyebrow">⏤ Step 1 of 4</div>
-        <h2>Verify you're a real human.</h2>
-        <p class="signup-sub">No name. No email. Just a phone number, so an advertiser knows they're paying a person — not a bot.</p>
-
-        <label class="signup-label">Mobile number</label>
-        <input class="signup-input" type="tel" id="signup-phone" placeholder="(512) 555 — 4471" autocomplete="off" />
-        <div class="signup-help">We'll text you a 6-digit code. Your phone is hashed and never displayed.</div>
-
-        <button class="signup-btn" id="signup-step1-btn">Send code</button>
-
-        <div class="signup-trust">
-          <div class="signup-trust-row">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            <span>Your number is hashed at signup. We can text you a recovery code, but the raw number is never stored or shared.</span>
-          </div>
-          <div class="signup-trust-row">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
-            <span>No data brokers. No third-party tracking. Ever.</span>
-          </div>
-        </div>
+      <div class="signup-progress-steps">
+        <div class="signup-step-marker active" data-step="1"><span>1</span></div>
+        <div class="signup-step-marker" data-step="2"><span>2</span></div>
+        <div class="signup-step-marker" data-step="3"><span>3</span></div>
+        <div class="signup-step-marker" data-step="4"><span>4</span></div>
       </div>
-
-      <!-- STEP 2: SMS code -->
-      <div class="signup-step" data-step="2">
-        <div class="signup-eyebrow">⏤ Step 2 of 4</div>
-        <h2>Enter the code we just texted.</h2>
-        <p class="signup-sub">It's 6 digits. For this demo, type any 6 numbers.</p>
-
-        <input class="signup-input code" type="text" id="signup-code" placeholder="0 0 0 0 0 0" maxlength="6" inputmode="numeric" autocomplete="off" />
-        <div class="signup-help" style="text-align:center;">Didn't get it? <span style="color: var(--gold-2); cursor: pointer; font-weight: 600;">Resend code</span></div>
-
-        <button class="signup-btn" id="signup-step2-btn">Verify</button>
-      </div>
-
-      <!-- STEP 3: Birth year + ZIP -->
-      <div class="signup-step" data-step="3">
-        <div class="signup-eyebrow">⏤ Step 3 of 4</div>
-        <h2>Two quick details.</h2>
-        <p class="signup-sub">These let advertisers buy attention from the right age range and region — without knowing who you are.</p>
-
-        <div class="signup-input-row">
-          <div>
-            <label class="signup-label">Birth year</label>
-            <input class="signup-input" type="text" id="signup-birthyear" placeholder="1972" maxlength="4" inputmode="numeric" autocomplete="off" />
-            <div class="signup-help">Used for age-gating. Never shown publicly.</div>
-          </div>
-          <div>
-            <label class="signup-label">ZIP <span style="color:var(--gold-2); font-weight:500;">(optional)</span></label>
-            <input class="signup-input" type="text" id="signup-zip" placeholder="78704" maxlength="5" inputmode="numeric" autocomplete="off" />
-            <div class="signup-help">For regional ads. Skip if you'd rather not.</div>
-          </div>
-        </div>
-
-        <button class="signup-btn" id="signup-step3-btn">Continue</button>
-
-        <div class="signup-trust" style="margin-top:18px;">
-          <div class="signup-trust-row">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1l3 6 6 .5-4.5 4 1.5 6.5-6-3.5-6 3.5 1.5-6.5L3 7.5l6-.5z"/></svg>
-            <span>You'll never enter your name. We don't have a name field — and we never will.</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- STEP 4: Reveal jar number -->
-      <div class="signup-step" data-step="4">
-        <div class="signup-reveal">
-          <div class="signup-eyebrow">⏤ Welcome to TipJip</div>
-
-          <div class="jar-avatar-lg" id="reveal-jar">
-            <svg class="tipjar-mark light" viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
-              <rect class="jar-fill" x="22" y="1" width="16" height="5.5" rx="1.5"/>
-              <rect class="jar-stroke" x="6" y="9" width="48" height="58" rx="8" stroke-width="2.6" fill="none"/>
-              <line class="jar-stroke" x1="30" y1="14" x2="30" y2="28" stroke-width="2" stroke-linecap="round"/>
-              <circle class="coin-fill" cx="30" cy="34" r="5.5"/>
-              <path class="smile-stroke" d="M16 50 Q30 60 44 50" stroke-width="3" stroke-linecap="round" fill="none"/>
-            </svg>
-          </div>
-
-          <div class="signup-reveal-name">Tip Jar</div>
-          <div class="signup-reveal-num" id="reveal-num" style="font-size: 32px; color: var(--gold-2); margin-bottom: 22px;">#4471</div>
-
-          <p class="signup-reveal-line">This is your jar number. It's how creators thank you, how the platform tracks your earnings, and the only handle anyone else will ever see. <strong>You can re-roll it later if you want a fresh start.</strong></p>
-
-          <button class="signup-reroll" id="signup-reroll-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-            Roll a different number
-          </button>
-
-          <!-- Founder Numbers — vanity premium upgrade -->
-          <div class="founder-card" id="founder-card">
-            <div class="founder-card-header">
-              <span class="founder-card-tag">FOUNDER</span>
-              <h4>Want a low jar number instead?</h4>
-            </div>
-            <p class="founder-card-sub">Founder Numbers (#001 through #999) are limited and never re-rolled. Like a vanity license plate — a permanent signal you were here early. Pick one for a one-time $20.</p>
-
-            <div class="founder-numbers-row" id="founder-numbers-row">
-              <div class="founder-number-option" data-founder="042">
-                <div class="num"><small>#</small>042</div>
-                <div class="price">$20 · one-time</div>
-              </div>
-              <div class="founder-number-option" data-founder="137">
-                <div class="num"><small>#</small>137</div>
-                <div class="price">$20 · one-time</div>
-              </div>
-              <div class="founder-number-option" data-founder="218">
-                <div class="num"><small>#</small>218</div>
-                <div class="price">$20 · one-time</div>
-              </div>
-            </div>
-
-            <div class="founder-card-foot">
-              <span><strong style="color: var(--gold-2);">487</strong> Founder Numbers remaining</span>
-              <span class="founder-reroll-link" id="founder-reroll-link">Show different options →</span>
-            </div>
-          </div>
-
-          <button class="signup-btn" id="signup-finish-btn" style="margin-top:24px;">Enter the platform</button>
-        </div>
-      </div>
-
     </div>
+
+    <!-- ============= STEP 1: Welcome + Phone ============= -->
+    <div class="signup-step active" data-signup-step="1">
+      <div class="signup-step-content">
+        <div class="signup-eyebrow">⏤ Step 1 of 4 · Welcome</div>
+        <h1 class="signup-headline">
+          Get a tip jar.<br><em>Free, anonymous, 30 seconds.</em>
+        </h1>
+        <p class="signup-lede">No name. No email. Just a phone number we use once to verify you're real, then never again. You'll be Tip Jar #4471 (or whatever number you get).</p>
+
+        <div class="signup-promise-grid">
+          <div class="signup-promise">
+            <div class="signup-promise-icon">⊘</div>
+            <div class="signup-promise-text"><strong>No name required.</strong> Your jar gets a number. That's the only ID.</div>
+          </div>
+          <div class="signup-promise">
+            <div class="signup-promise-icon">$</div>
+            <div class="signup-promise-text"><strong>You start earning immediately.</strong> Every ad you finish drops $0.50–$3 in your jar.</div>
+          </div>
+          <div class="signup-promise">
+            <div class="signup-promise-icon">↻</div>
+            <div class="signup-promise-text"><strong>Cash out at $20.</strong> Bank, PayPal, or stay in. No fees, no hold periods.</div>
+          </div>
+        </div>
+
+        <div class="signup-phone-input">
+          <label class="signup-input-label">Phone number</label>
+          <div class="signup-phone-wrap">
+            <span class="signup-phone-flag">🇺🇸 +1</span>
+            <input type="tel" class="signup-input" id="signup-phone" placeholder="(555) 123-4567" maxlength="14">
+          </div>
+          <div class="signup-input-help">We text a 6-digit code. We never share, sell, or store your number long-term.</div>
+        </div>
+
+        <button class="btn btn-primary btn-lg signup-btn" onclick="signupStep1Submit()">
+          Send verification code →
+        </button>
+
+        <div class="signup-fineprint">
+          By continuing, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Charter</a>. We don't sell your data. Ever.
+        </div>
+      </div>
+
+      <!-- Right side jar illustration on desktop -->
+      <div class="signup-jar-illustration">
+        <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" class="signup-jar-svg">
+          <!-- Coin animation -->
+          <circle cx="100" cy="35" r="11" fill="#C8902E" class="signup-coin signup-coin-1"/>
+          <text x="100" y="40" text-anchor="middle" fill="#0F2A24" font-weight="900" font-size="13" class="signup-coin signup-coin-1">$</text>
+
+          <!-- Jar lid -->
+          <rect x="55" y="60" width="90" height="14" rx="3" fill="#0F2A24"/>
+          <rect x="80" y="62" width="40" height="3" rx="1.5" fill="#F5F1EA"/>
+
+          <!-- Jar body -->
+          <rect x="50" y="74" width="100" height="140" rx="10" fill="#0F2A24"/>
+
+          <!-- Light reflection on left -->
+          <rect x="55" y="80" width="3" height="120" rx="1.5" fill="#F5F1EA" opacity="0.18"/>
+
+          <!-- Smile -->
+          <circle cx="80" cy="120" r="3" fill="#F5F1EA"/>
+          <circle cx="120" cy="120" r="3" fill="#F5F1EA"/>
+          <path d="M 78 138 Q 100 154 122 138" stroke="#F5F1EA" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+          <!-- Coins at bottom -->
+          <circle cx="70" cy="200" r="6" fill="#C8902E"/>
+          <circle cx="85" cy="195" r="7" fill="#ECC881"/>
+          <circle cx="100" cy="200" r="7" fill="#C8902E"/>
+          <circle cx="115" cy="195" r="6" fill="#ECC881"/>
+          <circle cx="130" cy="200" r="7" fill="#C8902E"/>
+        </svg>
+        <div class="signup-jar-caption">Your jar starts empty.<br><strong>Watch your first ad to drop the first coin.</strong></div>
+      </div>
+    </div>
+
+    <!-- ============= STEP 2: SMS Code Verification ============= -->
+    <div class="signup-step" data-signup-step="2">
+      <div class="signup-step-content signup-step-narrow">
+        <div class="signup-eyebrow">⏤ Step 2 of 4 · Verify</div>
+        <h1 class="signup-headline">
+          Check your texts.<br><em>We just sent you a code.</em>
+        </h1>
+        <p class="signup-lede">A 6-digit code is on its way to <strong id="signup-phone-display">your phone</strong>. Enter it below to confirm you're a real human.</p>
+
+        <div class="signup-code-input-row">
+          <input type="text" class="signup-code-digit" maxlength="1" inputmode="numeric" data-code-pos="0">
+          <input type="text" class="signup-code-digit" maxlength="1" inputmode="numeric" data-code-pos="1">
+          <input type="text" class="signup-code-digit" maxlength="1" inputmode="numeric" data-code-pos="2">
+          <span class="signup-code-dash">·</span>
+          <input type="text" class="signup-code-digit" maxlength="1" inputmode="numeric" data-code-pos="3">
+          <input type="text" class="signup-code-digit" maxlength="1" inputmode="numeric" data-code-pos="4">
+          <input type="text" class="signup-code-digit" maxlength="1" inputmode="numeric" data-code-pos="5">
+        </div>
+
+        <div class="signup-code-help">
+          <span>Didn't get it? <a href="#" onclick="signupResendCode(event)">Resend code</a></span>
+          <span class="signup-resend-timer" id="signup-resend-timer"></span>
+        </div>
+
+        <button class="btn btn-primary btn-lg signup-btn" id="signup-verify-btn" onclick="signupStep2Submit()" disabled>
+          Verify and create my jar →
+        </button>
+
+        <button class="signup-back" onclick="signupGoToStep(1)">
+          ← Wrong number? Go back
+        </button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 3: Jar Reveal ============= -->
+    <div class="signup-step" data-signup-step="3">
+      <div class="signup-step-content signup-step-reveal">
+        <div class="signup-eyebrow">⏤ Step 3 of 4 · Your jar is ready</div>
+
+        <div class="signup-jar-reveal">
+          <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" class="signup-jar-big">
+            <!-- Big celebration jar -->
+            <rect x="55" y="60" width="90" height="14" rx="3" fill="#0F2A24"/>
+            <rect x="80" y="62" width="40" height="3" rx="1.5" fill="#F5F1EA"/>
+            <rect x="50" y="74" width="100" height="140" rx="10" fill="#0F2A24"/>
+            <rect x="55" y="80" width="3" height="120" rx="1.5" fill="#F5F1EA" opacity="0.18"/>
+            <circle cx="80" cy="115" r="4" fill="#F5F1EA"/>
+            <circle cx="120" cy="115" r="4" fill="#F5F1EA"/>
+            <path d="M 76 138 Q 100 158 124 138" stroke="#F5F1EA" stroke-width="4" stroke-linecap="round" fill="none"/>
+            <!-- celebration sparkles -->
+            <g class="signup-sparkles">
+              <circle cx="35" cy="50" r="3" fill="#C8902E"/>
+              <circle cx="170" cy="40" r="2.5" fill="#ECC881"/>
+              <circle cx="180" cy="100" r="3" fill="#C8902E"/>
+              <circle cx="25" cy="120" r="2.5" fill="#ECC881"/>
+              <circle cx="40" cy="180" r="3" fill="#C8902E"/>
+              <circle cx="175" cy="180" r="2.5" fill="#ECC881"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="signup-jar-number-display">
+          <div class="signup-jar-number-label">YOUR TIP JAR</div>
+          <div class="signup-jar-number">#<span id="signup-assigned-jar-number">4471</span></div>
+        </div>
+
+        <h1 class="signup-headline signup-headline-center">
+          You're verified.<br><em>The jar is yours.</em>
+        </h1>
+
+        <p class="signup-lede signup-lede-center">No name. No email. Just a number, a jar, and a real human (you) attached to it. From here on, every ad you watch puts money in this jar.</p>
+
+        <div class="signup-verified-badge-display">
+          <div class="signup-vbadge">
+            <span class="signup-vbadge-check">✓</span>
+            <div>
+              <div class="signup-vbadge-label">VERIFIED HUMAN</div>
+              <div class="signup-vbadge-detail">Phone-verified · Jar #<span class="signup-jar-num-inline">4471</span></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg signup-btn signup-btn-wide" onclick="signupStep3Continue()">
+          Watch my first ad and earn →
+        </button>
+
+        <button class="signup-skip" onclick="signupComplete()">
+          I'll explore on my own →
+        </button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 4: First Earn Moment ============= -->
+    <div class="signup-step" data-signup-step="4">
+      <div class="signup-step-content signup-step-reveal">
+        <div class="signup-eyebrow">⏤ Step 4 of 4 · First coin</div>
+
+        <h1 class="signup-headline signup-headline-center">
+          Coin <em>just dropped.</em>
+        </h1>
+
+        <div class="signup-first-earn">
+          <div class="signup-first-earn-amount">
+            <span class="signup-earn-currency">+$</span><span id="signup-first-amount">0.75</span>
+          </div>
+          <div class="signup-first-earn-source">From sponsor: <strong>Eight Sleep</strong></div>
+        </div>
+
+        <div class="signup-jar-balance-pill">
+          <span class="signup-jar-balance-label">JAR BALANCE</span>
+          <span class="signup-jar-balance-value">$<span id="signup-jar-balance">0.75</span></span>
+        </div>
+
+        <p class="signup-lede signup-lede-center">That coin is yours. Tip the creator with thanks, jip and keep it with feedback, or just let it sit. The jar holds it either way until you cash out at $20.</p>
+
+        <div class="signup-milestone">
+          <div class="signup-milestone-icon">🏆</div>
+          <div class="signup-milestone-content">
+            <div class="signup-milestone-label">FIRST BADGE EARNED</div>
+            <div class="signup-milestone-name">First Coin in the Jar</div>
+            <div class="signup-milestone-detail">Welcome to TipJip. Your jar is officially in motion.</div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg signup-btn signup-btn-wide" data-view="profile" onclick="signupComplete()">
+          Take me to my jar →
+        </button>
+
+        <button class="signup-skip" data-view="browse" onclick="signupComplete()">
+          Show me more videos to watch →
+        </button>
+      </div>
+    </div>
+
   </div>
 </section>
 
+<!-- ========================================================================
+     PROFILE VIEW — The Unified Jar Dashboard
+     The centerpiece: ONE balance, growing from many sources
+     ======================================================================== -->
 <section class="view" data-view="profile">
-  <div class="profile-shell">
-    <div class="profile-header">
-      <div class="profile-header-left">
-        <div class="eyebrow">Your private tip jar</div>
-        <h1>Tip Jar <span style="color:var(--gold-2);">#<span id="profile-num">4471</span></span></h1>
-        <p>This is the only handle you have on TipJip. No name. No email. Just a verified phone, a jar number, and the traits you choose to share. Advertisers only see your jar number — and only the traits you've explicitly opened up.</p>
-      </div>
-      <div class="profile-stats">
-        <div class="profile-stat">
-          <div class="num gold" id="stat-traits">62</div>
-          <div class="label">traits shared</div>
-        </div>
-        <div class="profile-stat">
-          <div class="num">$12.40</div>
-          <div class="label">in your jar · $7.60 to cash out</div>
-        </div>
-        <div class="profile-stat">
-          <div class="num gold">14</div>
-          <div class="label">advertisers saw your jar this&nbsp;month</div>
+  <div class="profile-shell-v2">
+
+    <!-- Top header: Verified Human badge + Jar number + Settings -->
+    <div class="profile-topbar">
+      <div class="profile-topbar-left">
+        <div class="profile-vh-badge">
+          <span class="profile-vh-check">✓</span>
+          <div class="profile-vh-text">
+            <div class="profile-vh-label">VERIFIED HUMAN</div>
+            <div class="profile-vh-num">Tip Jar #<span class="profile-jar-num">4471</span></div>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Honesty check banner — appears every 30 ads to keep traits accurate -->
-    <!-- Verification Day banner — monthly trust event, $1 bonus for re-verifying -->
-    <div class="verify-day-banner" id="verify-day-banner">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        <path d="M9 12l2 2 4-4"/>
-      </svg>
-      <div class="verify-day-text">
-        <div class="verify-day-title">Verification Day · 8 days left <span class="verify-day-bonus">+$1.00 BONUS</span></div>
-        <div class="verify-day-sub">Re-confirm your phone in 30 seconds. Keeps your jar verified, earns you $1, and helps the platform stay 99% bot-free.</div>
+      <div class="profile-topbar-right">
+        <button class="profile-icon-btn" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="profile-icon-dot"></span>
+        </button>
+        <button class="profile-icon-btn" aria-label="Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
       </div>
-      <div class="verify-day-arrow">→</div>
     </div>
 
-    <div class="honesty-banner" id="honesty-banner">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-      <div class="honesty-banner-text">
-        <div class="honesty-banner-title">Quick honesty check · 1 trait pending</div>
-        <div class="honesty-banner-sub">You've watched 30 ads since the last check. Take 5 seconds to keep your jar honest.</div>
-      </div>
-      <div class="honesty-banner-arrow">→</div>
-    </div>
+    <!-- THE CENTERPIECE: Big Jar Hero with balance + growth -->
+    <div class="profile-jar-hero">
+      <div class="profile-jar-visual">
+        <svg viewBox="0 0 240 280" xmlns="http://www.w3.org/2000/svg" class="profile-jar-big">
+          <!-- Falling coin animation -->
+          <circle cx="120" cy="20" r="13" fill="#C8902E" class="profile-falling-coin"/>
+          <text x="120" y="25" text-anchor="middle" fill="#0F2A24" font-weight="900" font-size="14" class="profile-falling-coin">$</text>
 
-    <div class="honesty-card" id="honesty-card">
-      <div class="honesty-card-eyebrow">⏤ Honesty check · 1 of 1</div>
-      <h3>Is this still a top-3 interest of yours?</h3>
-      <div class="honesty-card-trait" id="honesty-trait">★ Hormone health</div>
-      <div class="honesty-card-actions">
-        <button class="honesty-btn yes" id="honesty-yes">Yes, still true</button>
-        <button class="honesty-btn" id="honesty-no">No, drop it</button>
-      </div>
-      <div class="honesty-card-foot">Honest declarations earn you better-paying ads. Misleading ones eventually get caught.</div>
-    </div>
+          <!-- Jar lid -->
+          <rect x="65" y="58" width="110" height="16" rx="3" fill="#0F2A24"/>
+          <rect x="95" y="60" width="50" height="3" rx="1.5" fill="#F5F1EA"/>
 
-    <!-- Identity panel — pseudonym + masked phone + birth year + ZIP + re-roll -->
-    <div class="identity-panel">
-      <div class="jar-avatar-lg">
-        <svg class="tipjar-mark light" viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
-          <rect class="jar-fill" x="22" y="1" width="16" height="5.5" rx="1.5"/>
-          <rect class="jar-stroke" x="6" y="9" width="48" height="58" rx="8" stroke-width="2.6" fill="none"/>
-          <line class="jar-stroke" x1="30" y1="14" x2="30" y2="28" stroke-width="2" stroke-linecap="round"/>
-          <circle class="coin-fill" cx="30" cy="34" r="5.5"/>
-          <path class="smile-stroke" d="M16 50 Q30 60 44 50" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <!-- Jar body -->
+          <rect x="58" y="74" width="124" height="170" rx="12" fill="#0F2A24"/>
+
+          <!-- Light reflection -->
+          <rect x="64" y="82" width="3" height="150" rx="1.5" fill="#F5F1EA" opacity="0.18"/>
+
+          <!-- Smile -->
+          <circle cx="98" cy="125" r="4" fill="#F5F1EA"/>
+          <circle cx="142" cy="125" r="4" fill="#F5F1EA"/>
+          <path d="M 92 148 Q 120 168 148 148" stroke="#F5F1EA" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+          <!-- Coins inside (representing balance) -->
+          <g class="profile-jar-coins">
+            <circle cx="78" cy="226" r="7" fill="#ECC881"/>
+            <circle cx="95" cy="220" r="8" fill="#C8902E"/>
+            <circle cx="115" cy="225" r="8" fill="#ECC881"/>
+            <circle cx="134" cy="220" r="8" fill="#C8902E"/>
+            <circle cx="152" cy="226" r="7" fill="#ECC881"/>
+            <circle cx="88" cy="208" r="7" fill="#C8902E"/>
+            <circle cx="105" cy="205" r="7" fill="#ECC881"/>
+            <circle cx="125" cy="206" r="7" fill="#C8902E"/>
+            <circle cx="145" cy="208" r="7" fill="#ECC881"/>
+            <circle cx="98" cy="195" r="6" fill="#C8902E"/>
+            <circle cx="118" cy="193" r="6" fill="#ECC881"/>
+            <circle cx="138" cy="195" r="6" fill="#C8902E"/>
+          </g>
         </svg>
       </div>
 
-      <div class="identity-panel-id">
-        <div class="identity-panel-name">
-          Tip Jar
-          <span class="num">#<span id="profile-panel-num">4471</span></span>
+      <div class="profile-jar-stats">
+        <div class="profile-balance-label">JAR BALANCE</div>
+        <div class="profile-balance-amount">
+          <span class="profile-balance-currency">$</span><span class="profile-balance-num" id="profile-balance">12.40</span>
         </div>
-        <div class="identity-panel-tagline">VERIFIED HUMAN · NO NAME ON FILE · NO EMAIL ON FILE</div>
+        <div class="profile-balance-growth">
+          <span class="profile-growth-arrow">↑</span> <span class="profile-growth-amount">+$2.15</span> <span class="profile-growth-window">this week</span>
+        </div>
 
-        <div class="identity-panel-meta">
-          <div class="identity-meta-item">
-            <span class="label">Phone (hashed)</span>
-            <span class="value masked">***-***-4471</span>
+        <div class="profile-cashout-progress">
+          <div class="profile-cashout-bar">
+            <div class="profile-cashout-fill" style="width: 62%"></div>
           </div>
-          <div class="identity-meta-item">
-            <span class="label">Birth year (private)</span>
-            <span class="value">1972</span>
-          </div>
-          <div class="identity-meta-item">
-            <span class="label">Age range (visible)</span>
-            <span class="value">50 – 59</span>
-          </div>
-          <div class="identity-meta-item">
-            <span class="label">Region</span>
-            <span class="value">78704 · Austin TX</span>
-          </div>
-          <div class="identity-meta-item">
-            <span class="label">Member since</span>
-            <span class="value">May 2025</span>
-          </div>
-          <div class="identity-meta-item">
-            <span class="label">Re-rolls left</span>
-            <span class="value">2 of 3 this year</span>
+          <div class="profile-cashout-text">
+            <span><strong>$7.60</strong> to cash out at $20</span>
+            <span class="profile-cashout-pct">62%</span>
           </div>
         </div>
-      </div>
 
-      <button class="reroll-button" id="profile-reroll-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-        Re-roll jar number
-      </button>
-    </div>
-
-    <div class="profile-section" data-capped="true" data-section="health">
-      <div class="profile-section-header">
-        <h2>Health interests</h2>
-        <span class="privacy-toggle"><span class="dot"></span>Top 3 visible to advertisers</span>
-      </div>
-      <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">Topics you want to learn about. <strong>Star up to 3 as TOP-tier</strong> — these are advertiser-visible and command premium bids. Up to 8 more can sit in research-only tier.</p>
-
-      <div class="tier-counter">
-        <div class="tier-counter-item">
-          <span class="tier-counter-pip top"></span>
-          <span><strong class="tier-top-count">3</strong> / 3 top-tier</span>
+        <div class="profile-action-row">
+          <button class="btn btn-primary profile-action-btn" data-view="watch">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polygon points="5,3 19,12 5,21" fill="currentColor"/></svg>
+            Watch &amp; earn
+          </button>
+          <button class="btn btn-outline profile-action-btn" disabled title="Cash out unlocks at $20">
+            Cash out
+          </button>
         </div>
-        <div class="tier-counter-divider"></div>
-        <div class="tier-counter-item">
-          <span class="tier-counter-pip research"></span>
-          <span><strong class="tier-res-count">8</strong> / 8 research-tier</span>
-        </div>
-        <div class="tier-counter-help">★ = top-tier (advertiser-visible) · 30-day cooldown on changes</div>
-      </div>
-
-      <div class="trait-grid">
-        <div class="trait-chip selected top-tier locked" data-tier="top" data-locked-until="🔒 Locked until Jun 8, 2026">
-          <span>Hormone health</span>
-          <button class="trait-star" aria-label="Top tier">★</button>
-          <span class="trait-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip selected top-tier" data-tier="top">
-          <span>Longevity</span>
-          <button class="trait-star" aria-label="Top tier">★</button>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip selected top-tier" data-tier="top">
-          <span>Sleep optimization</span>
-          <button class="trait-star" aria-label="Top tier">★</button>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip selected" data-tier="research">
-          <span>Cold therapy</span>
-          <button class="trait-star" aria-label="Promote to top tier">★</button>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip selected" data-tier="research">
-          <span>Breathwork</span>
-          <button class="trait-star" aria-label="Promote to top tier">★</button>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip selected" data-tier="research">
-          <span>Strength training</span>
-          <button class="trait-star" aria-label="Promote to top tier">★</button>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip selected" data-tier="research">
-          <span>Recovery / mobility</span>
-          <button class="trait-star" aria-label="Promote to top tier">★</button>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip selected" data-tier="research">
-          <span>Functional nutrition</span>
-          <button class="trait-star" aria-label="Promote to top tier">★</button>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip selected" data-tier="research">
-          <span>Intermittent fasting</span>
-          <button class="trait-star" aria-label="Promote to top tier">★</button>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip selected" data-tier="research">
-          <span>Supplements</span>
-          <button class="trait-star" aria-label="Promote to top tier">★</button>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip selected" data-tier="research">
-          <span>Hyperbaric / oxygen therapy</span>
-          <button class="trait-star" aria-label="Promote to top tier">★</button>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip" data-tier="off"><span>Mental wellness</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Mindfulness / meditation</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Endurance / cardio</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Plant-based diet</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Keto / low-carb</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Gut health / microbiome</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Heart health</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Brain / cognition</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>PEMF / red light</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Sauna / heat therapy</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Skincare / anti-aging</span><div class="check"></div></div>
       </div>
     </div>
 
-    <div class="profile-section" data-capped="true" data-section="goals">
-      <div class="profile-section-header">
-        <h2>Wellness goals</h2>
-        <span class="privacy-toggle"><span class="dot"></span>Top 3 visible to advertisers</span>
-      </div>
-      <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">What you're trying to achieve. Star up to 3 as your TOP-tier priorities.</p>
-
-      <div class="tier-counter">
-        <div class="tier-counter-item">
-          <span class="tier-counter-pip top"></span>
-          <span><strong class="tier-top-count">3</strong> / 3 top-tier</span>
-        </div>
-        <div class="tier-counter-divider"></div>
-        <div class="tier-counter-item">
-          <span class="tier-counter-pip research"></span>
-          <span><strong class="tier-res-count">5</strong> / 8 research-tier</span>
-        </div>
-        <div class="tier-counter-help">★ = top-tier (advertiser-visible) · 30-day cooldown on changes</div>
-      </div>
-
-      <div class="trait-grid">
-        <div class="trait-chip selected top-tier" data-tier="top">
-          <span>Better sleep quality</span>
-          <button class="trait-star">★</button>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip selected top-tier locked" data-tier="top" data-locked-until="🔒 Locked until May 22, 2026">
-          <span>Hormone balance</span>
-          <button class="trait-star">★</button>
-          <span class="trait-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip selected top-tier" data-tier="top">
-          <span>Athletic performance</span>
-          <button class="trait-star">★</button>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip selected" data-tier="research"><span>Add muscle</span><button class="trait-star">★</button><div class="check"></div></div>
-        <div class="trait-chip selected" data-tier="research"><span>Improve VO₂ max</span><button class="trait-star">★</button><div class="check"></div></div>
-        <div class="trait-chip selected" data-tier="research"><span>More energy / less fatigue</span><button class="trait-star">★</button><div class="check"></div></div>
-        <div class="trait-chip selected" data-tier="research"><span>Sharper focus / cognition</span><button class="trait-star">★</button><div class="check"></div></div>
-        <div class="trait-chip selected" data-tier="research"><span>Pain reduction</span><button class="trait-star">★</button><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Lose fat</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Reduce anxiety / stress</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Better mobility</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Healthy aging / longevity</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Improve digestion</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Reduce inflammation</span><div class="check"></div></div>
-      </div>
-    </div>
-
+    <!-- TODAY'S FLOW: Where today's money came from (Stream) -->
     <div class="profile-section">
       <div class="profile-section-header">
-        <h2>Activity &amp; habits</h2>
-        <span class="privacy-toggle"><span class="dot"></span>Visible to advertisers</span>
+        <div>
+          <div class="profile-section-eyebrow">⏤ TODAY · Live</div>
+          <h2 class="profile-section-h2">Where today's coin came from.</h2>
+        </div>
+        <div class="profile-section-tools">
+          <button class="profile-pill-btn active">Today</button>
+          <button class="profile-pill-btn">Week</button>
+          <button class="profile-pill-btn">Month</button>
+          <button class="profile-pill-btn">All time</button>
+        </div>
       </div>
-      <p style="font-size:13px; color:var(--muted); margin-bottom:16px;">How active you are, where you train, what your week looks like.</p>
-      <div class="trait-input">
-        <div class="trait-field">
-          <label>Activity level</label>
-          <select>
-            <option>Sedentary (mostly sitting)</option>
-            <option>Light (1-2 workouts/wk)</option>
-            <option>Moderate (3-4 workouts/wk)</option>
-            <option selected>High (5-6 workouts/wk)</option>
-            <option>Athlete (daily training)</option>
-          </select>
+
+      <!-- Income stream cards -->
+      <div class="profile-stream-grid">
+        <div class="profile-stream-card profile-stream-watching">
+          <div class="profile-stream-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          </div>
+          <div class="profile-stream-meta">
+            <div class="profile-stream-label">FROM WATCHING</div>
+            <div class="profile-stream-source">3 ads finished today</div>
+          </div>
+          <div class="profile-stream-amount">+$2.25</div>
         </div>
-        <div class="trait-field">
-          <label>Where you train</label>
-          <select>
-            <option>Home gym</option>
-            <option selected>Commercial gym</option>
-            <option>Boutique studio</option>
-            <option>Outdoor</option>
-            <option>Mix</option>
-          </select>
+
+        <div class="profile-stream-card profile-stream-creator profile-stream-empty">
+          <div class="profile-stream-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33"/></svg>
+          </div>
+          <div class="profile-stream-meta">
+            <div class="profile-stream-label">FROM CREATING</div>
+            <div class="profile-stream-source">Become a creator to unlock</div>
+          </div>
+          <button class="profile-stream-cta" data-view="creator">Activate →</button>
         </div>
-        <div class="trait-field">
-          <label>Sleep average</label>
-          <select>
-            <option>Less than 6 hours</option>
-            <option>6 – 7 hours</option>
-            <option selected>7 – 8 hours</option>
-            <option>8+ hours</option>
-          </select>
+
+        <div class="profile-stream-card profile-stream-podcast profile-stream-empty">
+          <div class="profile-stream-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2"/><path d="M12 19v3"/></svg>
+          </div>
+          <div class="profile-stream-meta">
+            <div class="profile-stream-label">FROM PODCASTS</div>
+            <div class="profile-stream-source">Run a video podcast on TipJip</div>
+          </div>
+          <button class="profile-stream-cta" data-view="podcast">Apply →</button>
         </div>
-        <div class="trait-field">
-          <label>Coffee / caffeine</label>
-          <select>
-            <option>None</option>
-            <option>1 cup / day</option>
-            <option selected>2-3 cups / day</option>
-            <option>4+ cups / day</option>
-          </select>
-        </div>
-        <div class="trait-field">
-          <label>Alcohol</label>
-          <select>
-            <option>None</option>
-            <option selected>Occasional (1-2/wk)</option>
-            <option>Social (3-5/wk)</option>
-            <option>Daily</option>
-          </select>
-        </div>
-        <div class="trait-field">
-          <label>Tobacco / nicotine</label>
-          <select>
-            <option selected>Never</option>
-            <option>Former (quit 1+ yr ago)</option>
-            <option>Occasional cigar / pipe</option>
-            <option>Regular</option>
-          </select>
+
+        <div class="profile-stream-card profile-stream-ads profile-stream-empty">
+          <div class="profile-stream-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+          </div>
+          <div class="profile-stream-meta">
+            <div class="profile-stream-label">FROM ADVERTISING</div>
+            <div class="profile-stream-source">Run a campaign for your business</div>
+          </div>
+          <button class="profile-stream-cta" data-view="advertiser">Activate →</button>
         </div>
       </div>
     </div>
 
-    <div class="profile-section" data-section="diet">
-      <div class="profile-section-header">
-        <h2>Diet style</h2>
-        <span class="privacy-toggle"><span class="dot"></span>Visible to advertisers</span>
-      </div>
-      <div class="single-pick-eyebrow">Pick one — your primary pattern</div>
-      <p style="font-size:13px; color:var(--muted); margin-bottom:16px;">The eating pattern you most identify with day-to-day. You can pick a different one in 30 days.</p>
-      <div class="radio-card-group" data-radio-group="diet">
-        <button class="radio-card" data-radio="omni">
-          <div class="radio-card-tick"></div>
-          <div class="radio-card-title">Omnivore</div>
-          <div class="radio-card-sub">No restrictions</div>
-        </button>
-        <button class="radio-card selected" data-radio="protein">
-          <div class="radio-card-tick"></div>
-          <div class="radio-card-title">High-protein</div>
-          <div class="radio-card-sub">Performance-focused</div>
-        </button>
-        <button class="radio-card" data-radio="paleo">
-          <div class="radio-card-tick"></div>
-          <div class="radio-card-title">Paleo / whole foods</div>
-          <div class="radio-card-sub">Minimally processed</div>
-        </button>
-        <button class="radio-card" data-radio="keto">
-          <div class="radio-card-tick"></div>
-          <div class="radio-card-title">Keto / low-carb</div>
-          <div class="radio-card-sub">Carbs &lt; 50g/day</div>
-        </button>
-        <button class="radio-card" data-radio="med">
-          <div class="radio-card-tick"></div>
-          <div class="radio-card-title">Mediterranean</div>
-          <div class="radio-card-sub">Fish, oil, plants</div>
-        </button>
-        <button class="radio-card" data-radio="plant">
-          <div class="radio-card-tick"></div>
-          <div class="radio-card-title">Plant-based</div>
-          <div class="radio-card-sub">Vegan or vegetarian</div>
-        </button>
-        <button class="radio-card" data-radio="if">
-          <div class="radio-card-tick"></div>
-          <div class="radio-card-title">Intermittent fasting</div>
-          <div class="radio-card-sub">Time-restricted eating</div>
-        </button>
-        <button class="radio-card" data-radio="carnivore">
-          <div class="radio-card-tick"></div>
-          <div class="radio-card-title">Carnivore</div>
-          <div class="radio-card-sub">Animal-only</div>
-        </button>
-      </div>
-    </div>
-
-    <div class="profile-section" data-section="sleep">
-      <div class="profile-section-header">
-        <h2>Sleep quality</h2>
-        <span class="privacy-toggle"><span class="dot"></span>Visible to advertisers</span>
-      </div>
-      <div class="single-pick-eyebrow">Pick one — your typical experience</div>
-      <p style="font-size:13px; color:var(--muted); margin-bottom:16px;">How you generally feel about your sleep. Not a one-night thing — your overall pattern.</p>
-      <div class="radio-card-group" data-radio-group="sleep">
-        <button class="radio-card" data-radio="great">
-          <div class="radio-card-tick"></div>
-          <div class="radio-card-title">Great</div>
-          <div class="radio-card-sub">Wake refreshed most days</div>
-        </button>
-        <button class="radio-card selected" data-radio="ok">
-          <div class="radio-card-tick"></div>
-          <div class="radio-card-title">Decent</div>
-          <div class="radio-card-sub">Some nights better than others</div>
-        </button>
-        <button class="radio-card" data-radio="poor">
-          <div class="radio-card-tick"></div>
-          <div class="radio-card-title">Poor</div>
-          <div class="radio-card-sub">Tired most mornings</div>
-        </button>
-        <button class="radio-card" data-radio="bad">
-          <div class="radio-card-tick"></div>
-          <div class="radio-card-title">Struggling</div>
-          <div class="radio-card-sub">Insomnia or apnea</div>
-        </button>
-      </div>
-    </div>
-
-    <div class="profile-section" data-section="stress">
-      <div class="profile-section-header">
-        <h2>Stress level</h2>
-        <span class="privacy-toggle"><span class="dot"></span>Visible to advertisers</span>
-      </div>
-      <div class="single-pick-eyebrow">Pick one — your typical baseline</div>
-      <p style="font-size:13px; color:var(--muted); margin-bottom:16px;">How loaded does your average week feel? Be honest — this is one of the most important signals for matching you to relevant wellness products.</p>
-      <div class="radio-card-group" data-radio-group="stress">
-        <button class="radio-card" data-radio="low">
-          <div class="radio-card-tick"></div>
-          <div class="radio-card-title">Low</div>
-          <div class="radio-card-sub">Calm, balanced weeks</div>
-        </button>
-        <button class="radio-card" data-radio="mod">
-          <div class="radio-card-tick"></div>
-          <div class="radio-card-title">Moderate</div>
-          <div class="radio-card-sub">Busy but managing</div>
-        </button>
-        <button class="radio-card selected" data-radio="high">
-          <div class="radio-card-tick"></div>
-          <div class="radio-card-title">High</div>
-          <div class="radio-card-sub">Often overloaded</div>
-        </button>
-        <button class="radio-card" data-radio="crisis">
-          <div class="radio-card-tick"></div>
-          <div class="radio-card-title">Crisis</div>
-          <div class="radio-card-sub">Burnout territory</div>
-        </button>
-      </div>
-    </div>
-
+    <!-- BADGES + MILESTONES -->
     <div class="profile-section">
       <div class="profile-section-header">
-        <h2>Lifestyle signals</h2>
-        <span class="privacy-toggle"><span class="dot"></span>Visible to advertisers</span>
+        <div>
+          <div class="profile-section-eyebrow">⏤ MILESTONES · Your jar's journey</div>
+          <h2 class="profile-section-h2">Badges earned. <em>Next ones in sight.</em></h2>
+        </div>
       </div>
-      <p style="font-size:13px; color:var(--muted); margin-bottom:16px;">Daily life and interests beyond health.</p>
-      <div class="trait-grid">
-        <div class="trait-chip selected"><span>Cigar enthusiast</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Wine collector</span><div class="check"></div></div>
-        <div class="trait-chip selected"><span>Travel often</span><div class="check"></div></div>
-        <div class="trait-chip selected"><span>Home owner</span><div class="check"></div></div>
-        <div class="trait-chip selected"><span>Entrepreneur</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Investor</span><div class="check"></div></div>
-        <div class="trait-chip selected"><span>Outdoor activities</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Audiophile</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Coffee enthusiast</span><div class="check"></div></div>
-        <div class="trait-chip selected"><span>Tech early-adopter</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Reader</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Foodie</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Pet owner</span><div class="check"></div></div>
+
+      <div class="profile-badges-grid">
+        <!-- Earned badges -->
+        <div class="profile-badge profile-badge-earned">
+          <div class="profile-badge-icon">🏆</div>
+          <div class="profile-badge-name">First Coin</div>
+          <div class="profile-badge-detail">Earned · 6 days ago</div>
+        </div>
+        <div class="profile-badge profile-badge-earned">
+          <div class="profile-badge-icon">🎯</div>
+          <div class="profile-badge-name">Five Tips</div>
+          <div class="profile-badge-detail">Earned · 4 days ago</div>
+        </div>
+        <div class="profile-badge profile-badge-earned">
+          <div class="profile-badge-icon">⭐</div>
+          <div class="profile-badge-name">Halfway Hero</div>
+          <div class="profile-badge-detail">$10 in jar · 2 days ago</div>
+        </div>
+        <!-- Upcoming/locked badges -->
+        <div class="profile-badge profile-badge-upcoming">
+          <div class="profile-badge-icon">💰</div>
+          <div class="profile-badge-name">First Cashout</div>
+          <div class="profile-badge-detail">$7.60 to go</div>
+        </div>
+        <div class="profile-badge profile-badge-upcoming">
+          <div class="profile-badge-icon">🎙️</div>
+          <div class="profile-badge-name">Creator Tier</div>
+          <div class="profile-badge-detail">Activate creator role</div>
+        </div>
+        <div class="profile-badge profile-badge-locked">
+          <div class="profile-badge-icon">🔥</div>
+          <div class="profile-badge-name">7-Day Streak</div>
+          <div class="profile-badge-detail">Watch every day for a week</div>
+        </div>
+        <div class="profile-badge profile-badge-locked">
+          <div class="profile-badge-icon">💎</div>
+          <div class="profile-badge-name">Century Club</div>
+          <div class="profile-badge-detail">100 ads watched</div>
+        </div>
+        <div class="profile-badge profile-badge-locked">
+          <div class="profile-badge-icon">🌟</div>
+          <div class="profile-badge-name">Verified Practitioner</div>
+          <div class="profile-badge-detail">Health professionals only</div>
+        </div>
       </div>
     </div>
 
-    <div class="profile-section" data-capped="true" data-section="practitioners">
-      <div class="profile-section-header">
-        <h2>Practitioner relationships</h2>
-        <span class="privacy-toggle"><span class="dot"></span>Top 3 visible to advertisers</span>
-      </div>
-      <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">Who you actively work with for healthcare. Star up to 3 as primary.</p>
-
-      <div class="tier-counter">
-        <div class="tier-counter-item">
-          <span class="tier-counter-pip top"></span>
-          <span><strong class="tier-top-count">3</strong> / 3 top-tier</span>
-        </div>
-        <div class="tier-counter-divider"></div>
-        <div class="tier-counter-item">
-          <span class="tier-counter-pip research"></span>
-          <span><strong class="tier-res-count">2</strong> / 8 research-tier</span>
-        </div>
-        <div class="tier-counter-help">★ = top-tier (advertiser-visible) · 30-day cooldown on changes</div>
-      </div>
-
-      <div class="trait-grid">
-        <div class="trait-chip selected top-tier" data-tier="top">
-          <span>Primary care doctor</span>
-          <button class="trait-star">★</button>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip selected top-tier" data-tier="top">
-          <span>Chiropractor</span>
-          <button class="trait-star">★</button>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip selected top-tier" data-tier="top">
-          <span>Functional medicine</span>
-          <button class="trait-star">★</button>
-          <div class="check"></div>
-        </div>
-        <div class="trait-chip selected" data-tier="research"><span>Personal trainer</span><button class="trait-star">★</button><div class="check"></div></div>
-        <div class="trait-chip selected" data-tier="research"><span>Health coach</span><button class="trait-star">★</button><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Naturopath</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Acupuncturist</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Physical therapist</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Therapist / counselor</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Nutritionist / dietitian</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Endocrinologist</span><div class="check"></div></div>
-        <div class="trait-chip" data-tier="off"><span>Sleep specialist</span><div class="check"></div></div>
-      </div>
-    </div>
-
+    <!-- GROW YOUR JAR — Role activation cards -->
     <div class="profile-section">
       <div class="profile-section-header">
-        <h2>Spending tier</h2>
-        <span class="privacy-toggle"><span class="dot"></span>Visible to advertisers</span>
+        <div>
+          <div class="profile-section-eyebrow">⏤ GROW · Unlock more income streams</div>
+          <h2 class="profile-section-h2">Your jar can fill from <em>more than one place.</em></h2>
+          <p class="profile-section-sub">A TipJar account isn't just for watching. Activate any of these roles in seconds — no separate signup, same jar, more sources.</p>
+        </div>
       </div>
-      <p style="font-size:13px; color:var(--muted); margin-bottom:16px;">How you typically shop in the wellness space. Lets advertisers match the right price tier to you.</p>
-      <div class="trait-input">
-        <div class="trait-field">
-          <label>Wellness budget tier</label>
-          <select>
-            <option>Budget (best deals)</option>
-            <option>Mid-tier (good value)</option>
-            <option selected>Premium (research-backed)</option>
-            <option>Luxury (no compromise)</option>
-          </select>
+
+      <div class="profile-grow-grid">
+        <div class="profile-grow-card" data-view="creator">
+          <div class="profile-grow-tag">CREATORS</div>
+          <h3>Become a creator</h3>
+          <p>Upload videos. Get tipped by other verified humans. Keep 100% of every tip.</p>
+          <div class="profile-grow-cta">One-tap activate →</div>
         </div>
-        <div class="trait-field">
-          <label>Monthly supplement spend</label>
-          <select>
-            <option>$0 - 50</option>
-            <option>$50 - 150</option>
-            <option selected>$150 - 400</option>
-            <option>$400+</option>
-          </select>
+
+        <div class="profile-grow-card profile-grow-card-featured" data-view="podcast">
+          <div class="profile-grow-tag profile-grow-tag-gold">PODCASTERS · NEW</div>
+          <h3>Launch a video podcast</h3>
+          <p>Three ad slots, your call. 0% platform cut from ads. Founding 25 spots open for health &amp; wellness shows.</p>
+          <div class="profile-grow-cta">Apply now →</div>
         </div>
-        <div class="trait-field">
-          <label>Wellness device spend (annual)</label>
-          <select>
-            <option>$0 - 500</option>
-            <option>$500 - 2,000</option>
-            <option selected>$2,000 - 10,000</option>
-            <option>$10,000+</option>
-          </select>
+
+        <div class="profile-grow-card" data-view="advertiser">
+          <div class="profile-grow-tag">ADVERTISERS</div>
+          <h3>Run a campaign</h3>
+          <p>Bid for verified human attention. Pay only for slide-confirmed, phone-verified watches. No bots, no data brokers.</p>
+          <div class="profile-grow-cta">Get verified to advertise →</div>
         </div>
-        <div class="trait-field">
-          <label>Buys subscriptions</label>
-          <select>
-            <option>Rarely / never</option>
-            <option selected>Sometimes</option>
-            <option>Often</option>
-          </select>
+
+        <div class="profile-grow-card" data-view="standards">
+          <div class="profile-grow-tag profile-grow-tag-evergreen">PRACTITIONERS</div>
+          <h3>Verify with NPI</h3>
+          <p>If you're a licensed health professional, add your NPI for instant verification. Unlock the gold practitioner badge and premium ad inventory.</p>
+          <div class="profile-grow-cta">NPI lookup →</div>
         </div>
       </div>
     </div>
 
+    <!-- RECENT JAR ACTIVITY -->
     <div class="profile-section">
       <div class="profile-section-header">
-        <h2>Family situation</h2>
-        <span class="privacy-toggle"><span class="dot"></span>Visible to advertisers</span>
-      </div>
-      <p style="font-size:13px; color:var(--muted); margin-bottom:16px;">Optional. Helps advertisers selling family-relevant or caregiver products.</p>
-      <div class="trait-input">
-        <div class="trait-field">
-          <label>Household</label>
-          <select>
-            <option>Solo</option>
-            <option>Partnered, no kids</option>
-            <option selected>Partnered with kids at home</option>
-            <option>Empty nester</option>
-            <option>Multi-generational</option>
-          </select>
+        <div>
+          <div class="profile-section-eyebrow">⏤ ACTIVITY · Every coin tracked</div>
+          <h2 class="profile-section-h2">Recent jar activity.</h2>
         </div>
-        <div class="trait-field">
-          <label>Caregiver role</label>
-          <select>
-            <option selected>None</option>
-            <option>Caring for aging parent</option>
-            <option>Caring for child with health needs</option>
-            <option>Caring for spouse</option>
-          </select>
+        <button class="profile-link-btn">View all →</button>
+      </div>
+
+      <div class="profile-activity-list">
+        <div class="profile-activity-row">
+          <div class="profile-activity-time">2:14 PM</div>
+          <div class="profile-activity-desc">
+            <strong>+$0.75</strong> from <em>Eight Sleep</em> — watched <a href="#">"How temperature affects deep sleep"</a>
+          </div>
+          <div class="profile-activity-tag profile-activity-tag-in">EARNED</div>
+        </div>
+        <div class="profile-activity-row">
+          <div class="profile-activity-time">2:14 PM</div>
+          <div class="profile-activity-desc">
+            <strong>−$0.75</strong> tipped to <em>Dr. Sarah Cohen</em> · "thanks for the explanation"
+          </div>
+          <div class="profile-activity-tag profile-activity-tag-tip">TIPPED</div>
+        </div>
+        <div class="profile-activity-row">
+          <div class="profile-activity-time">11:42 AM</div>
+          <div class="profile-activity-desc">
+            <strong>+$0.50</strong> from <em>Manta Sleep</em> — watched <a href="#">"Why your eye mask might be causing headaches"</a>
+          </div>
+          <div class="profile-activity-tag profile-activity-tag-in">EARNED</div>
+        </div>
+        <div class="profile-activity-row">
+          <div class="profile-activity-time">11:42 AM</div>
+          <div class="profile-activity-desc">
+            <strong>−$0.50</strong> jipped — kept it. Note: "Felt salesy, want more research-backed."
+          </div>
+          <div class="profile-activity-tag profile-activity-tag-jip">JIPPED</div>
+        </div>
+        <div class="profile-activity-row">
+          <div class="profile-activity-time">9:15 AM</div>
+          <div class="profile-activity-desc">
+            <strong>+$1.00</strong> from <em>Hatch Restore</em> — watched <a href="#">"Your morning circadian rhythm"</a>
+          </div>
+          <div class="profile-activity-tag profile-activity-tag-in">EARNED</div>
+        </div>
+        <div class="profile-activity-row">
+          <div class="profile-activity-time">Yesterday</div>
+          <div class="profile-activity-desc">
+            <strong>+$2.15</strong> earned across 4 ads · 2 tipped, 2 jipped
+          </div>
+          <div class="profile-activity-tag profile-activity-tag-summary">DAILY</div>
         </div>
       </div>
     </div>
 
-    <div class="profile-section">
-      <div class="profile-section-header">
-        <h2>Demographics</h2>
-        <span class="privacy-toggle"><span class="dot"></span>Range only · birth year &amp; ZIP private</span>
-      </div>
-      <p style="font-size:13px; color:var(--muted); margin-bottom:16px;">Your birth year and ZIP stay encrypted. Advertisers only see decade-bucket age and broad region.</p>
-      <div class="trait-input">
-        <div class="trait-field">
-          <label>Age range (visible to advertisers)</label>
-          <select>
-            <option>30 – 39</option>
-            <option>40 – 49</option>
-            <option selected>50 – 59</option>
-            <option>60 – 69</option>
-            <option>70+</option>
-          </select>
-        </div>
-        <div class="trait-field">
-          <label>Gender (self-declared)</label>
-          <select>
-            <option selected>Man</option>
-            <option>Woman</option>
-            <option>Non-binary</option>
-            <option>Prefer not to say</option>
-          </select>
-        </div>
-        <div class="trait-field">
-          <label>Region</label>
-          <select>
-            <option>Midwest US</option>
-            <option>Northeast US</option>
-            <option>Pacific US</option>
-            <option selected>Southern US (TX/SE)</option>
-          </select>
-        </div>
-        <div class="trait-field">
-          <label>Household income</label>
-          <select>
-            <option>$50k – 100k</option>
-            <option>$100k – 200k</option>
-            <option selected>$200k – 500k</option>
-            <option>$500k+</option>
-          </select>
-        </div>
-        <div class="trait-field">
-          <label>Education</label>
-          <select>
-            <option>High school</option>
-            <option>Some college</option>
-            <option>Bachelor's</option>
-            <option selected>Graduate / professional</option>
-          </select>
-        </div>
-        <div class="trait-field">
-          <label>Decision-making for healthcare</label>
-          <select>
-            <option selected>Self only</option>
-            <option>Self + partner</option>
-            <option>Family</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <div class="profile-section">
-      <div class="profile-section-header">
-        <h2>Sensitive health (opt-in)</h2>
-        <span class="privacy-toggle"><span class="dot" style="background: var(--gold);"></span>Each item separately consented</span>
-      </div>
-      <p style="font-size:13px; color:var(--muted); margin-bottom:8px;">Diagnoses, medications, and conditions you opt to share for ad targeting and/or research. Each item has its own consent — toggle "share with advertisers" or "share with research only" or "keep entirely private."</p>
-      <p style="font-size:12px; color:var(--gold-2); margin-bottom:16px; font-weight:600;">⏤ Storage is HIPAA-grade. Encrypted at rest. Row-level access control. No data brokers, ever.</p>
-      <div class="trait-grid">
-        <div class="trait-chip"><span>On TRT therapy</span><div class="check"></div></div>
-        <div class="trait-chip selected"><span>Sleep apnea</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Chronic pain</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Pre-diabetic</span><div class="check"></div></div>
-        <div class="trait-chip selected"><span>High blood pressure</span><div class="check"></div></div>
-        <div class="trait-chip"><span>High cholesterol</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Thyroid condition</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Autoimmune condition</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Anxiety / depression</span><div class="check"></div></div>
-        <div class="trait-chip"><span>ADHD</span><div class="check"></div></div>
-        <div class="trait-chip selected"><span>Family history: heart disease</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Family history: cancer</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Family history: diabetes</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Perimenopause / menopause</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Long-COVID symptoms</span><div class="check"></div></div>
-        <div class="trait-chip"><span>Recent injury / surgery</span><div class="check"></div></div>
-      </div>
-    </div>
-
-
-    <div style="display:flex; gap:12px; padding-top:32px; border-top:1px solid var(--line);">
-      <button class="btn btn-primary">Save changes</button>
-      <button class="btn btn-ghost">Export my data</button>
-      <button style="margin-left:auto; background:none; border:none; color:var(--danger); font-size:13px; font-weight:600; cursor:pointer; padding: 12px 0;">Permanently delete profile</button>
-    </div>
   </div>
 </section>
 
@@ -14451,6 +15104,159 @@ document.querySelectorAll('.why-cta-btn').forEach(btn => {
   });
 });
 
+</script>
+<script>
+// ============================================
+// SIGNUP V2 — Multi-step flow handlers
+// ============================================
+(function() {
+  let currentSignupStep = 1;
+  let assignedJarNumber = null;
+  let resendTimerInterval = null;
+
+  // Phone number formatting
+  document.addEventListener('input', function(e) {
+    if (e.target && e.target.id === 'signup-phone') {
+      let digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+      if (digits.length > 6) {
+        e.target.value = '(' + digits.slice(0,3) + ') ' + digits.slice(3,6) + '-' + digits.slice(6);
+      } else if (digits.length > 3) {
+        e.target.value = '(' + digits.slice(0,3) + ') ' + digits.slice(3);
+      } else if (digits.length > 0) {
+        e.target.value = '(' + digits;
+      }
+    }
+  });
+
+  // Code digit auto-advance
+  document.addEventListener('input', function(e) {
+    if (e.target && e.target.classList && e.target.classList.contains('signup-code-digit')) {
+      const v = e.target.value.replace(/\D/g, '').slice(0, 1);
+      e.target.value = v;
+      if (v) {
+        e.target.classList.add('filled');
+        const next = e.target.parentElement.querySelector('.signup-code-digit[data-code-pos="' + (parseInt(e.target.dataset.codePos) + 1) + '"]');
+        if (next) next.focus();
+      } else {
+        e.target.classList.remove('filled');
+      }
+      // Check if all 6 are filled
+      const all = document.querySelectorAll('.signup-code-digit');
+      const filled = Array.from(all).filter(i => i.value).length;
+      const verifyBtn = document.getElementById('signup-verify-btn');
+      if (verifyBtn) verifyBtn.disabled = filled < 6;
+    }
+  });
+
+  // Backspace handling for code input
+  document.addEventListener('keydown', function(e) {
+    if (e.target && e.target.classList && e.target.classList.contains('signup-code-digit')) {
+      if (e.key === 'Backspace' && !e.target.value) {
+        const prev = e.target.parentElement.querySelector('.signup-code-digit[data-code-pos="' + (parseInt(e.target.dataset.codePos) - 1) + '"]');
+        if (prev) { prev.focus(); prev.value = ''; prev.classList.remove('filled'); }
+      }
+    }
+  });
+
+  window.signupGoToStep = function(step) {
+    const allSteps = document.querySelectorAll('.signup-step');
+    allSteps.forEach(s => s.classList.remove('active'));
+    const targetStep = document.querySelector('.signup-step[data-signup-step="' + step + '"]');
+    if (targetStep) targetStep.classList.add('active');
+
+    // Progress bar
+    const fill = document.getElementById('signup-progress-fill');
+    if (fill) fill.style.width = (step * 25) + '%';
+
+    // Step markers
+    const markers = document.querySelectorAll('.signup-step-marker');
+    markers.forEach(m => {
+      const ms = parseInt(m.dataset.step);
+      m.classList.remove('active', 'complete');
+      if (ms < step) m.classList.add('complete');
+      else if (ms === step) m.classList.add('active');
+    });
+
+    currentSignupStep = step;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  window.signupStep1Submit = function() {
+    const phoneInput = document.getElementById('signup-phone');
+    if (!phoneInput) return;
+    const digits = phoneInput.value.replace(/\D/g, '');
+    if (digits.length !== 10) {
+      phoneInput.focus();
+      phoneInput.parentElement.style.borderColor = '#9C2A2A';
+      setTimeout(() => { phoneInput.parentElement.style.borderColor = ''; }, 1600);
+      return;
+    }
+    // Show phone on step 2
+    const phoneDisplay = document.getElementById('signup-phone-display');
+    if (phoneDisplay) phoneDisplay.textContent = phoneInput.value;
+    signupGoToStep(2);
+    // Focus first code input after a beat
+    setTimeout(() => {
+      const firstDigit = document.querySelector('.signup-code-digit[data-code-pos="0"]');
+      if (firstDigit) firstDigit.focus();
+    }, 500);
+    startResendTimer();
+  };
+
+  function startResendTimer() {
+    let secs = 30;
+    const timer = document.getElementById('signup-resend-timer');
+    if (resendTimerInterval) clearInterval(resendTimerInterval);
+    if (timer) timer.textContent = '(' + secs + 's)';
+    resendTimerInterval = setInterval(() => {
+      secs--;
+      if (timer) timer.textContent = secs > 0 ? '(' + secs + 's)' : '';
+      if (secs <= 0) clearInterval(resendTimerInterval);
+    }, 1000);
+  }
+
+  window.signupResendCode = function(e) {
+    e.preventDefault();
+    startResendTimer();
+  };
+
+  window.signupStep2Submit = function() {
+    // Mock verification — generate random jar number
+    assignedJarNumber = Math.floor(1000 + Math.random() * 8999);
+    // Update displays
+    document.querySelectorAll('.signup-jar-num-inline, #signup-assigned-jar-number').forEach(el => {
+      el.textContent = assignedJarNumber;
+    });
+    signupGoToStep(3);
+  };
+
+  window.signupStep3Continue = function() {
+    // Animate first earn — pick random sponsor and amount
+    const sponsors = ['Eight Sleep', 'Manta Sleep', 'Hatch Restore', 'Calm', 'Whoop'];
+    const amounts = [0.50, 0.75, 1.00, 1.25, 1.50];
+    const sponsor = sponsors[Math.floor(Math.random() * sponsors.length)];
+    const amount = amounts[Math.floor(Math.random() * amounts.length)];
+
+    const amountEl = document.getElementById('signup-first-amount');
+    const balanceEl = document.getElementById('signup-jar-balance');
+    const sourceEl = document.querySelector('.signup-first-earn-source strong');
+    if (amountEl) amountEl.textContent = amount.toFixed(2);
+    if (balanceEl) balanceEl.textContent = amount.toFixed(2);
+    if (sourceEl) sourceEl.textContent = sponsor;
+
+    signupGoToStep(4);
+  };
+
+  window.signupComplete = function() {
+    // Persist jar number to topbar everywhere
+    if (assignedJarNumber) {
+      document.querySelectorAll('.profile-jar-num').forEach(el => {
+        el.textContent = assignedJarNumber;
+      });
+    }
+    // The data-view click on the button itself handles routing.
+  };
+})();
 </script>
 </body>
 </html>
