@@ -263,9 +263,29 @@ input, textarea, select {
 }
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 480px;
+  grid-template-columns: 1fr;
   gap: 64px;
   align-items: center;
+}
+.hero-h1-row {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 28px;
+}
+.hero-h1-row h1 {
+  margin-bottom: 0;
+}
+.hero-h1-jar {
+  flex-shrink: 0;
+  width: 180px;
+  height: 180px;
+  filter: drop-shadow(0 16px 32px rgba(15, 42, 36, 0.15));
+}
+.hero-h1-jar svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 .hero-eyebrow {
   display: inline-flex;
@@ -2172,7 +2192,6 @@ input, textarea, select {
    ======================================================================== */
 @media (max-width: 1180px) {
   .hero-grid { grid-template-columns: 1fr; gap: 56px; }
-  .hero-art { max-width: 480px; margin: 0 auto; }
 }
 @media (max-width: 1024px) {
   .hero-grid, .audiences-pane, .trust-grid { grid-template-columns: 1fr; gap: 48px; }
@@ -2191,6 +2210,8 @@ input, textarea, select {
   .creator-hero, .numbers-grid, .footer-grid, .trait-input { grid-template-columns: 1fr; }
   .video-grid { grid-template-columns: 1fr; }
   .hero { padding: 48px 0 32px; }
+  .hero-h1-row { gap: 16px; }
+  .hero-h1-jar { width: 80px; height: 80px; }
   .section { padding: 64px 0; }
   .section-header { flex-direction: column; align-items: flex-start; }
   .section-tagline { text-align: left; }
@@ -3888,16 +3909,11 @@ input, textarea, select {
   display: grid;
   grid-template-columns: 280px 1fr 320px;
   gap: 0;
-  height: calc(100vh - 65px);
+  /* Use CSS variable so JS can measure actual header height and update at runtime */
+  height: calc(100vh - var(--header-height, 75px));
+  height: calc(100dvh - var(--header-height, 75px));
   background: var(--parchment);
 }
-
-/* Coach is a full-screen chat app — hide marketing footer + lock body scroll */
-body.coach-view-active .app-footer { display: none; }
-body.coach-view-active { overflow: hidden; }
-/* Also use :has() for browsers that support it, in case JS hasn't fired yet */
-body:has(.view.active[data-view="coach"]) .app-footer { display: none; }
-body:has(.view.active[data-view="coach"]) { overflow: hidden; }
 .coach-side {
   background: var(--parchment-2);
   border-right: 1px solid var(--line);
@@ -3905,6 +3921,8 @@ body:has(.view.active[data-view="coach"]) { overflow: hidden; }
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  /* Critical: allow this grid item to be shorter than its content so overflow-y works */
+  min-height: 0;
 }
 .coach-side-eyebrow {
   font-size: 10px;
@@ -3969,6 +3987,9 @@ body:has(.view.active[data-view="coach"]) { overflow: hidden; }
   display: flex;
   flex-direction: column;
   background: var(--parchment);
+  /* Critical: allow flex child (thread) overflow:auto to actually scroll */
+  min-height: 0;
+  min-width: 0;
 }
 .coach-header {
   padding: 18px 28px;
@@ -4197,6 +4218,8 @@ body:has(.view.active[data-view="coach"]) { overflow: hidden; }
   color: var(--parchment);
   padding: 28px 22px;
   overflow-y: auto;
+  /* Critical: allow grid item to be shorter than content so overflow-y works */
+  min-height: 0;
 }
 .coach-aside-eyebrow {
   font-size: 10px;
@@ -6951,76 +6974,70 @@ body:has(.view.active[data-view="coach"]) { overflow: hidden; }
           Advertisers want to <span class="pay">PAY</span> for your attention.<br>
           Creators want to <span class="earn">EARN</span> it.
         </div>
-        <h1>Get paid to&nbsp;watch.<br><em>Tip</em> with thanks. <em>Jip</em> with feedback.</h1>
+        <div class="hero-h1-row">
+          <h1>Get paid to&nbsp;watch.<br><em>Tip</em> with thanks.<br><em>Jip</em> with feedback.</h1>
+          <div class="hero-h1-jar">
+            <svg viewBox="0 0 400 440" xmlns="http://www.w3.org/2000/svg" aria-label="The TipJip tip jar collecting coins">
+              <defs>
+                <radialGradient id="heroGlow" cx="50%" cy="55%" r="55%">
+                  <stop offset="0%" stop-color="#ECC881" stop-opacity="0.45"/>
+                  <stop offset="55%" stop-color="#ECC881" stop-opacity="0.08"/>
+                  <stop offset="100%" stop-color="#ECC881" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <!-- Soft glow behind jar -->
+              <circle cx="200" cy="240" r="200" fill="url(#heroGlow)"/>
+
+              <!-- Animated falling coin -->
+              <g>
+                <circle cx="200" cy="40" r="16" fill="#C8902E">
+                  <animate attributeName="cy" values="40;185;185;40" keyTimes="0;0.55;0.6;1" dur="3s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.15;0.55;0.6;1" dur="3s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="200" cy="40" r="16" fill="none" stroke="#0F2A24" stroke-width="2.5">
+                  <animate attributeName="cy" values="40;185;185;40" keyTimes="0;0.55;0.6;1" dur="3s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.15;0.55;0.6;1" dur="3s" repeatCount="indefinite"/>
+                </circle>
+                <!-- Coin "$" detail -->
+                <text x="200" y="46" font-family="Quicksand, sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#0F2A24">
+                  $
+                  <animate attributeName="y" values="46;191;191;46" keyTimes="0;0.55;0.6;1" dur="3s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.15;0.55;0.6;1" dur="3s" repeatCount="indefinite"/>
+                </text>
+              </g>
+
+              <!-- Jar lid -->
+              <rect x="100" y="170" width="200" height="34" rx="6" fill="#0F2A24"/>
+              <!-- Coin slot -->
+              <rect x="170" y="180" width="60" height="10" rx="3" fill="#F5F1EA"/>
+
+              <!-- Jar body -->
+              <rect x="90" y="204" width="220" height="220" rx="22" fill="#0F2A24"/>
+
+              <!-- Subtle highlight stripe on jar -->
+              <rect x="106" y="218" width="14" height="190" rx="7" fill="#1B3A33"/>
+
+              <!-- Friendly face on jar (matches logo) -->
+              <circle cx="158" cy="290" r="7" fill="#F5F1EA"/>
+              <circle cx="242" cy="290" r="7" fill="#F5F1EA"/>
+              <path d="M152 328 Q200 362 248 328" stroke="#F5F1EA" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+
+              <!-- Coins stacked at bottom inside jar -->
+              <circle cx="148" cy="402" r="11" fill="#C8902E"/>
+              <circle cx="172" cy="408" r="11" fill="#ECC881"/>
+              <circle cx="200" cy="402" r="11" fill="#C8902E"/>
+              <circle cx="228" cy="408" r="11" fill="#ECC881"/>
+              <circle cx="252" cy="402" r="11" fill="#C8902E"/>
+              <circle cx="186" cy="394" r="11" fill="#C8902E"/>
+              <circle cx="214" cy="394" r="11" fill="#ECC881"/>
+            </svg>
+          </div>
+        </div>
         <p class="lede">Phone-verify in 30 seconds — you're <strong>Tip Jar #4471</strong>, no name asked. Every ad you finish drops $0.50 to $3 in your jar. Tip the creator with a thank-you, or jip and keep the coin with feedback. <strong>Three people, one transaction.</strong> No data brokers, no middlemen, no names.</p>
         <div class="hero-cta">
           <button class="btn btn-primary btn-lg" data-view="signup">Get your tip jar — free</button>
           <button class="btn btn-outline btn-lg" data-view="watch">See it in action</button>
         </div>
-      </div>
-
-      <div class="hero-art">
-        <svg class="hero-jar" viewBox="0 0 400 440" xmlns="http://www.w3.org/2000/svg" aria-label="The TipJip tip jar collecting coins">
-          <defs>
-            <radialGradient id="heroGlow" cx="50%" cy="55%" r="55%">
-              <stop offset="0%" stop-color="#ECC881" stop-opacity="0.45"/>
-              <stop offset="55%" stop-color="#ECC881" stop-opacity="0.08"/>
-              <stop offset="100%" stop-color="#ECC881" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <!-- Soft glow behind jar -->
-          <circle cx="200" cy="240" r="200" fill="url(#heroGlow)"/>
-
-          <!-- Animated falling coin -->
-          <g>
-            <circle cx="200" cy="40" r="16" fill="#C8902E">
-              <animate attributeName="cy" values="40;185;185;40" keyTimes="0;0.55;0.6;1" dur="3s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.15;0.55;0.6;1" dur="3s" repeatCount="indefinite"/>
-            </circle>
-            <circle cx="200" cy="40" r="16" fill="none" stroke="#0F2A24" stroke-width="2.5">
-              <animate attributeName="cy" values="40;185;185;40" keyTimes="0;0.55;0.6;1" dur="3s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.15;0.55;0.6;1" dur="3s" repeatCount="indefinite"/>
-            </circle>
-            <!-- Coin "$" detail -->
-            <text x="200" y="46" font-family="Quicksand, sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#0F2A24">
-              $
-              <animate attributeName="y" values="46;191;191;46" keyTimes="0;0.55;0.6;1" dur="3s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.15;0.55;0.6;1" dur="3s" repeatCount="indefinite"/>
-            </text>
-          </g>
-
-          <!-- Jar lid -->
-          <rect x="100" y="170" width="200" height="34" rx="6" fill="#0F2A24"/>
-          <!-- Coin slot -->
-          <rect x="170" y="180" width="60" height="10" rx="3" fill="#F5F1EA"/>
-
-          <!-- Jar body -->
-          <rect x="90" y="204" width="220" height="220" rx="22" fill="#0F2A24"/>
-
-          <!-- Subtle highlight stripe on jar -->
-          <rect x="106" y="218" width="14" height="190" rx="7" fill="#1B3A33"/>
-
-          <!-- Friendly face on jar (matches logo) -->
-          <circle cx="158" cy="290" r="7" fill="#F5F1EA"/>
-          <circle cx="242" cy="290" r="7" fill="#F5F1EA"/>
-          <path d="M152 328 Q200 362 248 328" stroke="#F5F1EA" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-
-          <!-- Coins stacked at bottom inside jar -->
-          <circle cx="148" cy="402" r="11" fill="#C8902E"/>
-          <circle cx="172" cy="408" r="11" fill="#ECC881"/>
-          <circle cx="200" cy="402" r="11" fill="#C8902E"/>
-          <circle cx="228" cy="408" r="11" fill="#ECC881"/>
-          <circle cx="252" cy="402" r="11" fill="#C8902E"/>
-          <circle cx="186" cy="394" r="11" fill="#C8902E"/>
-          <circle cx="214" cy="394" r="11" fill="#ECC881"/>
-
-          <!-- Hanging tag with "tipjar" label -->
-          <g transform="translate(280, 175) rotate(8)">
-            <line x1="0" y1="0" x2="0" y2="32" stroke="#0F2A24" stroke-width="2.5" stroke-linecap="round"/>
-            <rect x="-32" y="32" width="74" height="32" rx="6" fill="#F5F1EA" stroke="#0F2A24" stroke-width="2.5"/>
-            <text x="5" y="53" font-family="Quicksand, sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#0F2A24" letter-spacing="0.4">tipjar</text>
-          </g>
-        </svg>
       </div>
     </div>
   </div>
@@ -11798,14 +11815,22 @@ function switchView(view) {
   document.querySelectorAll('.nav-drawer-link').forEach(b => b.classList.remove('active'));
   document.querySelectorAll(`.nav-drawer-link[data-view="${view}"]`).forEach(b => b.classList.add('active'));
 
-  // Toggle body class for full-screen views (Coach is a chat-app, hide marketing chrome)
-  document.body.classList.toggle('coach-view-active', view === 'coach');
-
   // Auto-close drawer when navigating
   closeNavDrawer();
 
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
+
+/* Measure actual header height and expose as CSS variable so coach-shell sizing is exact */
+function syncHeaderHeight() {
+  const header = document.querySelector('.app-header');
+  if (!header) return;
+  const h = Math.ceil(header.getBoundingClientRect().height);
+  document.documentElement.style.setProperty('--header-height', h + 'px');
+}
+syncHeaderHeight();
+window.addEventListener('resize', syncHeaderHeight);
+window.addEventListener('load', syncHeaderHeight);
 
 /* ============================================================
    Mobile drawer — open/close + balance sync
