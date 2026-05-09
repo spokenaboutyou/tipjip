@@ -3891,6 +3891,13 @@ input, textarea, select {
   height: calc(100vh - 65px);
   background: var(--parchment);
 }
+
+/* Coach is a full-screen chat app — hide marketing footer + lock body scroll */
+body.coach-view-active .app-footer { display: none; }
+body.coach-view-active { overflow: hidden; }
+/* Also use :has() for browsers that support it, in case JS hasn't fired yet */
+body:has(.view.active[data-view="coach"]) .app-footer { display: none; }
+body:has(.view.active[data-view="coach"]) { overflow: hidden; }
 .coach-side {
   background: var(--parchment-2);
   border-right: 1px solid var(--line);
@@ -11790,6 +11797,9 @@ function switchView(view) {
   // Sync mobile drawer active state
   document.querySelectorAll('.nav-drawer-link').forEach(b => b.classList.remove('active'));
   document.querySelectorAll(`.nav-drawer-link[data-view="${view}"]`).forEach(b => b.classList.add('active'));
+
+  // Toggle body class for full-screen views (Coach is a chat-app, hide marketing chrome)
+  document.body.classList.toggle('coach-view-active', view === 'coach');
 
   // Auto-close drawer when navigating
   closeNavDrawer();
