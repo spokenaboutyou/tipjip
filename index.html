@@ -276,10 +276,70 @@ input, textarea, select {
 .hero-h1-row h1 {
   margin-bottom: 0;
 }
+.hero-brand-def {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--evergreen);
+  margin-bottom: 18px;
+  padding-left: 16px;
+  border-left: 3px solid var(--gold);
+  line-height: 1.5;
+  max-width: 620px;
+}
+.hero-brand-def strong {
+  font-weight: 700;
+  color: var(--gold);
+  font-style: normal;
+}
+.hero-real-human-promise {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: var(--evergreen);
+  color: var(--parchment);
+  padding: 10px 18px 10px 14px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  line-height: 1.4;
+  max-width: 620px;
+}
+.hero-real-human-promise .check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: var(--gold);
+  color: var(--evergreen);
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.hero-real-human-promise strong {
+  font-weight: 700;
+  color: var(--gold-soft);
+}
+.hero-real-human-promise .standards-link {
+  color: var(--gold-soft);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(236, 200, 129, 0.4);
+  padding-bottom: 1px;
+  margin-left: 4px;
+}
+.hero-real-human-promise .standards-link:hover {
+  border-bottom-color: var(--gold-soft);
+}
 .hero-h1-jar {
   flex-shrink: 0;
-  width: 180px;
-  height: 180px;
+  width: 350px;
+  height: 350px;
   filter: drop-shadow(0 16px 32px rgba(15, 42, 36, 0.15));
 }
 .hero-h1-jar svg {
@@ -3902,6 +3962,113 @@ input, textarea, select {
   .three-roles-grid { grid-template-columns: 1fr; gap: 14px; padding: 0 20px; }
 }
 
+/* Podcaster callout */
+.three-roles-podcaster-callout {
+  margin: 32px 32px 0;
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: 18px;
+  padding: 28px 36px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 32px;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.three-roles-podcaster-callout::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(ellipse at center, rgba(200,144,46,0.15), transparent 60%);
+  pointer-events: none;
+}
+.three-roles-podcaster-callout:hover {
+  box-shadow: 0 12px 36px rgba(15,42,36,0.25);
+  transform: translateY(-2px);
+}
+.three-roles-podcaster-callout .callout-icon {
+  width: 64px;
+  height: 64px;
+  background: rgba(200,144,46,0.15);
+  border: 1.5px solid var(--gold);
+  border-radius: 16px;
+  color: var(--gold-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.three-roles-podcaster-callout .callout-icon svg {
+  width: 32px;
+  height: 32px;
+}
+.three-roles-podcaster-callout .callout-content {
+  position: relative;
+}
+.callout-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.three-roles-podcaster-callout h3 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  color: var(--parchment);
+  margin-bottom: 6px;
+}
+.three-roles-podcaster-callout h3 em {
+  color: var(--gold-soft);
+  font-style: italic;
+}
+.three-roles-podcaster-callout p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--sage);
+  margin: 0;
+}
+.three-roles-podcaster-callout .callout-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gold);
+  white-space: nowrap;
+  flex-shrink: 0;
+  position: relative;
+}
+.three-roles-podcaster-callout .callout-cta svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+.three-roles-podcaster-callout:hover .callout-cta svg {
+  transform: translateX(4px);
+}
+@media (max-width: 900px) {
+  .three-roles-podcaster-callout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 24px;
+    margin: 24px 20px 0;
+  }
+  .three-roles-podcaster-callout .callout-icon { width: 48px; height: 48px; }
+  .three-roles-podcaster-callout h3 { font-size: 22px; }
+}
+
 /* ========================================================================
    TipJip Coach — AI health coach view (consumer)
    ======================================================================== */
@@ -6530,6 +6697,837 @@ input, textarea, select {
   color: var(--parchment);
   min-height: calc(100vh - 65px);
 }
+
+/* ========================================================================
+   PODCAST VIEW
+   ======================================================================== */
+.podcast-hero {
+  background: var(--evergreen);
+  color: var(--parchment);
+  padding: 72px 32px 64px;
+  border-bottom: 1px solid rgba(245,241,234,0.08);
+  position: relative;
+  overflow: hidden;
+}
+.podcast-hero::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  right: -100px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(ellipse at center, rgba(200,144,46,0.18), transparent 60%);
+  pointer-events: none;
+}
+.podcast-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  font-weight: 600;
+  margin-bottom: 16px;
+  position: relative;
+}
+.podcast-hero h1 {
+  font-family: var(--font-display);
+  font-size: 60px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--parchment);
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 920px;
+}
+.podcast-hero h1 em {
+  color: var(--gold-soft);
+  font-style: italic;
+}
+.podcast-lede {
+  max-width: 740px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--sage);
+  margin-bottom: 32px;
+  position: relative;
+}
+.podcast-cta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  position: relative;
+}
+.btn-outline-light {
+  background: transparent;
+  color: var(--parchment);
+  border: 1px solid rgba(245,241,234,0.3);
+}
+.btn-outline-light:hover {
+  background: rgba(245,241,234,0.08);
+  border-color: var(--gold-soft);
+}
+
+.podcast-section {
+  padding: 80px 0;
+  border-bottom: 1px solid var(--line);
+}
+.podcast-section:last-child { border-bottom: none; }
+.podcast-section-header {
+  margin-bottom: 48px;
+  max-width: 820px;
+}
+.podcast-section h2 {
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--evergreen);
+  margin-bottom: 18px;
+}
+.podcast-section h2 em {
+  color: var(--gold);
+  font-style: italic;
+}
+.podcast-section-sub {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 760px;
+}
+.podcast-section-sub em {
+  font-style: italic;
+  color: var(--evergreen);
+  font-weight: 500;
+}
+
+/* Three slots grid */
+.podcast-slots-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.podcast-slot-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 32px 28px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.podcast-slot-featured {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-color: var(--evergreen);
+  box-shadow: 0 12px 36px rgba(15, 42, 36, 0.18);
+}
+.slot-tag {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+  background: var(--parchment-2);
+  padding: 5px 10px;
+  border-radius: 100px;
+  margin-bottom: 16px;
+  align-self: flex-start;
+}
+.slot-tag-gold {
+  color: var(--evergreen);
+  background: var(--gold);
+}
+.podcast-slot-card h3 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.podcast-slot-featured h3 { color: var(--parchment); }
+.slot-position {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.podcast-slot-featured .slot-position { color: var(--gold-soft); }
+.podcast-slot-card p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin-bottom: 24px;
+  flex: 1;
+}
+.podcast-slot-featured p { color: var(--sage); }
+.slot-econ {
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+.podcast-slot-featured .slot-econ {
+  border-top-color: rgba(245,241,234,0.1);
+}
+.slot-econ-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.slot-econ-row:last-child { margin-bottom: 0; }
+.slot-econ-row span { color: var(--muted); }
+.podcast-slot-featured .slot-econ-row span { color: var(--sage); }
+.slot-econ-row strong {
+  color: var(--gold);
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+
+.podcast-mechanic-note {
+  margin-top: 36px;
+  padding: 24px 28px;
+  background: var(--parchment-2);
+  border-left: 4px solid var(--gold);
+  border-radius: 0 12px 12px 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--evergreen);
+}
+.podcast-mechanic-note strong {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* Example */
+.podcast-example-section {
+  background: var(--parchment-2);
+  margin-left: -32px;
+  margin-right: -32px;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+.podcast-example {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 40px 44px;
+}
+.podcast-example-header {
+  margin-bottom: 36px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--line);
+}
+.example-show-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.podcast-example-header h3 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--evergreen);
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+  line-height: 1.25;
+}
+.example-show-stats {
+  display: flex;
+  gap: 32px;
+  font-size: 13px;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+.example-show-stats strong {
+  color: var(--evergreen);
+  font-family: var(--font-display);
+}
+
+/* Timeline */
+.podcast-timeline {
+  margin-bottom: 36px;
+}
+.timeline-header {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+.timeline-track {
+  position: relative;
+  height: 100px;
+  margin-bottom: 24px;
+}
+.timeline-bar {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--evergreen);
+  border-radius: 2px;
+}
+.timeline-slot {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 200px;
+}
+.timeline-slot-mid {
+  width: 220px;
+}
+.timeline-slot-end {
+  transform: translateX(-100%);
+  align-items: flex-end;
+  text-align: right;
+}
+.timeline-slot:first-child {
+  transform: translateX(0);
+  align-items: flex-start;
+  text-align: left;
+}
+.timeline-slot-dot {
+  width: 28px;
+  height: 28px;
+  background: var(--evergreen);
+  border-radius: 50%;
+  border: 4px solid var(--gold);
+  margin-bottom: 12px;
+}
+.timeline-slot-dot-gold {
+  background: var(--gold);
+  border-color: var(--evergreen);
+  width: 32px;
+  height: 32px;
+  margin-top: -2px;
+}
+.timeline-slot-label strong {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--evergreen);
+  margin-bottom: 2px;
+}
+.timeline-slot-label span {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+}
+.timeline-footer {
+  text-align: center;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--gold);
+  font-weight: 600;
+  font-family: var(--font-display);
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+}
+
+/* Earnings grid */
+.podcast-earnings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 32px;
+}
+.earnings-card {
+  padding: 24px 24px;
+  background: var(--parchment-2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+.earnings-card-featured {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-color: var(--evergreen);
+}
+.earnings-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.earnings-card-featured .earnings-label { color: var(--gold-soft); }
+.earnings-stat {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+.earnings-card-featured .earnings-stat { color: var(--gold-soft); }
+.earnings-detail {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.earnings-card-featured .earnings-detail { color: var(--sage); }
+
+/* Comparison table */
+.podcast-comparison {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--white);
+}
+.comparison-row {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(4, 1fr);
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--line);
+  align-items: center;
+  font-size: 14px;
+}
+.comparison-row:last-child { border-bottom: none; }
+.comparison-row.comparison-header {
+  background: var(--evergreen);
+  color: var(--gold-soft);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.comparison-row > div {
+  text-align: center;
+  font-weight: 500;
+}
+.comparison-row > div:first-child {
+  text-align: left;
+  color: var(--evergreen);
+  font-weight: 500;
+}
+.comp-yes { color: #2D6E4D; font-weight: 700; }
+.comp-no { color: #9C2A2A; font-weight: 600; }
+.comp-mid { color: var(--muted); font-weight: 500; }
+
+/* Apply CTA */
+.podcast-apply {
+  background: var(--evergreen);
+  color: var(--parchment);
+  margin-left: -32px;
+  margin-right: -32px;
+  padding: 80px 32px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.podcast-apply::before {
+  content: "";
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(ellipse at center, rgba(200,144,46,0.18), transparent 60%);
+  pointer-events: none;
+}
+.podcast-apply-content {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.podcast-apply h2 {
+  font-size: 48px;
+  color: var(--parchment);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin-bottom: 18px;
+}
+.podcast-apply h2 em { color: var(--gold-soft); }
+.podcast-apply p {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--sage);
+  max-width: 660px;
+  margin: 0 auto 28px;
+}
+.podcast-apply-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .podcast-hero h1 { font-size: 40px; }
+  .podcast-section h2 { font-size: 30px; }
+  .podcast-slots-grid { grid-template-columns: 1fr; }
+  .podcast-earnings-grid { grid-template-columns: 1fr; }
+  .timeline-track { display: none; } /* Timeline doesn't fit mobile, skip it */
+  .comparison-row { grid-template-columns: 1.4fr repeat(2, 1fr); }
+  .comparison-row > div:nth-child(4),
+  .comparison-row > div:nth-child(5) { display: none; }
+  .podcast-apply h2 { font-size: 32px; }
+  .podcast-example { padding: 28px 24px; }
+}
+
+/* ========================================================================
+   CONTENT STANDARDS VIEW (the AI rule)
+   ======================================================================== */
+.standards-hero {
+  background: var(--evergreen);
+  color: var(--parchment);
+  padding: 72px 32px 64px;
+  text-align: center;
+  border-bottom: 1px solid rgba(245,241,234,0.08);
+  position: relative;
+  overflow: hidden;
+}
+.standards-hero::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 320px;
+  background: radial-gradient(ellipse at center, rgba(200,144,46,0.20), transparent 60%);
+  pointer-events: none;
+}
+.standards-hero .standards-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  font-weight: 600;
+  margin-bottom: 16px;
+  position: relative;
+}
+.standards-hero h1 {
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--parchment);
+  margin-bottom: 24px;
+  position: relative;
+}
+.standards-hero h1 em {
+  color: var(--gold-soft);
+  font-style: italic;
+}
+.standards-lede {
+  max-width: 780px;
+  margin: 0 auto;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--sage);
+  position: relative;
+}
+.standards-section {
+  padding: 80px 0;
+  border-bottom: 1px solid var(--line);
+}
+.standards-section:last-child { border-bottom: none; }
+.standards-section-header {
+  margin-bottom: 48px;
+  max-width: 760px;
+}
+.standards-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.standards-section h2 {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--evergreen);
+  margin-bottom: 18px;
+}
+.standards-section h2 em {
+  color: var(--gold);
+  font-style: italic;
+}
+.standards-section-sub {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 700px;
+}
+.standards-rule-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 40px;
+  background: var(--evergreen);
+  color: var(--parchment);
+  padding: 48px 56px;
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.standards-rule-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 6px; height: 100%;
+  background: var(--gold);
+}
+.standards-rule-num {
+  font-family: var(--font-display);
+  font-size: 96px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.standards-rule-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.standards-rule-content h2 {
+  font-size: 30px;
+  color: var(--parchment);
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+.standards-rule-content p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--sage);
+}
+.standards-allowed-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.standards-allowed-col {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 36px 32px;
+}
+.standards-allowed-col.allowed-no {
+  background: rgba(156, 42, 42, 0.03);
+  border-color: rgba(156, 42, 42, 0.15);
+}
+.allowed-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #2D6E4D;
+  background: rgba(45, 110, 77, 0.08);
+  padding: 6px 12px;
+  border-radius: 100px;
+  margin-bottom: 18px;
+}
+.allowed-tag.tag-no {
+  color: #9C2A2A;
+  background: rgba(156, 42, 42, 0.08);
+}
+.standards-allowed-col h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--evergreen);
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+.allowed-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.allowed-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.allowed-list li:last-child { border-bottom: none; }
+.allowed-list strong {
+  color: var(--evergreen);
+  font-weight: 600;
+}
+.standards-why {
+  background: var(--parchment-2);
+  margin-left: -32px;
+  margin-right: -32px;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+.standards-why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 36px;
+}
+.standards-why-card {
+  background: var(--white);
+  padding: 32px 28px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+}
+.standards-why-stat {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+.standards-why-card p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.standards-why-conclusion {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--evergreen);
+  max-width: 880px;
+  padding: 24px 32px;
+  border-left: 4px solid var(--gold);
+  background: var(--white);
+  border-radius: 0 14px 14px 0;
+}
+.standards-enforce-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.standards-enforce-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 28px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 28px 32px;
+  align-items: flex-start;
+}
+.enforce-num {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  min-width: 50px;
+}
+.enforce-content h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--evergreen);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.enforce-content p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.standards-disclose-table {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--white);
+}
+.disclose-row {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  padding: 18px 28px;
+  border-bottom: 1px solid var(--line);
+  align-items: center;
+  font-size: 15px;
+}
+.disclose-row:last-child { border-bottom: none; }
+.disclose-row.disclose-header {
+  background: var(--evergreen);
+  color: var(--gold-soft);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.disclose-row > div:first-child { color: var(--evergreen); font-weight: 500; }
+.disclose-yes { color: #9C2A2A; font-weight: 600; }
+.disclose-no { color: #2D6E4D; font-weight: 600; }
+.standards-promise {
+  background: var(--evergreen);
+  color: var(--parchment);
+  margin-left: -32px;
+  margin-right: -32px;
+  padding: 80px 32px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.standards-promise::before {
+  content: "";
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(ellipse at center, rgba(200,144,46,0.18), transparent 60%);
+  pointer-events: none;
+}
+.standards-promise-content { position: relative; }
+.gold-eyebrow { color: var(--gold-soft) !important; }
+.standards-promise h2 {
+  font-size: 52px;
+  color: var(--parchment);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin-bottom: 18px;
+}
+.standards-promise h2 em { color: var(--gold-soft); }
+.standards-promise p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--sage);
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .standards-hero h1 { font-size: 44px; }
+  .standards-section h2 { font-size: 32px; }
+  .standards-rule-card { grid-template-columns: 1fr; padding: 36px 28px; gap: 20px; }
+  .standards-rule-num { font-size: 64px; }
+  .standards-allowed-grid { grid-template-columns: 1fr; }
+  .standards-why-grid { grid-template-columns: 1fr; }
+  .standards-promise h2 { font-size: 36px; }
+}
+
 .why-hero {
   padding: 72px 32px 56px;
   text-align: center;
@@ -6975,7 +7973,7 @@ input, textarea, select {
           Creators want to <span class="earn">EARN</span> it.
         </div>
         <div class="hero-h1-row">
-          <h1>Get paid to&nbsp;watch.<br><em>Tip</em> with thanks.<br><em>Jip</em> with feedback.</h1>
+          <h1>Get paid to&nbsp;watch.<br><em>Reward</em> what you love.<br><em>Skip</em> what you don't.</h1>
           <div class="hero-h1-jar">
             <svg viewBox="0 0 400 440" xmlns="http://www.w3.org/2000/svg" aria-label="The TipJip tip jar collecting coins">
               <defs>
@@ -7033,9 +8031,11 @@ input, textarea, select {
             </svg>
           </div>
         </div>
-        <p class="lede">Phone-verify in 30 seconds — you're <strong>Tip Jar #4471</strong>, no name asked. Every ad you finish drops $0.50 to $3 in your jar. Tip the creator with a thank-you, or jip and keep the coin with feedback. <strong>Three people, one transaction.</strong> No data brokers, no middlemen, no names.</p>
+        <p class="hero-brand-def"><strong>TipJip</strong> — the tip jar, now for video. Watch ads. Pay creators with a tip. Or skip with feedback.</p>
+        <p class="hero-real-human-promise"><span class="check">✓</span> <strong>100% real humans on screen.</strong> No AI faces. No deepfakes. No synthetic performers. <a href="#" data-view="standards" class="standards-link">Read the rule →</a></p>
+        <p class="lede"><strong>The first video platform that pays you, not Big Tech.</strong> Phone-verify in 30 seconds — no name needed — and every ad you finish drops $0.50 to $3 in your jar. Reward creators who teach you something. Skip the rest. Cash out at $20.</p>
         <div class="hero-cta">
-          <button class="btn btn-primary btn-lg" data-view="signup">Get your tip jar — free</button>
+          <button class="btn btn-primary btn-lg" data-view="signup">Claim your tip jar — free</button>
           <button class="btn btn-outline btn-lg" data-view="watch">See it in action</button>
         </div>
       </div>
@@ -7046,9 +8046,9 @@ input, textarea, select {
        THREE ROLES — quick-grok block right below hero
        ======================================================================== -->
   <div class="three-roles">
-    <div class="three-roles-eyebrow">⏤ Three roles, one transaction</div>
-    <h2>Whoever you are, <em>TipJip pays you</em><br>for what you actually bring.</h2>
-    <p class="three-roles-sub">Health & wellness video, but the money flows straight between the people who matter — no platform stack in the middle.</p>
+    <div class="three-roles-eyebrow">⏤ Three humans, one transaction</div>
+    <h2>Verified humans get paid.<br><em>Everyone else gets the door.</em></h2>
+    <p class="three-roles-sub">Three people in every transaction — viewer, creator, advertiser. No data brokers. No bot farms. No tracking pixels. Just money flowing between humans who can prove they're human.</p>
 
     <div class="three-roles-grid">
 
@@ -7071,8 +8071,8 @@ input, textarea, select {
           </svg>
         </div>
         <div class="role-card-eyebrow">If you watch</div>
-        <h3>Get paid for your <em>attention.</em><br>No name required.</h3>
-        <p class="role-card-body">Phone-verify in 30 seconds and you're <strong>Tip Jar #4471</strong> — no name, no email, ever. Watch a video, slide to confirm you're real, and the advertiser's $0.50–$3 lands in your jar. Tip the creator with thanks, or jip and keep it with feedback.</p>
+        <h3>You're a verified human.<br><em>That's worth money now.</em></h3>
+        <p class="role-card-body">Phone-verify in 30 seconds. No name. No email. You're Tip Jar #4471. Every ad drops $0.50–$3 in your jar. Tip the creator with thanks, or jip and keep it with feedback. The advertiser pays the human directly. That's it.</p>
         <div class="role-card-stats">
           <div class="role-card-stat">
             <div class="num">$25.50</div>
@@ -7111,8 +8111,8 @@ input, textarea, select {
           </svg>
         </div>
         <div class="role-card-eyebrow">If you create</div>
-        <h3>Earn from real attention. <em>Keep 100%</em> of every tip.</h3>
-        <p class="role-card-body">No algorithm. No demonetization. No platform cut. Verified viewers thank you with coins (every cent is yours), and jip notes give you honest critique to sharpen the next video. Your <strong>tip rate is your reputation</strong> — earned, not gamed.</p>
+        <h3>Real attention. <em>100% of the tip.</em></h3>
+        <p class="role-card-body">No algorithm. No demonetization. No platform cut. Verified humans thank you with coins (every cent is yours). Jip notes are honest critique that bots can't fake. Your tip rate is your reputation — earned, not gamed.</p>
         <div class="role-card-stats">
           <div class="role-card-stat">
             <div class="num">$3,490</div>
@@ -7149,8 +8149,8 @@ input, textarea, select {
           </svg>
         </div>
         <div class="role-card-eyebrow">If you advertise</div>
-        <h3>Pay <em>the human.</em><br>Not a platform stack.</h3>
-        <p class="role-card-body">Bid $0.50+ per ad. Pay only for slide-confirmed, phone-verified watches. Target on consented traits — health interests, wellness goals, practitioner relationships, lifestyle. <strong>Zero fraud, zero data brokers,</strong> 100% real humans who chose to watch.</p>
+        <h3>Every impression is human. <em>Every one.</em></h3>
+        <p class="role-card-body">Bid $0.50+ per ad. Pay only for slide-confirmed, phone-verified watches. Target on consented traits — health interests, wellness goals, practitioner relationships. Zero bots. Zero data brokers. Zero invalid traffic. The cleanest media buy on the internet.</p>
         <div class="role-card-stats">
           <div class="role-card-stat">
             <div class="num">8.3%</div>
@@ -7168,6 +8168,26 @@ input, textarea, select {
       </div>
 
     </div>
+
+    <!-- Podcaster callout -->
+    <div class="three-roles-podcaster-callout" data-view="podcast">
+      <div class="callout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="2" width="6" height="11" rx="3"/>
+          <path d="M5 10v2a7 7 0 0 0 14 0v-2"/>
+          <path d="M12 19v3"/>
+        </svg>
+      </div>
+      <div class="callout-content">
+        <div class="callout-eyebrow">⏤ NEW · For health &amp; wellness video podcasters</div>
+        <h3>Run a video podcast?<br><em>Three ad slots. Your call.</em></h3>
+        <p>Pre-roll, mid-stream, post-roll — pick any combination. 0% platform cut from ads. Listener pays you directly. Founding 25 spots open.</p>
+      </div>
+      <div class="callout-cta">
+        Apply as a podcaster
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </div>
+    </div>
   </div>
 
   <div class="section">
@@ -7177,7 +8197,7 @@ input, textarea, select {
           <div class="section-eyebrow">How it works</div>
           <h2>Watch.<br><em>Tip or jip.</em><br>Cash out.</h2>
         </div>
-        <p class="section-tagline">Three steps. About sixty seconds. The whole transaction lives between you, the creator, and the advertiser — nobody else.</p>
+        <p class="section-tagline">Three steps. Sixty seconds. The whole transaction lives between three people — viewer, creator, advertiser. Nobody else gets a cut. Nobody else gets your data.</p>
       </div>
 
       <div class="flow-grid">
@@ -7186,24 +8206,24 @@ input, textarea, select {
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14v12a2 2 0 01-2 2H7a2 2 0 01-2-2V8z"/><path d="M5 8V5a1 1 0 011-1h12a1 1 0 011 1v3"/><line x1="9" y1="6" x2="15" y2="6"/></svg>
           </div>
           <span class="step-num">01 — Watch</span>
-          <h3>The advertiser fills your tip jar.</h3>
-          <p>Find a video, hit play. A 30-second sponsor ad runs first. The moment it ends, the advertiser drops their bid into your tip jar — minimum $0.50, often $1 to $3 for premium audiences. Not yet yours to keep, but waiting on your next move.</p>
+          <h3>The advertiser fills your jar.</h3>
+          <p>Hit play. A 30-second sponsor ad runs first. The moment it ends, the advertiser's bid drops into your tip jar — minimum $0.50, often $1 to $3. The money is already yours. You just decide where it goes next.</p>
         </div>
         <div class="flow-step">
           <div class="step-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6m0 8v6m-10-10h6m8 0h6"/><circle cx="12" cy="12" r="3"/></svg>
           </div>
           <span class="step-num">02 — Tip or jip</span>
-          <h3>Drop it in their jar — or in yours.</h3>
-          <p><em>Tip</em> if the video taught you something — drop your coin in the creator's jar with a thanks. <em>Jip</em> if it didn't quite land — keep the coin in your own jar with feedback that helps them sharpen the next one.</p>
+          <h3>Their jar — or yours.</h3>
+          <p><em>Tip</em> if the video taught you something. The coin goes to the creator with a thank-you. <em>Jip</em> if it didn't land. The coin stays in your jar with anonymous feedback. Either way, the money flows. The data doesn't.</p>
         </div>
         <div class="flow-step">
           <div class="step-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><path d="M8 14h2"/></svg>
           </div>
           <span class="step-num">03 — Cash out</span>
-          <h3>Your jar fills up. Empty it whenever.</h3>
-          <p>Coins from tipped and jipped videos both add to your TipJip jar. At $20, transfer to your bank or PayPal — no fees, no thresholds, no waiting period. Or let it ride and tip the next creator.</p>
+          <h3>Empty the jar whenever.</h3>
+          <p>Tips and jips both stack in your TipJip jar. Hit $20 and transfer to your bank or PayPal — no fees, no thresholds, no waiting period. Or let it ride and tip the next creator. Your jar, your call.</p>
         </div>
       </div>
     </div>
@@ -7214,9 +8234,9 @@ input, textarea, select {
       <div class="section-header">
         <div>
           <div class="section-eyebrow">A real walkthrough</div>
-          <h2>Meet Tip&nbsp;Jar&nbsp;<em>#756.</em><br>Watch the model in motion.</h2>
+          <h2>Tip&nbsp;Jar&nbsp;<em>#756.</em><br>One transaction, start to finish.</h2>
         </div>
-        <p class="section-tagline">Five steps from sign-up to cash-out, with a real (anonymized) viewer. The complete TipJip transaction in under two minutes.</p>
+        <p class="section-tagline">Five steps. Two minutes. From a phone-verified human to a paid-out jar — with the actual UI you'll use, not a mockup.</p>
       </div>
 
       <div class="story-stack">
@@ -7530,9 +8550,9 @@ input, textarea, select {
       <div class="section-header">
         <div>
           <div class="section-eyebrow">How we get paid</div>
-          <h2>We charge <em>advertisers,</em><br>not you. Not creators.</h2>
+          <h2>Advertisers pay us.<br><em>Nobody else.</em></h2>
         </div>
-        <p class="section-tagline">Plain numbers. No hidden cuts. The same fee schedule for the smallest indie advertiser as for the biggest brand.</p>
+        <p class="section-tagline">One fee. Posted publicly. Same schedule for an indie supplement brand and a Fortune 500. No platform tax on viewers. No platform tax on creators.</p>
       </div>
 
       <div class="money-grid">
@@ -7921,15 +8941,15 @@ input, textarea, select {
     <div class="audiences-tabs">
       <div class="audiences-tab active" data-aud="viewer">
         <span class="tab-label">For viewers</span>
-        <span class="tab-title">Get paid to learn.</span>
+        <span class="tab-title">Verified humans get paid.</span>
       </div>
       <div class="audiences-tab" data-aud="creator">
         <span class="tab-label">For creators</span>
-        <span class="tab-title">Earn from value, not the algorithm.</span>
+        <span class="tab-title">Real attention. 100% of the tip.</span>
       </div>
       <div class="audiences-tab" data-aud="advertiser">
         <span class="tab-label">For advertisers</span>
-        <span class="tab-title">Real attention, declared.</span>
+        <span class="tab-title">Every impression is human.</span>
       </div>
     </div>
 
@@ -7938,13 +8958,13 @@ input, textarea, select {
         <div>
           <div class="section-eyebrow">For viewers</div>
           <h3>You hold the jar.<br><em>You decide</em> where the coin goes.</h3>
-          <p class="lede">Phone-verify in 30 seconds and you're <strong>Tip Jar #4471</strong> — no name, no email, ever. Every video has a tip jar. The advertiser fills it with their bid — $0.50 minimum, often $1 to $3 for premium audiences — the moment you finish their ad. That money is already yours. Tip the creator's jar to thank them. Jip and keep the coin in your own jar with feedback for next time. You stay anonymous, the creator stays paid, and Google, Meta, and the data brokers stay out.</p>
+          <p class="lede">Phone-verify in 30 seconds. No name. No email. Ever. You're Tip Jar #4471. Every video has a jar. The advertiser fills it — $0.50 minimum, often $1 to $3 — the moment their ad ends. The money is already yours. Tip the creator with thanks. Jip and keep the coin with feedback. You stay anonymous. The creator stays paid. The data brokers stay out.</p>
           <ul class="aud-points">
-            <li>Earn $0.75 (or more) per ad you actually choose to watch</li>
-            <li>Identify only as "Tip Jar #4471" — name and email are never collected</li>
-            <li>Drop coins direct into creator jars — no platform takes a cut</li>
-            <li>Jip and help creators sharpen the next video — anonymous notes signed only with your jar number</li>
-            <li>Empty your jar to bank or PayPal at $20. No fees.</li>
+            <li>Earn $0.50 to $3 per ad — every ad you finish</li>
+            <li>You're "Tip Jar #4471." No name, no email, ever collected</li>
+            <li>Drop coins direct in creator jars — no platform tax</li>
+            <li>Jip notes are anonymous, signed only with your jar number</li>
+            <li>Cash out to bank or PayPal at $20. Zero fees.</li>
           </ul>
         </div>
         <div class="aud-card">
@@ -7961,12 +8981,12 @@ input, textarea, select {
         <div>
           <div class="section-eyebrow">For creators</div>
           <h3>The market <em>finally</em> rewards quality.</h3>
-          <p class="lede">No algorithm. No demonetization roulette. No middleman keeping half. Every coin in your jar came from a viewer who chose to drop it there — because you taught them something. Every jip is honest signal that the next video can be sharper. The tip jar tells the truth: it fills when the work earns it.</p>
+          <p class="lede">No algorithm. No demonetization. No middleman keeping half. Every coin came from a verified human who chose to drop it — because you taught them something. Every jip is honest signal a bot can't fake. The jar tells the truth: it fills when the work earns it.</p>
           <ul class="aud-points">
-            <li>Keep 100% of every coin dropped in your jar — flat, no thresholds, no platform cut</li>
-            <li>Read anonymous jip notes to sharpen the next video</li>
-            <li>Your tip rate is your reputation — display it on every thumbnail</li>
-            <li>Optional verified-practitioner status for licensed clinicians</li>
+            <li>Keep 100% of every coin — flat, no thresholds, no platform cut</li>
+            <li>Read anonymous jip notes — honest signal only verified humans can give</li>
+            <li>Your tip rate is your reputation. Display it on every thumbnail.</li>
+            <li>Verified-practitioner status for licensed clinicians</li>
           </ul>
         </div>
         <div class="aud-card">
@@ -7983,13 +9003,13 @@ input, textarea, select {
         <div>
           <div class="section-eyebrow">For advertisers</div>
           <h3>Pay <em>the human</em> for their attention. Not a proxy.</h3>
-          <p class="lede">Every ad dollar you've spent for a decade went to a platform, an exchange, a data broker, a verification vendor, an attribution tool, and finally — a sliver — to the actual person who saw your ad. TipJip removes the stack. You pay the viewer. They watched. The transaction is complete. Higher intent, zero fraud, no proxies.</p>
+          <p class="lede">Every ad dollar you've spent for a decade went to a platform, an exchange, a data broker, a verification vendor, an attribution tool — and finally, a sliver, to the human who saw your ad. TipJip kills the stack. You pay the viewer. They watched. Transaction complete. Higher intent, zero fraud, zero proxies.</p>
           <ul class="aud-points">
-            <li>Target on consented traits — health interests, wellness goals, activity level, practitioner relationships, lifestyle, demographics</li>
-            <li>Reach <strong>top-tier declarations</strong> only — viewers can name 3 priorities per category, locked by 30-day cooldown so the data stays honest</li>
-            <li>Pay only for verified watches with phone-confirmed humans and slide-to-prove attention checks</li>
-            <li>Zero invalid traffic — every viewer is a real, KYC'd human with a tip jar number</li>
-            <li>Sensitive health (perimenopause, sleep apnea, etc.) reachable by individual opt-in only — full HIPAA-grade consent records, 2× bid floor</li>
+            <li>Target on consented traits — health interests, wellness goals, practitioner relationships, lifestyle</li>
+            <li>Reach <strong>top-tier declarations</strong> only. Three priorities per category, 30-day cooldown. The data stays honest.</li>
+            <li>Pay only for verified watches — phone-confirmed humans, slide-to-prove attention</li>
+            <li>Zero invalid traffic. Every viewer is a real human with a tip jar number.</li>
+            <li>Sensitive health (perimenopause, sleep, mental health) — opt-in only, HIPAA-grade consent, 2× bid floor</li>
           </ul>
         </div>
         <div class="aud-card">
@@ -8008,10 +9028,10 @@ input, textarea, select {
     <div class="container">
       <div class="section-header">
         <div>
-          <div class="section-eyebrow">The math</div>
+          <div class="section-eyebrow">The numbers</div>
           <h2>The model only works if it works <em>for everyone.</em></h2>
         </div>
-        <p class="section-tagline">Below are real numbers from our private beta — running with hand-picked health practitioners and a closed cohort of advertisers since March.</p>
+        <p class="section-tagline">Real numbers. Real beta. Hand-picked health practitioners and a closed cohort of advertisers, running since March 2026.</p>
       </div>
       <div class="numbers-grid">
         <div class="number-card">
@@ -8039,8 +9059,8 @@ input, textarea, select {
        ======================================================================== -->
   <div class="for-business">
     <div class="for-business-eyebrow">⏤ TipJip for business</div>
-    <h2>Five products, <em>one platform.</em></h2>
-    <p class="for-business-sub">Beyond the consumer app, TipJip ships infrastructure for clinics, brands, AI companies, and developers. Each product runs on the same verified-human spine.</p>
+    <h2>Five products. <em>One verified-human spine.</em></h2>
+    <p class="for-business-sub">Consumer is just the front door. The same verified-human infrastructure powers SaaS for clinics, market research for brands, and APIs for any platform that needs to know it's talking to a real person.</p>
 
     <div class="business-grid">
 
@@ -8048,7 +9068,7 @@ input, textarea, select {
       <div class="business-card" data-view="clinic">
         <div class="business-card-eyebrow">⏤ TipJip Clinic · Live</div>
         <h3>For chiropractors, wellness centers, &amp; clinics.</h3>
-        <p class="body">Embed a TipJip widget on your clinic site. Your patients sign up, earn from advertiser bids, and a percentage of those earnings flows back to your clinic as a wellness benefit. Publish your verified-practitioner content directly to your patient cohort.</p>
+        <p class="body">Embed the TipJip widget on your site. Patients earn from advertiser bids, a percentage flows back to your clinic, and your verified-practitioner content goes straight to your cohort. A new revenue line that builds itself.</p>
         <div class="business-card-price">$99<small>/mo · per clinic location</small></div>
         <div class="business-card-cta">
           See the dashboard
@@ -8060,7 +9080,7 @@ input, textarea, select {
       <div class="business-card" data-view="pulse">
         <div class="business-card-eyebrow">⏤ TipJip Pulse · Live</div>
         <h3>For wellness brands &amp; supplement companies.</h3>
-        <p class="body">Real-time market research from 50,000+ phone-verified, opted-in humans. See what real consumers are watching, tipping, and asking about. Better than surveys (declared, not stated). Better than YouTube Trends (no bots).</p>
+        <p class="body">Real-time signal from 50,000+ phone-verified, opted-in humans. Watch behavior. Tip rates. Jip notes. Survey panels are stated. YouTube Trends has bots. Pulse is the only declared, verified-human market signal in wellness.</p>
         <div class="business-card-price">$1k–10k<small>/mo · per seat</small></div>
         <div class="business-card-cta">
           Open the dashboard
@@ -8072,7 +9092,7 @@ input, textarea, select {
       <div class="business-card" data-view="verify">
         <div class="business-card-eyebrow">⏤ TipJip Verify · Live</div>
         <h3>For platforms &amp; developers.</h3>
-        <p class="body">A drop-in API to verify "this is a phone-confirmed human, not a bot" — for any platform that wants real users in comments, reviews, replies, or interactions. Same trust signal we use internally, exposed as infrastructure.</p>
+        <p class="body">A drop-in API: "is this a verified human?" Same signal we use internally, exposed as infrastructure. For comments, reviews, replies, anywhere bots are killing your platform. The verification rail the open web needs.</p>
         <div class="business-card-price">Free<small> → $0.05/call · pay-as-you-go</small></div>
         <div class="business-card-cta">
           Read the docs
@@ -8084,7 +9104,7 @@ input, textarea, select {
       <div class="business-card" data-view="research">
         <div class="business-card-eyebrow">⏤ TipJip Research · Live</div>
         <h3>For AI companies training models.</h3>
-        <p class="body">License the world's only proprietary verified-human feedback dataset on health content. Real critiques, real preferences, real signal — written by real humans, with consent baked in. Train smarter health-domain models.</p>
+        <p class="body">License the only proprietary verified-human feedback dataset on health content. Real critique. Real preference. Consent baked in at ingestion. The training signal LLMs need but synthetic data can't replicate.</p>
         <div class="business-card-price">$50k–$500k<small>/yr · enterprise contracts</small></div>
         <div class="business-card-cta">
           Browse the dataset catalog
@@ -8096,7 +9116,7 @@ input, textarea, select {
       <div class="business-card" data-view="protocol">
         <div class="business-card-eyebrow">⏤ Agent Protocol · Live</div>
         <h3>For AI agents acting on behalf of humans.</h3>
-        <p class="body">As AI agents start browsing for humans, advertisers need a way to distinguish them. The Agent Protocol formalizes the human/agent boundary — agents identify themselves, humans earn full bid, agents earn at reduced rate. Honest by design.</p>
+        <p class="body">Agents are about to flood the open web. Advertisers need a way to tell them apart from humans. The Agent Protocol formalizes the boundary: agents identify themselves, humans earn full bid, agents earn at reduced rate. Honest by design.</p>
         <div class="business-card-price">v1.0<small> · open spec · technical preview</small></div>
         <div class="business-card-cta">
           Read the spec
@@ -8108,7 +9128,7 @@ input, textarea, select {
       <div class="business-card" data-view="why" style="background: var(--evergreen); color: var(--parchment); border-color: rgba(245,241,234,0.08);">
         <div class="business-card-eyebrow" style="color: var(--gold-soft);">⏤ For acquirers &amp; investors</div>
         <h3 style="color: var(--parchment);">Why TipJip wins the AI era.</h3>
-        <p class="body" style="color: var(--sage);">A short brief on why a verified-human-attention platform with a working economic model is one of the few defensible moats against generative content collapse. Available on request.</p>
+        <p class="body" style="color: var(--sage);">Synthetic content collapses. Synthetic engagement collapses. Synthetic identity collapses. Verified-human attention compounds. A short brief on the moat — and why a platform with a working economic model on top of it is one of the few defensible bets left.</p>
         <div class="business-card-price" style="color: var(--gold-soft);">Public brief<small style="color: var(--sage);"> · detailed financials NDA-gated</small></div>
         <div class="business-card-cta" style="color: var(--gold-soft);">
           Read the brief
@@ -8123,8 +9143,8 @@ input, textarea, select {
     <div class="container">
       <div style="text-align:center; margin-bottom: 32px;">
         <div class="section-eyebrow" style="text-align:center;">⏤ The bot fight</div>
-        <h2 style="font-family: var(--font-display); font-weight: 700; font-size: 36px; color: var(--evergreen); letter-spacing: -0.015em; line-height: 1.1; max-width: 720px; margin: 0 auto 12px;">Once a month, every active jar re-verifies.</h2>
-        <p style="font-size: 15px; color: var(--muted); max-width: 580px; margin: 0 auto;">Verification Day is how we keep the platform 99%+ bot-free. Re-confirm your phone in 30 seconds, earn a $1 bonus. Advertisers see the verification rate published every month.</p>
+        <h2 style="font-family: var(--font-display); font-weight: 700; font-size: 36px; color: var(--evergreen); letter-spacing: -0.015em; line-height: 1.1; max-width: 720px; margin: 0 auto 12px;">Every month, every jar re-verifies.</h2>
+        <p style="font-size: 15px; color: var(--muted); max-width: 580px; margin: 0 auto;">Verification Day is how we stay 99%+ bot-free. 30 seconds to re-confirm your phone. $1 bonus for showing up. Advertisers see the rate published publicly every month — no spin, no marketing math.</p>
       </div>
 
       <div class="verify-day-stat">
@@ -8136,7 +9156,7 @@ input, textarea, select {
         </div>
         <div class="verify-day-stat-text">
           <h3>This month, <strong>97.3%</strong> of active jars re-verified.</h3>
-          <p>That's 47,892 phone-verified humans confirming their attention is real. The 2.7% that lapsed are paused from earnings until they re-verify, and dropped from advertiser-targetable audiences immediately. No grace period, no exceptions.</p>
+          <p>47,892 phone-verified humans confirmed their attention is real. The 2.7% that lapsed are paused from earnings and dropped from advertiser audiences immediately. No grace period. No exceptions. The bots can't keep up.</p>
         </div>
         <div class="verify-day-stat-num">97.3<small>%</small></div>
       </div>
@@ -8148,13 +9168,13 @@ input, textarea, select {
       <div class="section-header">
         <div>
           <div class="section-eyebrow">Privacy by architecture</div>
-          <h2>We built consent <em>in,</em><br>not bolted it on.</h2>
+          <h2>Consent is the foundation.<br><em>Not the disclaimer.</em></h2>
         </div>
-        <p class="section-tagline">Compliant with Washington's My Health My Data Act, California's CPRA, and the rest of the alphabet — by design, not by retrofit.</p>
+        <p class="section-tagline">Compliant with Washington's My Health My Data Act, California's CPRA, and every regulation coming next — built in from day one, not retrofitted under pressure.</p>
       </div>
       <div class="trust-grid">
         <div>
-          <p style="font-size:17px; line-height:1.6; color:var(--evergreen); margin-bottom:24px; font-family:var(--font-body); font-weight:500; letter-spacing:-0.005em; font-style: italic;">"Privacy is a feature, not a footer link. Every trait you share is opted in. Every share-out is logged. Every deletion request propagates within 45 days. The audit trail is the product."</p>
+          <p style="font-size:17px; line-height:1.6; color:var(--evergreen); margin-bottom:24px; font-family:var(--font-body); font-weight:500; letter-spacing:-0.005em; font-style: italic;">"Privacy is the architecture, not a footer link. Every trait is opted in. Every share-out is logged. Every deletion propagates within 45 days. The audit trail isn't a feature — it's the product."</p>
           <p style="color:var(--muted); font-size:13px; letter-spacing:0.04em; text-transform:uppercase; font-weight:600;">— TipJip Privacy Charter</p>
         </div>
         <ul class="trust-list">
@@ -8164,7 +9184,7 @@ input, textarea, select {
             </div>
             <div>
               <h4>Zero-party data only</h4>
-              <p>We never infer, scrape, or buy data about you. If we know it, you told us.</p>
+              <p>We never infer, scrape, or buy. If we know it, you told us.</p>
             </div>
           </li>
           <li class="trust-item">
@@ -8172,8 +9192,8 @@ input, textarea, select {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
             </div>
             <div>
-              <h4>Full deletion rights</h4>
-              <p>One click removes your profile from us and propagates to every advertiser who saw it.</p>
+              <h4>One-click deletion</h4>
+              <p>One click. Removes your profile from us — and propagates to every advertiser who ever saw it.</p>
             </div>
           </li>
           <li class="trust-item">
@@ -8182,7 +9202,7 @@ input, textarea, select {
             </div>
             <div>
               <h4>HIPAA-aligned storage</h4>
-              <p>Health-adjacent traits are encrypted at rest and in transit, with strict role-based access.</p>
+              <p>Health-adjacent traits encrypted at rest and in transit. Role-based access. Audit logs on every read.</p>
             </div>
           </li>
           <li class="trust-item">
@@ -8190,8 +9210,8 @@ input, textarea, select {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h6m6 0h6"/><circle cx="12" cy="12" r="3"/></svg>
             </div>
             <div>
-              <h4>No third-party tracking</h4>
-              <p>No pixels, no fingerprinting, no Google or Meta SDKs. We turn the lights off on the surveillance graph.</p>
+              <h4>Zero third-party tracking</h4>
+              <p>No pixels. No fingerprinting. No Google or Meta SDKs. We turned the surveillance graph off.</p>
             </div>
           </li>
         </ul>
@@ -8201,13 +9221,13 @@ input, textarea, select {
 
   <div class="final-cta">
     <div class="container">
-      <h2>Tip with thanks. Jip with feedback.<br><em>Get paid either&nbsp;way.</em></h2>
-      <p style="color:var(--sage); font-size:16px; max-width:560px; margin:0 auto 32px; line-height:1.55;">Private beta opens March 2026. Founding viewers earn 2× on every ad for the first year. Founding creators keep 100% of every coin dropped in their jar — forever. No platform cut, no thresholds.</p>
+      <h2>The internet got broken.<br><em>We rebuilt it.</em></h2>
+      <p style="color:var(--sage); font-size:16px; max-width:560px; margin:0 auto 32px; line-height:1.55;">Private beta opens March 2026. Founding viewers earn 2× on every ad for the first year. Founding creators keep 100% of every coin — forever. No platform cut. No thresholds. The first 999 jars get founder numbers.</p>
       <div class="final-cta-form">
         <input type="email" placeholder="you@example.com" />
-        <button class="btn btn-gold">Request access</button>
+        <button class="btn btn-gold">Claim your jar</button>
       </div>
-      <p class="final-cta-note">Health-and-wellness focus · US launch · No credit card · Unsubscribe anytime</p>
+      <p class="final-cta-note">Health &amp; wellness · US launch · No credit card · Unsubscribe anytime</p>
     </div>
   </div>
 </section>
@@ -11723,6 +12743,408 @@ curl https://api.tipjip.com/v1/verify \
     </aside>
   </div>
 </section>
+
+<!-- ========================================================================
+     PODCAST CREATOR VIEW
+     ======================================================================== -->
+<section class="view" data-view="podcast">
+  <div class="podcast-hero">
+    <div class="container">
+      <div class="podcast-eyebrow">⏤ For video podcasters</div>
+      <h1>Health &amp; wellness podcasters,<br><em>finally paid like creators.</em></h1>
+      <p class="podcast-lede">Three ad slots. Your show, your rules. Pre-roll, mid-stream, post-roll — pick any combination. Verified human listeners pay you directly. No 50% platform tax. No ads from sketchy supplement brands. The first podcast platform built for the verified-human era.</p>
+      <div class="podcast-cta">
+        <button class="btn btn-gold btn-lg" data-view="signup">Apply as a podcaster</button>
+        <button class="btn btn-outline-light btn-lg" data-view="standards">Read content standards</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" style="padding: 0 32px;">
+
+    <!-- The three slots -->
+    <div class="podcast-section">
+      <div class="podcast-section-header">
+        <div class="standards-eyebrow">01 · THE THREE-SLOT MODEL</div>
+        <h2>You decide where the ads land.<br><em>Your show, your call.</em></h2>
+        <p class="podcast-section-sub">Every slot you enable adds to the listener's tip jar. They tip you with thanks, or jip and keep it themselves with feedback. Three places to earn per episode. Or one. Whatever fits your show.</p>
+      </div>
+
+      <div class="podcast-slots-grid">
+        <div class="podcast-slot-card">
+          <div class="slot-tag">SLOT 1</div>
+          <h3>Pre-roll</h3>
+          <div class="slot-position">Before episode begins</div>
+          <p>Highest engagement, lowest skip. Ideal for shows where listeners commit to the full episode. Most podcasters enable this slot by default.</p>
+          <div class="slot-econ">
+            <div class="slot-econ-row"><span>Listener earns</span><strong>$0.50–$3</strong></div>
+            <div class="slot-econ-row"><span>Tip rate (current beta)</span><strong>82%</strong></div>
+          </div>
+        </div>
+
+        <div class="podcast-slot-card podcast-slot-featured">
+          <div class="slot-tag slot-tag-gold">SLOT 2 · MOST VALUABLE</div>
+          <h3>Mid-stream</h3>
+          <div class="slot-position">You set the timestamp</div>
+          <p>Highest CPM in conventional podcasting ($30–$50). Listeners who reach mid-roll are committed. Use it once per episode, or skip it entirely for shows where flow matters more than ad inventory.</p>
+          <div class="slot-econ">
+            <div class="slot-econ-row"><span>Listener earns</span><strong>$1–$5</strong></div>
+            <div class="slot-econ-row"><span>Tip rate (current beta)</span><strong>76%</strong></div>
+          </div>
+        </div>
+
+        <div class="podcast-slot-card">
+          <div class="slot-tag">SLOT 3</div>
+          <h3>Post-roll</h3>
+          <div class="slot-position">After episode ends</div>
+          <p>Highest-intent inventory. Listeners who finish the episode are your committed audience. Cheaper per impression, but converts well for niche advertisers.</p>
+          <div class="slot-econ">
+            <div class="slot-econ-row"><span>Listener earns</span><strong>$0.50–$2</strong></div>
+            <div class="slot-econ-row"><span>Tip rate (current beta)</span><strong>88%</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="podcast-mechanic-note">
+        <strong>The mechanic, slightly different for podcasts:</strong> For a regular video, one ad runs and the listener immediately tips or jips. For a podcast, each enabled slot adds to the same jar. At episode end, your listener tips the whole jar to you, or jips and keeps it themselves with anonymous feedback. Three people, one transaction — just spread across an hour-long show.
+      </div>
+    </div>
+
+    <!-- Real Example -->
+    <div class="podcast-section podcast-example-section">
+      <div class="podcast-section-header">
+        <div class="standards-eyebrow">02 · A REAL EXAMPLE</div>
+        <h2>What this looks like in practice.</h2>
+        <p class="podcast-section-sub">Imagine Dr. Sarah Cohen, a sleep researcher who runs a 60-minute weekly video podcast called <em>"The Sleep Lab."</em> She has 8,000 verified listeners on TipJip and produces 50 episodes per year.</p>
+      </div>
+
+      <div class="podcast-example">
+        <div class="podcast-example-header">
+          <div class="podcast-example-meta">
+            <div class="example-show-eyebrow">⏤ THE SLEEP LAB · DR. SARAH COHEN</div>
+            <h3>Episode 47: Why your aura ring is lying to you about REM sleep</h3>
+            <div class="example-show-stats">
+              <div><strong>62 min</strong> runtime</div>
+              <div><strong>8,140</strong> verified listeners</div>
+              <div><strong>67%</strong> avg completion</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual timeline of slots -->
+        <div class="podcast-timeline">
+          <div class="timeline-header">EPISODE TIMELINE</div>
+          <div class="timeline-track">
+            <!-- Pre-roll marker -->
+            <div class="timeline-slot" style="left: 0%;">
+              <div class="timeline-slot-dot"></div>
+              <div class="timeline-slot-label">
+                <strong>0:00 · Pre-roll</strong>
+                <span>Sponsor: Eight Sleep · $1.50/jar</span>
+              </div>
+            </div>
+            <!-- Bar -->
+            <div class="timeline-bar"></div>
+            <!-- Mid marker -->
+            <div class="timeline-slot timeline-slot-mid" style="left: 50%;">
+              <div class="timeline-slot-dot timeline-slot-dot-gold"></div>
+              <div class="timeline-slot-label">
+                <strong>31:00 · Mid-stream</strong>
+                <span>Sponsor: Manta Sleep · $2.50/jar</span>
+              </div>
+            </div>
+            <!-- Post marker -->
+            <div class="timeline-slot timeline-slot-end" style="left: 100%;">
+              <div class="timeline-slot-dot"></div>
+              <div class="timeline-slot-label">
+                <strong>62:00 · Post-roll</strong>
+                <span>Sponsor: Hatch Restore · $1.00/jar</span>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-footer">Total per listener who completes: $5.00 added to jar</div>
+        </div>
+
+        <!-- Earnings breakdown -->
+        <div class="podcast-earnings-grid">
+          <div class="earnings-card">
+            <div class="earnings-label">Per episode</div>
+            <div class="earnings-stat">$11,400</div>
+            <div class="earnings-detail">8,140 listeners × 67% completion × $5/jar avg = $27,270 in advertiser bids. 76% tip rate to Dr. Cohen = ~$11,400 in direct tips. Plus % of jipped bids.</div>
+          </div>
+          <div class="earnings-card earnings-card-featured">
+            <div class="earnings-label">Per year (50 episodes)</div>
+            <div class="earnings-stat">$570,000</div>
+            <div class="earnings-detail">Conservative annual revenue from tips alone, before considering jipped-bid percentages or growth in listener base. No platform tax. No ad-network fees.</div>
+          </div>
+          <div class="earnings-card">
+            <div class="earnings-label">vs. Spotify Partner Program</div>
+            <div class="earnings-stat">~3.4×</div>
+            <div class="earnings-detail">Spotify takes 50% of ad revenue and pays creators based on consumption metrics. Our model would pay Dr. Cohen approximately 3.4× what Spotify's program would on the same audience.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Why this matters -->
+    <div class="podcast-section">
+      <div class="podcast-section-header">
+        <div class="standards-eyebrow">03 · WHY THIS BEATS EVERY OTHER PODCAST PLATFORM</div>
+        <h2>The math is brutal.</h2>
+      </div>
+
+      <div class="podcast-comparison">
+        <div class="comparison-row comparison-header">
+          <div></div>
+          <div>TIPJIP</div>
+          <div>SPOTIFY PARTNER</div>
+          <div>YOUTUBE</div>
+          <div>PATREON</div>
+        </div>
+        <div class="comparison-row">
+          <div>Platform cut</div>
+          <div class="comp-yes">0% from ads</div>
+          <div class="comp-no">50%</div>
+          <div class="comp-no">45%</div>
+          <div class="comp-mid">8%</div>
+        </div>
+        <div class="comparison-row">
+          <div>Verified human listeners</div>
+          <div class="comp-yes">100%</div>
+          <div class="comp-no">No</div>
+          <div class="comp-no">No</div>
+          <div class="comp-no">No</div>
+        </div>
+        <div class="comparison-row">
+          <div>No AI-generated humans</div>
+          <div class="comp-yes">Banned</div>
+          <div class="comp-no">Allowed</div>
+          <div class="comp-no">Allowed</div>
+          <div class="comp-no">Allowed</div>
+        </div>
+        <div class="comparison-row">
+          <div>Listener pays creator directly</div>
+          <div class="comp-yes">Yes</div>
+          <div class="comp-no">No</div>
+          <div class="comp-no">No</div>
+          <div class="comp-yes">Yes (subscription)</div>
+        </div>
+        <div class="comparison-row">
+          <div>Health-vertical ad quality control</div>
+          <div class="comp-yes">Pre-vetted</div>
+          <div class="comp-no">No</div>
+          <div class="comp-no">No</div>
+          <div class="comp-mid">N/A</div>
+        </div>
+        <div class="comparison-row">
+          <div>Choice of slot count (1, 2, or 3)</div>
+          <div class="comp-yes">Yes</div>
+          <div class="comp-mid">Limited</div>
+          <div class="comp-mid">Limited</div>
+          <div class="comp-no">N/A</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Application -->
+    <div class="podcast-section podcast-apply">
+      <div class="podcast-apply-content">
+        <div class="standards-eyebrow gold-eyebrow">⏤ APPLY</div>
+        <h2>We're approving the first 25<br><em>health &amp; wellness video podcasters.</em></h2>
+        <p>Application requirements: a video podcast (not audio-only), health &amp; wellness focus, real human host on camera, content standards compliance. Approval timeline: 5–7 days. Once approved, your show is live within 14 days with all three slots configurable.</p>
+        <div class="podcast-apply-buttons">
+          <button class="btn btn-gold btn-lg" data-view="signup">Apply now — founding 25 spots</button>
+          <button class="btn btn-outline-light btn-lg" data-view="standards">Read content standards first</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========================================================================
+     CONTENT STANDARDS VIEW (the AI rule)
+     ======================================================================== -->
+<section class="view" data-view="standards">
+  <div class="standards-hero">
+    <div class="container">
+      <div class="standards-eyebrow">⏤ Content Standards · The Rules</div>
+      <h1>100% real humans.<br><em>No exceptions.</em></h1>
+      <p class="standards-lede">Every face you see on TipJip is a real person who chose to be there. Every voice belongs to a verified human. We don't allow synthetic performers, AI avatars, or deepfakes — at any percentage, in any format. This is the rule that defines what TipJip is.</p>
+    </div>
+  </div>
+
+  <div class="container" style="padding: 0 32px;">
+
+    <!-- The Rule -->
+    <div class="standards-section">
+      <div class="standards-rule-card">
+        <div class="standards-rule-num">01</div>
+        <div class="standards-rule-content">
+          <div class="standards-rule-eyebrow">THE 100% REAL HUMAN RULE</div>
+          <h2>Every human face and voice on TipJip must belong to a real, consenting person.</h2>
+          <p>AI-generated performers, synthetic avatars, deepfakes, voice clones, and AI-modified faces are not permitted under any circumstance. There is no acceptable percentage. There is no labeled-AI exception. Either the human in the video is real, or the video doesn't belong on TipJip.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- What's allowed vs not -->
+    <div class="standards-section">
+      <div class="standards-section-header">
+        <div class="standards-eyebrow">02 · WHAT'S ALLOWED</div>
+        <h2>The line we draw — and why.</h2>
+        <p class="standards-section-sub">AI tools have legitimate creative uses. We allow them where they support real human creators, and ban them where they replace real human creators. Here's exactly where the line sits.</p>
+      </div>
+
+      <div class="standards-allowed-grid">
+        <div class="standards-allowed-col allowed-yes">
+          <div class="allowed-tag">✓ ALLOWED</div>
+          <h3>AI as a creative tool</h3>
+          <ul class="allowed-list">
+            <li><strong>Editing &amp; post-production.</strong> AI editing tools (cut detection, audio cleanup, color grading) are tools — like a camera or a microphone.</li>
+            <li><strong>Supporting graphics &amp; B-roll.</strong> AI-generated illustrations, animations, charts, or stock-style imagery used to illustrate concepts are fine, with metadata disclosure.</li>
+            <li><strong>Captions, transcription, translation.</strong> Auto-generated captions and translation of the creator's actual spoken words are fine — and recommended for accessibility.</li>
+            <li><strong>Background music.</strong> AI-composed music as background score is permitted with disclosure.</li>
+            <li><strong>Research &amp; scripting.</strong> Using AI to research topics or draft scripts is fine — the creator must read and own the content.</li>
+            <li><strong>Thumbnails.</strong> AI-generated thumbnails are permitted with disclosure (note: must accurately represent video content).</li>
+          </ul>
+        </div>
+
+        <div class="standards-allowed-col allowed-no">
+          <div class="allowed-tag tag-no">✗ NOT ALLOWED</div>
+          <h3>AI replacing the human</h3>
+          <ul class="allowed-list">
+            <li><strong>AI-generated faces.</strong> Synthetic performers, AI avatars, virtual influencers, generated headshots used as the on-camera presenter.</li>
+            <li><strong>Deepfakes.</strong> Face-swap technology of any kind, including putting one human's face on another's body. Both are immediate suspension.</li>
+            <li><strong>Voice cloning.</strong> AI-generated speech in the creator's voice — even of words the creator approves. The voice on the video must be the human speaking it.</li>
+            <li><strong>AI-modified faces.</strong> Face-altering filters that shift age, ethnicity, or identity. (Cosmetic filters that smooth or color-correct are fine.)</li>
+            <li><strong>Synthetic patient testimonials.</strong> AI-generated "patient" voices or faces describing experiences. Real patients only, with consent.</li>
+            <li><strong>Lip-sync to AI voice.</strong> Real human face moving lips to AI-generated audio. Both must be real, both from the same person.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Why it matters -->
+    <div class="standards-section standards-why">
+      <div class="standards-section-header">
+        <div class="standards-eyebrow">03 · WHY THIS RULE EXISTS</div>
+        <h2>Other platforms got this wrong.<br><em>We learned from them.</em></h2>
+      </div>
+
+      <div class="standards-why-grid">
+        <div class="standards-why-card">
+          <div class="standards-why-stat">38%</div>
+          <p>Of TikTok ad creatives in 2026 incorporate some form of AI-generated content. Labels exist, but most viewers don't notice them. Trust erodes invisibly.</p>
+        </div>
+        <div class="standards-why-card">
+          <div class="standards-why-stat">89%</div>
+          <p>Of enterprise marketers said they won't work with AI avatars in 2026. Even the buy-side has lost confidence in synthetic content.</p>
+        </div>
+        <div class="standards-why-card">
+          <div class="standards-why-stat">$5,000</div>
+          <p>Per-violation civil penalty under New York's S8420A for undisclosed synthetic performers in advertising. The legal direction is hardening fast.</p>
+        </div>
+      </div>
+
+      <p class="standards-why-conclusion">The major platforms (YouTube, TikTok, Meta, X) tried to compromise: allow AI content if labeled. The result is a hybrid environment where labeled-AI sits next to real content, viewers can't tell the difference, and trust collapses for everyone. We chose the harder, simpler path: the rule. Bright line. No exceptions. Easy to enforce, easy to explain, easy to trust.</p>
+    </div>
+
+    <!-- Enforcement -->
+    <div class="standards-section">
+      <div class="standards-section-header">
+        <div class="standards-eyebrow">04 · HOW WE ENFORCE</div>
+        <h2>The rule has teeth.</h2>
+      </div>
+
+      <div class="standards-enforce-list">
+        <div class="standards-enforce-item">
+          <div class="enforce-num">01</div>
+          <div class="enforce-content">
+            <h3>Identity verification at upload</h3>
+            <p>Every creator account is tied to a verified human. For verified-practitioner tier, we cross-check professional licensing. The face on screen must match the face on file.</p>
+          </div>
+        </div>
+        <div class="standards-enforce-item">
+          <div class="enforce-num">02</div>
+          <div class="enforce-content">
+            <h3>Automated detection on every video</h3>
+            <p>C2PA metadata scanning, deepfake detection, voice biometric matching. Every uploaded video runs through detection before publish. Detection isn't perfect — but it sets the floor.</p>
+          </div>
+        </div>
+        <div class="standards-enforce-item">
+          <div class="enforce-num">03</div>
+          <div class="enforce-content">
+            <h3>Viewer flagging</h3>
+            <p>Every video has a "this looks fake" flag. Two flags from verified jars triggers a manual review within 24 hours. Verified humans are the strongest detection layer we have.</p>
+          </div>
+        </div>
+        <div class="standards-enforce-item">
+          <div class="enforce-num">04</div>
+          <div class="enforce-content">
+            <h3>Suspension &amp; clawback</h3>
+            <p>Confirmed AI-generated humans = immediate account suspension and clawback of all earnings. Repeat or willful violations = permanent ban and the funds go to the affected viewers' jars.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Disclosure requirements -->
+    <div class="standards-section">
+      <div class="standards-section-header">
+        <div class="standards-eyebrow">05 · DISCLOSURE REQUIREMENTS</div>
+        <h2>If you used AI for anything other than the human, label it.</h2>
+        <p class="standards-section-sub">Required AI-use disclosures in the video metadata. Failure to disclose is treated the same as a violation.</p>
+      </div>
+
+      <div class="standards-disclose-table">
+        <div class="disclose-row disclose-header">
+          <div>Element</div>
+          <div>Disclosure required?</div>
+        </div>
+        <div class="disclose-row">
+          <div>AI-generated B-roll, illustrations, charts</div>
+          <div class="disclose-yes">Yes — metadata tag</div>
+        </div>
+        <div class="disclose-row">
+          <div>AI-composed background music</div>
+          <div class="disclose-yes">Yes — metadata tag</div>
+        </div>
+        <div class="disclose-row">
+          <div>AI-generated thumbnail</div>
+          <div class="disclose-yes">Yes — metadata tag</div>
+        </div>
+        <div class="disclose-row">
+          <div>Auto-generated captions / transcription</div>
+          <div class="disclose-no">No — standard accessibility tool</div>
+        </div>
+        <div class="disclose-row">
+          <div>AI editing tools (Descript, AutoCut, etc.)</div>
+          <div class="disclose-no">No — standard editing tool</div>
+        </div>
+        <div class="disclose-row">
+          <div>AI used in research / drafting scripts</div>
+          <div class="disclose-no">No — creator owns and reads the content</div>
+        </div>
+        <div class="disclose-row">
+          <div>Cosmetic filters (smoothing, color)</div>
+          <div class="disclose-no">No — same as makeup</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- The promise -->
+    <div class="standards-section standards-promise">
+      <div class="standards-promise-content">
+        <div class="standards-eyebrow gold-eyebrow">⏤ THE PROMISE</div>
+        <h2>If you watch a TipJip video,<br>the human you see is real.</h2>
+        <p>That's the brand. That's the rule. That's what every advertiser, every creator, and every viewer can rely on. Forever.</p>
+        <button class="btn btn-gold btn-lg" data-view="signup" style="margin-top: 24px;">Claim your tip jar — free</button>
+      </div>
+    </div>
+
+  </div>
+</section>
 </main>
 
 <!-- ========================================================================
@@ -11745,11 +13167,11 @@ curl https://api.tipjip.com/v1/verify \
           </svg>
           <span class="logo-word"><span class="tip-part">Tip</span><span class="jip-part">Jip</span></span>
         </a>
-        <p>The tip jar — now for video. Health and wellness, where every video earns the viewer first. Built consent-first, US-launched, in private beta.</p>
+        <p>The verified human attention protocol. Health &amp; wellness video where every dollar of attention flows directly between viewer, creator, and advertiser. No data brokers. No middlemen. Private beta.</p>
       </div>
       <div class="footer-col">
         <h5>Platform</h5>
-        <a data-view="browse">Browse</a><a data-view="creator">Creators</a><a data-view="advertiser">For advertisers</a><a data-view="coach">Coach</a><a data-view="signup">Sign up</a>
+        <a data-view="browse">Browse</a><a data-view="creator">Creators</a><a data-view="podcast" style="color: var(--gold-soft);">Podcasters · NEW</a><a data-view="advertiser">For advertisers</a><a data-view="coach">Coach</a><a data-view="signup">Sign up</a>
       </div>
       <div class="footer-col">
         <h5>For business</h5>
@@ -11760,8 +13182,8 @@ curl https://api.tipjip.com/v1/verify \
         <a>About</a><a>Careers</a><a>Press</a><a>Contact</a><a data-view="why" style="color: var(--gold-soft);">Why TipJip wins →</a>
       </div>
       <div class="footer-col">
-        <h5>Legal</h5>
-        <a>Privacy charter</a><a>Health data policy</a><a>Terms of service</a><a>Cookie policy</a><a>Sponsorship policy</a>
+        <h5>Standards &amp; legal</h5>
+        <a data-view="standards" style="color: var(--gold-soft);">Content Standards (No AI)</a><a>Privacy charter</a><a>Health data policy</a><a>Terms of service</a><a>Cookie policy</a><a>Sponsorship policy</a>
       </div>
     </div>
     <div class="footer-bottom">
