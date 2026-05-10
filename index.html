@@ -269,12 +269,14 @@ input, textarea, select {
 }
 .hero-h1-row {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 32px;
   margin-bottom: 28px;
 }
 .hero-h1-row h1 {
   margin-bottom: 0;
+  flex: 1;
+  min-width: 0;
 }
 .hero-brand-def {
   font-family: var(--font-display);
@@ -13703,6 +13705,439 @@ input, textarea, select {
   .protocol-hero { padding: 48px 20px; }
   .protocol-hero h1 { font-size: 32px; }
   .research-compliance { grid-template-columns: 1fr; }
+}
+
+
+/* ========================================================================
+   AUDIT FIXES — Site-wide mobile/desktop consistency pass
+   Applied: 2026-05-09
+   ======================================================================== */
+
+/* ---- WATCH VIEW: video player text + actions overflow on mobile ---- */
+@media (max-width: 768px) {
+  /* The video player content (ad text inside) needs to wrap properly */
+  .video-shell, .video-shell * {
+    max-width: 100%;
+  }
+  .video-shell {
+    min-width: 0;
+  }
+  /* Action buttons need to wrap, not overflow */
+  .video-meta-row {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .creator-row {
+    min-width: 0;
+    flex: 1;
+  }
+  .video-actions {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .video-action {
+    flex: 1;
+    justify-content: center;
+    min-width: 0;
+    font-size: 12px;
+    padding: 9px 10px;
+  }
+  /* AD bar inside player */
+  .ad-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .ad-bar > * {
+    min-width: 0;
+  }
+  /* Player ad content text needs tighter padding on mobile */
+  .ad-content { padding: 24px 16px; }
+  .ad-content h2 { font-size: 20px !important; line-height: 1.15; }
+  .ad-content p { font-size: 13px; }
+  .ad-content .brand { font-size: 11px; margin-bottom: 12px; }
+  .ad-content .ad-cta { font-size: 13px; padding: 10px 18px; }
+  /* Ad banner on top — keep on one line, smaller text */
+  .ad-banner {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    padding: 6px 10px;
+    font-size: 11px;
+    gap: 8px;
+  }
+  .ad-banner .ad-label { font-size: 10px; gap: 6px; }
+  .ad-banner .ad-label::before { font-size: 9px; padding: 2px 5px; }
+  .ad-earn { font-size: 11px; }
+  /* Player controls smaller on mobile */
+  .player-controls { padding: 8px 12px; }
+  .time-display { font-size: 11px; }
+}
+
+/* ---- BROWSE VIEW: sidebar should hide cleanly, category pills must scroll ---- */
+@media (max-width: 1024px) {
+  .browse-shell { grid-template-columns: 1fr !important; overflow-x: hidden; }
+  .browse-sidebar { display: none !important; }
+  .browse-main {
+    min-width: 0;
+    width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .browse-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+  }
+  .search-bar {
+    width: 100% !important;
+    max-width: 100%;
+  }
+  /* Category pills horizontal scroll */
+  .browse-category-row, .filter-row {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap !important;
+    width: 100%;
+    padding-bottom: 8px;
+    margin-left: -2px;
+    padding-left: 2px;
+  }
+  .browse-category-row::-webkit-scrollbar,
+  .filter-row::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-pill, .browse-category-pill {
+    flex-shrink: 0;
+  }
+  /* Video cards full width on mobile */
+  .video-card { width: 100%; min-width: 0; }
+  .video-card-thumb { width: 100%; }
+}
+
+/* ---- BROWSE DESKTOP: video duration overlapping title ---- */
+.thumb-title {
+  /* Reserve space for the duration timestamp at bottom-right */
+  padding-right: 60px;
+}
+
+/* ---- ADVERTISER MARKETING VIEW: stat cards overflow on mobile ---- */
+@media (max-width: 1024px) {
+  .adv-shell { grid-template-columns: 1fr !important; }
+  .adv-sidebar { display: none; }
+  .adv-main { min-width: 0; }
+}
+@media (max-width: 768px) {
+  /* The advertiser view uses inline-styled header. Force wrap. */
+  section.view[data-view="advertiser"] .container {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 20px;
+  }
+  section.view[data-view="advertiser"] .container > div:last-child {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 16px !important;
+    width: 100%;
+  }
+  section.view[data-view="advertiser"] h1 {
+    font-size: 24px !important;
+    line-height: 1.15;
+  }
+  section.view[data-view="advertiser"] .container > div:last-child > div > div:first-child {
+    font-size: 9px !important;
+    line-height: 1.3;
+  }
+  section.view[data-view="advertiser"] .container > div:last-child > div > div:last-child {
+    font-size: 18px !important;
+  }
+  /* Wizard steps on mobile */
+  .adv-stepper { flex-wrap: wrap; gap: 12px; }
+  .adv-step { flex: 1; min-width: 100px; }
+  /* Trait pills wrap */
+  .adv-trait-pill { display: inline-block; margin: 2px; }
+}
+
+/* ---- PULSE VIEW: filter pills overflow + content max-width ---- */
+@media (max-width: 768px) {
+  .pulse-shell { padding: 16px; min-width: 0; overflow-x: hidden; }
+  .pulse-filter-group {
+    overflow-x: auto;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    padding-bottom: 6px;
+  }
+  .pulse-filter-group::-webkit-scrollbar { display: none; }
+  .pulse-filter-pill { flex-shrink: 0; white-space: nowrap; }
+  .pulse-trend, .pulse-trend-header, .pulse-trend-legend {
+    width: 100% !important;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .pulse-trend-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pulse-trend-legend { flex-wrap: wrap; }
+  .pulse-section-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .pulse-shell h2, .pulse-shell h3 { word-wrap: break-word; }
+}
+
+/* ---- VERIFY VIEW: code blocks overflow ---- */
+@media (max-width: 768px) {
+  /* Critical: Grid items default to min-width: auto which grows to content size.
+     Force min-width: 0 so they respect parent constraints. */
+  .verify-hero-inner > * { min-width: 0; }
+  .verify-hero-inner { gap: 24px; }
+  .verify-terminal { width: 100%; max-width: 100%; }
+  .verify-terminal-body { padding: 14px 12px; font-size: 11px; line-height: 1.6; }
+  .verify-terminal-body pre { font-size: 11px; }
+  .verify-shell pre,
+  .verify-shell code,
+  .code-block,
+  .verify-code {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: pre;
+    font-size: 11px;
+  }
+  .verify-shell pre { padding: 16px 12px; }
+  .verify-actions, .verify-hero-cta {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .verify-actions a, .verify-actions button,
+  .verify-hero-cta a, .verify-hero-cta button { width: 100%; justify-content: center; }
+  .verify-btn { padding: 14px 20px !important; font-size: 14px !important; }
+  .verify-btn svg { width: 16px !important; height: 16px !important; flex-shrink: 0; }
+  /* Verify hero h1 needs to scale */
+  .verify-hero h1 { font-size: 32px !important; line-height: 1.05; }
+  .verify-hero { padding: 32px 16px !important; }
+  /* Verify key panel */
+  .verify-key-panel { grid-template-columns: 1fr !important; }
+  .verify-key-card { width: 100%; min-width: 0; }
+  .verify-key-card .key-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    word-break: break-all;
+  }
+  .verify-key-card .key-row > span:first-child { font-size: 12px; }
+}
+
+/* ---- CLINIC VIEW: cohort header overflow ---- */
+@media (max-width: 768px) {
+  .clinic-shell { padding: 16px !important; min-width: 0; overflow-x: hidden; }
+  .clinic-card { width: 100%; max-width: 100%; min-width: 0; overflow: hidden; padding: 16px !important; }
+  .clinic-card-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px;
+    width: 100%;
+  }
+  .clinic-card-header .meta {
+    width: 100%;
+    flex-wrap: wrap;
+    font-size: 11px;
+  }
+  .clinic-card h3 {
+    font-size: 18px !important;
+    word-wrap: break-word;
+  }
+  /* B2B header (clinic plan info) */
+  .b2b-header {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 16px;
+  }
+  .b2b-header h1 { font-size: 28px !important; }
+  .b2b-plan {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .b2b-plan-upgrade { width: 100%; }
+  /* Clinic stats grid */
+  .clinic-stats {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px;
+  }
+  .clinic-stat-card .value { font-size: 24px !important; }
+  .clinic-stat-card .label { font-size: 10px !important; line-height: 1.3; }
+  .clinic-stat-card .delta { font-size: 10px !important; }
+  /* Cohort table needs scroll */
+  .cohort-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: 11px;
+  }
+  .clinic-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ---- PROTOCOL VIEW: code spans need to wrap, table needs scroll ---- */
+@media (max-width: 768px) {
+  .protocol-shell { padding: 16px; overflow-x: hidden; }
+  .protocol-body { padding: 16px !important; }
+  /* Code blocks - already have overflow-x: auto on .protocol-code */
+  .protocol-code {
+    padding: 14px 12px !important;
+    font-size: 11px !important;
+    line-height: 1.6 !important;
+  }
+  .protocol-code pre { font-size: 11px; }
+  /* Rate card table needs horizontal scroll wrapper */
+  .rate-card-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    font-size: 11px;
+  }
+  .rate-card-table thead, .rate-card-table tbody, .rate-card-table tr {
+    display: table;
+    width: 100%;
+    table-layout: auto;
+  }
+  .rate-card-table th, .rate-card-table td {
+    padding: 8px 10px !important;
+    font-size: 11px !important;
+  }
+  /* Protocol section pills wrap */
+  .protocol-section-pills { flex-wrap: wrap; gap: 8px; }
+  .protocol-shell h1 { font-size: 32px !important; line-height: 1.05; }
+  .protocol-shell h2 { font-size: 22px !important; }
+}
+
+/* ---- CREATOR MARKETING: name wrapping, table overflow ---- */
+@media (max-width: 768px) {
+  .creator-shell { overflow-x: hidden; }
+  /* The inline-styled header div with H1 + Upload button — force stack */
+  section.view[data-view="creator"] .creator-shell > div:first-child {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 16px;
+  }
+  section.view[data-view="creator"] .creator-shell > div:first-child h1 {
+    font-size: 28px !important;
+  }
+  section.view[data-view="creator"] .creator-shell > div:first-child button {
+    width: 100%;
+    justify-content: center;
+  }
+  .creator-hero h1 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  .creator-tabs, .creator-tab-row {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap !important;
+    padding-bottom: 6px;
+  }
+  .creator-tab { flex-shrink: 0; white-space: nowrap; }
+  /* Video table: force horizontal scroll */
+  .video-table {
+    display: block !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    min-width: 100%;
+    font-size: 12px;
+  }
+  .video-table thead, .video-table tbody {
+    display: table;
+    width: max-content;
+    min-width: 100%;
+  }
+  .video-table tr { display: table-row; }
+  .video-table th, .video-table td {
+    display: table-cell;
+    padding: 10px 12px !important;
+  }
+}
+
+/* ---- STUDIO: nav locked items shouldn't trigger overflow on mobile ---- */
+@media (max-width: 900px) {
+  .studio-nav-item.studio-nav-locked {
+    width: auto !important;
+    flex-shrink: 0;
+  }
+}
+
+/* ---- SITE-WIDE OVERFLOW SAFETY NET ---- */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+section.view {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+@media (max-width: 768px) {
+  /* Common pattern: tables, code blocks, embeds need to be scrollable, not overflow */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  pre, code:not(:root) { max-width: 100%; }
+  /* Long unbroken strings (URLs, code, etc) wrap */
+  .wrap-anywhere, .url, .endpoint { overflow-wrap: anywhere; word-break: break-word; }
+}
+
+/* ---- SIGNUP VIEW: ensure responsive ---- */
+@media (max-width: 768px) {
+  .signup-shell { padding: 16px; overflow-x: hidden; }
+  .signup-card { padding: 24px 20px; }
+}
+
+/* ---- PROFILE VIEW: ensure stat grid behaves on mobile ---- */
+@media (max-width: 768px) {
+  .profile-stream-grid,
+  .profile-grow-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+  .profile-balance-amount { font-size: 48px; }
+  .profile-jar-num-pill { font-size: 11px; padding: 4px 10px; }
+}
+
+/* ---- COACH MARKETING: alignment ---- */
+@media (max-width: 768px) {
+  .coach-shell { padding: 16px; overflow-x: hidden; }
+  .coach-shell h1, .coach-shell h2 { word-wrap: break-word; }
+  .coach-pricing-grid { grid-template-columns: 1fr !important; gap: 16px; }
+}
+
+/* ---- WHY VIEW: alignment ---- */
+@media (max-width: 768px) {
+  .why-shell { padding: 16px; overflow-x: hidden; }
+  .why-shell h1 { font-size: 36px !important; line-height: 1.05; }
+}
+
+/* ---- STANDARDS VIEW: alignment ---- */
+@media (max-width: 768px) {
+  .standards-shell { padding: 16px; overflow-x: hidden; }
+  .standards-shell .rule-card { padding: 24px 20px !important; }
+  .standards-rule-num { font-size: 40px !important; }
+}
+
+/* ---- PODCAST MARKETING VIEW ---- */
+@media (max-width: 768px) {
+  .podcast-shell { padding: 16px; overflow-x: hidden; }
+  .podcast-shell h1 { font-size: 36px !important; word-wrap: break-word; }
+  .podcast-comparison-table { font-size: 12px; }
+}
+
+/* ---- RESEARCH VIEW ---- */
+@media (max-width: 768px) {
+  .research-shell { padding: 16px; overflow-x: hidden; }
+  .research-shell pre {
+    max-width: 100%;
+    overflow-x: auto;
+    font-size: 11px;
+  }
 }
 
 </style>
