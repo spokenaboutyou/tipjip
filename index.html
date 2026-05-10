@@ -6830,6 +6830,2269 @@ input, textarea, select {
 }
 
 /* ========================================================================
+   ACTIVATE PRACTITIONER VIEW — NPI verification flow
+   ======================================================================== */
+.apract-shell {
+  min-height: calc(100vh - 65px);
+  background: var(--parchment);
+  padding: 32px 32px 80px;
+  position: relative;
+}
+.apract-shell::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse at center, rgba(200,144,46,0.10), transparent 60%);
+  pointer-events: none;
+}
+.apract-progress {
+  max-width: 580px;
+  margin: 24px auto 48px;
+  position: relative;
+}
+.apract-progress-bar {
+  position: relative;
+  height: 3px;
+  background: var(--line);
+  border-radius: 2px;
+  margin: 0 auto;
+  width: calc(100% - 32px);
+}
+.apract-progress-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+.apract-progress-steps {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+.apract-step-marker {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--muted);
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+.apract-step-marker.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--evergreen);
+}
+.apract-step-marker.complete {
+  background: var(--evergreen);
+  border-color: var(--evergreen);
+  color: var(--gold-soft);
+}
+.apract-step-marker.complete::after {
+  content: "✓";
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.apract-step-marker.complete > span { display: none; }
+
+.apract-step {
+  display: none;
+  max-width: 880px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  animation: apractFade 0.5s ease;
+}
+.apract-step.active { display: block; }
+.apract-step-narrow.active { max-width: 580px; }
+.apract-step-verifying { text-align: center; max-width: 720px; margin: 0 auto; }
+
+@keyframes apractFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.apract-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.apract-eyebrow-fail { color: #9C2A2A; }
+.apract-headline {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--evergreen);
+  margin-bottom: 18px;
+}
+.apract-headline em {
+  color: var(--gold);
+  font-style: italic;
+}
+.apract-lede {
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin-bottom: 32px;
+  max-width: 720px;
+}
+
+.apract-section-h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--evergreen);
+  margin-bottom: 16px;
+  margin-top: 8px;
+}
+
+.apract-btn { width: 100%; margin-top: 8px; font-weight: 600; }
+.apract-skip {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 16px;
+  padding: 8px 16px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: inherit;
+  text-align: center;
+  text-decoration: none;
+}
+.apract-skip:hover { color: var(--evergreen); }
+
+/* Step 1 badge preview */
+.apract-badge-preview {
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: center;
+}
+.apract-badge-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: 18px;
+  padding: 22px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.apract-badge-card::before {
+  content: "";
+  position: absolute;
+  top: -50px; right: -50px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(200,144,46,0.18), transparent 70%);
+  pointer-events: none;
+}
+.apract-badge-icon {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  position: relative;
+}
+.apract-badge-icon svg { width: 100%; height: 100%; }
+.apract-badge-meta { position: relative; }
+.apract-badge-tag {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--gold-soft);
+  margin-bottom: 4px;
+}
+.apract-badge-name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--parchment);
+  margin-bottom: 4px;
+}
+.apract-badge-detail {
+  font-size: 13px;
+  color: var(--sage);
+}
+
+/* Benefits grid */
+.apract-benefits-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+.apract-benefit-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 22px;
+}
+.apract-benefit-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.apract-benefit-meta { min-width: 0; flex: 1; }
+.apract-benefit-meta h4 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--evergreen);
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+.apract-benefit-meta p {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+/* Eligibility card */
+.apract-eligibility-card {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: 14px;
+  padding: 22px 28px;
+  margin-bottom: 32px;
+}
+.apract-eligibility-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--gold-soft);
+  margin-bottom: 14px;
+}
+.apract-eligibility-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px 24px;
+}
+.apract-eligibility-grid > div {
+  font-size: 13px;
+  color: var(--sage);
+  padding: 4px 0 4px 22px;
+  position: relative;
+}
+.apract-eligibility-grid > div::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-weight: 800;
+}
+
+/* Step 2 NPI input */
+.apract-npi-input { margin-bottom: 24px; }
+.apract-input-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.apract-npi-wrap {
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+.apract-npi-wrap:focus-within {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(200,144,46,0.12);
+}
+.apract-input {
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 16px;
+  font-family: inherit;
+  color: var(--evergreen);
+  background: transparent;
+}
+.apract-input-large {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: 0.04em;
+  text-align: center;
+  padding: 22px 18px;
+  font-variant-numeric: tabular-nums;
+}
+.apract-input::placeholder { color: var(--muted2); font-weight: 400; }
+.apract-input-help {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+.apract-input-link {
+  color: var(--gold);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(200,144,46,0.4);
+}
+.apract-input-link:hover { border-bottom-color: var(--gold); }
+
+/* Privacy note */
+.apract-privacy-note {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: flex-start;
+  background: rgba(200,144,46,0.04);
+  border: 1px solid rgba(200,144,46,0.2);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--evergreen);
+}
+.apract-privacy-icon {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.apract-privacy-note strong {
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+.apract-privacy-note a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(200,144,46,0.4);
+}
+
+/* Demo hint */
+.apract-demo-hint {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px dashed var(--line);
+}
+.apract-demo-hint-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 12px;
+  text-align: center;
+}
+.apract-demo-hint-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.apract-demo-npi {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+.apract-demo-npi:hover {
+  border-color: var(--gold);
+  background: rgba(200,144,46,0.04);
+}
+.apract-demo-npi strong {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--evergreen);
+  letter-spacing: 0.02em;
+}
+.apract-demo-npi span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Step 3 verification states */
+.apract-verify-state {
+  animation: apractFade 0.5s ease;
+}
+.apract-verify-loader {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+}
+.apract-verify-loader svg { width: 100%; height: 100%; }
+.apract-verify-spinner {
+  animation: apractSpin 1.4s linear infinite;
+  transform-origin: center;
+}
+@keyframes apractSpin {
+  from { transform: rotate(-90deg); }
+  to { transform: rotate(270deg); }
+}
+.apract-verify-h2 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--evergreen);
+  margin-bottom: 14px;
+}
+.apract-verify-h2 em {
+  color: var(--gold);
+  font-style: italic;
+}
+.apract-verify-sub {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.apract-verify-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 32px;
+  text-align: left;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.apract-verify-substep {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font-size: 14px;
+  color: var(--muted);
+  transition: all 0.4s ease;
+}
+.apract-verify-substep.active {
+  border-color: var(--gold);
+  color: var(--evergreen);
+  background: rgba(200,144,46,0.04);
+}
+.apract-verify-substep.complete {
+  border-color: rgba(45,110,77,0.3);
+  background: rgba(45,110,77,0.04);
+  color: var(--evergreen);
+}
+.apract-verify-substep strong { font-family: var(--font-display); color: var(--evergreen); }
+.apract-verify-substep-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--line);
+  flex-shrink: 0;
+  position: relative;
+  transition: all 0.3s ease;
+}
+.apract-verify-substep.active .apract-verify-substep-dot {
+  background: var(--gold);
+  animation: apractPulse 1s ease-in-out infinite;
+}
+@keyframes apractPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.5; }
+}
+.apract-verify-substep.complete .apract-verify-substep-dot {
+  background: #2D6E4D;
+}
+.apract-verify-substep.complete .apract-verify-substep-dot::after {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--white);
+}
+
+/* Success state */
+.apract-success-icon {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 20px;
+  animation: apractSuccessPop 0.7s ease;
+}
+@keyframes apractSuccessPop {
+  0% { transform: scale(0.4) rotate(-30deg); opacity: 0; }
+  60% { transform: scale(1.15) rotate(8deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); }
+}
+
+.apract-record-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px 28px;
+  margin: 24px 0;
+  text-align: left;
+}
+.apract-record-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+.apract-record-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.apract-record-row:last-child { border-bottom: none; padding-bottom: 0; }
+.apract-record-row:first-of-type { padding-top: 0; }
+.apract-record-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.apract-record-value {
+  font-size: 14px;
+  color: var(--evergreen);
+  font-weight: 500;
+}
+.apract-record-mono {
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+.apract-record-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(45,110,77,0.10);
+  color: #2D6E4D;
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.apract-record-check {
+  width: 16px;
+  height: 16px;
+  background: #2D6E4D;
+  color: var(--white);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+.apract-result-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+}
+
+/* Failure state */
+.apract-fail-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+}
+.apract-fail-reasons {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 24px 0;
+  text-align: left;
+}
+.apract-fail-reason {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 14px;
+  padding: 10px 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--evergreen);
+  border-bottom: 1px solid var(--line);
+}
+.apract-fail-reason:last-child { border-bottom: none; padding-bottom: 0; }
+.apract-fail-reason:first-of-type { padding-top: 0; }
+.apract-fail-reason span {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(156,42,42,0.10);
+  color: #9C2A2A;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Mobile activate-practitioner */
+@media (max-width: 760px) {
+  .apract-shell { padding: 16px 18px 60px; }
+  .apract-headline { font-size: 36px; }
+  .apract-verify-h2 { font-size: 26px; }
+  .apract-badge-card { flex-direction: column; text-align: center; padding: 24px 20px; }
+  .apract-badge-icon { width: 64px; height: 64px; }
+  .apract-benefits-grid { grid-template-columns: 1fr; }
+  .apract-eligibility-grid { grid-template-columns: 1fr; }
+  .apract-input-large { font-size: 22px; padding: 18px 14px; }
+  .apract-record-row { grid-template-columns: 1fr; gap: 4px; padding: 10px 0; }
+  .apract-record-label { font-size: 11px; }
+  .apract-privacy-note { grid-template-columns: 1fr; gap: 8px; }
+  .apract-privacy-icon { font-size: 18px; }
+}
+
+/* ========================================================================
+   PRACTITIONER BADGE — appears across the app once verified
+   Gold star icon used in: profile topbar, studio identity, watch view, etc.
+   ======================================================================== */
+.practitioner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--gold);
+  color: var(--evergreen);
+  padding: 4px 10px 4px 8px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.practitioner-badge-star {
+  width: 14px; height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.practitioner-badge-star svg { width: 100%; height: 100%; }
+.practitioner-badge-mini {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4px;
+  vertical-align: -2px;
+}
+.practitioner-badge-mini svg { width: 100%; height: 100%; }
+
+/* The "unlocked badge in studio sidebar" promotion */
+.studio-practitioner-active {
+  background: linear-gradient(135deg, var(--gold), var(--gold-soft));
+  color: var(--evergreen) !important;
+  border: 1px solid var(--gold);
+  box-shadow: 0 4px 12px rgba(200, 144, 46, 0.3);
+}
+.studio-practitioner-active svg { color: var(--evergreen) !important; }
+.studio-practitioner-active .studio-nav-tag {
+  background: var(--evergreen);
+  color: var(--gold);
+}
+
+/* ========================================================================
+   ACTIVATE ADVERTISER VIEW — 5-step business KYC + first campaign
+   ======================================================================== */
+.aadv-shell {
+  min-height: calc(100vh - 65px);
+  background: var(--parchment);
+  padding: 32px 32px 80px;
+  position: relative;
+}
+.aadv-shell::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse at center, rgba(200,144,46,0.10), transparent 60%);
+  pointer-events: none;
+}
+
+.aadv-progress {
+  max-width: 880px;
+  margin: 24px auto 48px;
+  position: relative;
+}
+.aadv-progress-bar {
+  position: relative;
+  height: 3px;
+  background: var(--line);
+  border-radius: 2px;
+  margin: 0 auto;
+  width: calc(100% - 32px);
+}
+.aadv-progress-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+.aadv-progress-steps {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+.aadv-step-marker {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--muted);
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+.aadv-step-marker.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--evergreen);
+}
+.aadv-step-marker.complete {
+  background: var(--evergreen);
+  border-color: var(--evergreen);
+  color: var(--gold-soft);
+}
+.aadv-step-marker.complete::after {
+  content: "✓";
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.aadv-step-marker.complete > span { display: none; }
+
+.aadv-step {
+  display: none;
+  max-width: 920px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  animation: aadvFade 0.5s ease;
+}
+.aadv-step.active { display: block; }
+@keyframes aadvFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.aadv-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.aadv-headline {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--evergreen);
+  margin-bottom: 18px;
+}
+.aadv-headline em {
+  color: var(--gold);
+  font-style: italic;
+}
+.aadv-headline-center { text-align: center; }
+.aadv-lede {
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin-bottom: 32px;
+  max-width: 740px;
+}
+.aadv-lede-center { margin-left: auto; margin-right: auto; text-align: center; }
+
+.aadv-btn { width: 100%; margin-top: 8px; font-weight: 600; }
+.aadv-btn-narrow { width: auto; min-width: 280px; display: block; margin-left: auto; margin-right: auto; }
+.aadv-skip {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 16px;
+  padding: 8px 16px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: inherit;
+}
+.aadv-skip:hover { color: var(--evergreen); }
+
+/* Step 1 pillars */
+.aadv-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 32px;
+}
+.aadv-pillar {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 22px;
+}
+.aadv-pillar-featured {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-color: var(--evergreen);
+}
+.aadv-pillar-num {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.aadv-pillar-featured .aadv-pillar-num { color: var(--gold-soft); }
+.aadv-pillar-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.aadv-pillar-featured .aadv-pillar-label { color: var(--gold-soft); }
+.aadv-pillar-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--evergreen);
+}
+.aadv-pillar-featured .aadv-pillar-text { color: var(--sage); }
+
+/* Step 1 rule callout */
+.aadv-rule-callout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  align-items: flex-start;
+  background: rgba(200,144,46,0.06);
+  border: 1px solid rgba(200,144,46,0.3);
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+}
+.aadv-rule-callout-icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+.aadv-rule-callout-icon svg { width: 100%; height: 100%; }
+.aadv-rule-callout-tag {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.aadv-rule-callout p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--evergreen);
+}
+.aadv-rule-link {
+  color: var(--gold);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(200,144,46,0.4);
+}
+.aadv-rule-link:hover { border-bottom-color: var(--gold); }
+
+/* Step 2 form */
+.aadv-form-section { margin-bottom: 24px; }
+.aadv-form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.aadv-form-row-2 .aadv-form-section { margin-bottom: 0; }
+.aadv-form-row-3 {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.aadv-form-row-3 .aadv-form-section { margin-bottom: 0; }
+.aadv-form-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: block;
+}
+.aadv-input {
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--evergreen);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.aadv-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(200,144,46,0.12);
+}
+.aadv-input-block { display: block; width: 100%; }
+.aadv-input-mono { font-family: ui-monospace, monospace; letter-spacing: 0.02em; }
+.aadv-input-textarea {
+  resize: vertical;
+  min-height: 70px;
+  line-height: 1.55;
+}
+.aadv-input-help {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* Step 3 category radio cards */
+.aadv-category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.aadv-category-card {
+  position: relative;
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: block;
+}
+.aadv-category-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.aadv-category-card:has(input:checked) {
+  border-color: var(--gold);
+  background: rgba(200,144,46,0.06);
+}
+.aadv-category-card:hover {
+  border-color: var(--gold-soft);
+}
+.aadv-category-content {
+  display: block;
+}
+.aadv-category-icon {
+  font-size: 24px;
+  display: block;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+.aadv-category-name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--evergreen);
+  display: block;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+.aadv-category-detail {
+  font-size: 12px;
+  color: var(--muted);
+  display: block;
+  line-height: 1.4;
+}
+
+/* Step 3 restricted toggles */
+.aadv-restricted-section {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  margin-top: 24px;
+}
+.aadv-restricted-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 12px;
+}
+.aadv-toggle-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--evergreen);
+  cursor: pointer;
+  line-height: 1.5;
+}
+.aadv-toggle-row:last-child { border-bottom: none; }
+.aadv-toggle-control { position: relative; display: inline-block; }
+.aadv-toggle-control input[type="checkbox"] { display: none; }
+.aadv-toggle-track {
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  background: var(--line);
+  border-radius: 100px;
+  position: relative;
+  transition: background 0.2s ease;
+}
+.aadv-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: var(--white);
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.aadv-toggle-control input:checked + .aadv-toggle-track {
+  background: var(--gold);
+}
+.aadv-toggle-control input:checked + .aadv-toggle-track .aadv-toggle-thumb {
+  transform: translateX(16px);
+}
+.aadv-restricted-note {
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: rgba(200,144,46,0.06);
+  border: 1px solid rgba(200,144,46,0.3);
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--evergreen);
+}
+.aadv-restricted-note strong { color: var(--gold); }
+
+/* Step 3 payment card */
+.aadv-payment-section { margin-bottom: 24px; }
+.aadv-payment-card {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: 14px;
+  padding: 22px 26px;
+  position: relative;
+  overflow: hidden;
+}
+.aadv-payment-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(245,241,234,0.08);
+}
+.aadv-payment-card-row:last-of-type { border-bottom: none; }
+.aadv-payment-method-label { color: var(--sage); font-size: 13px; }
+.aadv-payment-method-value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--gold-soft);
+  display: inline-flex;
+  align-items: center;
+}
+.aadv-payment-edit {
+  margin-top: 12px;
+  background: none;
+  border: 1px solid rgba(200,144,46,0.4);
+  color: var(--gold-soft);
+  padding: 8px 14px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.aadv-payment-edit:hover { background: rgba(200,144,46,0.1); }
+.aadv-payment-help {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* Step 4 creative upload */
+.aadv-creative-zone {
+  border: 2px dashed var(--line);
+  border-radius: 14px;
+  padding: 36px 24px;
+  text-align: center;
+  background: var(--white);
+  margin-bottom: 16px;
+  transition: all 0.2s ease;
+}
+.aadv-creative-zone:hover {
+  border-color: var(--gold);
+  background: rgba(200,144,46,0.04);
+}
+.aadv-creative-icon {
+  width: 36px;
+  height: 36px;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.aadv-creative-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--evergreen);
+  margin-bottom: 4px;
+}
+.aadv-creative-sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.aadv-creative-browse {
+  background: var(--evergreen);
+  color: var(--gold-soft);
+  border: none;
+  padding: 8px 18px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Pledge */
+.aadv-pledge {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  cursor: pointer;
+  padding: 14px 18px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+.aadv-pledge:has(input:checked) {
+  border-color: var(--gold);
+  background: rgba(200,144,46,0.04);
+}
+.aadv-pledge input { display: none; }
+.aadv-pledge-box {
+  width: 22px; height: 22px;
+  border: 2px solid var(--line);
+  border-radius: 6px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+.aadv-pledge input:checked + .aadv-pledge-box {
+  border-color: var(--gold);
+  background: var(--gold);
+}
+.aadv-pledge input:checked + .aadv-pledge-box::after {
+  content: "✓";
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--evergreen); font-weight: 800; font-size: 14px;
+}
+.aadv-pledge-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--evergreen);
+}
+.aadv-pledge-text strong { font-weight: 700; }
+
+/* Step 4 targeting pills */
+.aadv-targeting-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.aadv-target-pill {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: center;
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.aadv-target-pill:has(input:checked):not(.aadv-target-pill-active) {
+  border-color: var(--gold);
+  background: rgba(200,144,46,0.04);
+}
+.aadv-target-pill input { margin: 0; flex-shrink: 0; accent-color: var(--gold); }
+.aadv-target-pill-active {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-color: var(--evergreen);
+}
+.aadv-target-pill > span:nth-of-type(1) {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--evergreen);
+  letter-spacing: -0.01em;
+  grid-column: 2 / 3;
+}
+.aadv-target-pill-detail {
+  grid-column: 2 / 3;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+.aadv-target-pill.aadv-target-pill-active > span:nth-of-type(1) { color: var(--gold-soft); font-weight: 600; }
+.aadv-target-pill.aadv-target-pill-active .aadv-target-pill-detail { color: var(--sage); }
+
+/* Step 4 bid + budget */
+.aadv-bid-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 18px;
+}
+.aadv-bid-prefix {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+.aadv-bid-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: var(--line);
+  border-radius: 3px;
+  outline: none;
+}
+.aadv-bid-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px; height: 22px;
+  background: var(--gold);
+  border: 3px solid var(--evergreen);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.aadv-bid-slider::-moz-range-thumb {
+  width: 22px; height: 22px;
+  background: var(--gold);
+  border: 3px solid var(--evergreen);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.aadv-bid-value {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--evergreen);
+  font-variant-numeric: tabular-nums;
+  min-width: 60px;
+  text-align: right;
+}
+.aadv-bid-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 6px;
+  padding: 0 8px;
+}
+
+.aadv-budget-input {
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+.aadv-budget-input:focus-within {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(200,144,46,0.12);
+}
+.aadv-budget-prefix {
+  padding: 12px 0 12px 16px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gold);
+}
+.aadv-budget-input .aadv-input {
+  border: none;
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  outline: none;
+  box-shadow: none !important;
+}
+.aadv-budget-suffix {
+  padding: 12px 16px 12px 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Step 4 estimate card */
+.aadv-estimate-card {
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: 14px;
+  padding: 22px 28px;
+  margin: 28px 0;
+}
+.aadv-estimate-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--gold-soft);
+  margin-bottom: 16px;
+}
+.aadv-estimate-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 12px;
+}
+.aadv-estimate-stat {
+  text-align: left;
+}
+.aadv-estimate-num {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.aadv-estimate-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold-soft);
+}
+.aadv-estimate-disclaimer {
+  font-size: 12px;
+  color: var(--sage);
+  font-style: italic;
+  line-height: 1.55;
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(245,241,234,0.08);
+}
+
+/* Step 5 review */
+.aadv-review-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.aadv-review-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px 28px;
+}
+.aadv-review-card-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.aadv-review-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+}
+.aadv-review-row:last-child { border-bottom: none; padding-bottom: 0; }
+.aadv-review-row:first-of-type { padding-top: 0; }
+.aadv-review-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.aadv-review-value {
+  font-size: 13px;
+  color: var(--evergreen);
+  line-height: 1.5;
+  word-break: break-word;
+}
+.aadv-review-mono { font-family: ui-monospace, monospace; font-size: 12px; }
+.aadv-review-vh {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.aadv-review-check {
+  width: 16px;
+  height: 16px;
+  background: var(--gold);
+  color: var(--evergreen);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+.aadv-after-section { margin-bottom: 32px; }
+.aadv-after-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  counter-reset: aadv-after;
+}
+.aadv-after-list li {
+  counter-increment: aadv-after;
+  padding: 14px 0 14px 48px;
+  font-size: 14px;
+  color: var(--evergreen);
+  line-height: 1.55;
+  position: relative;
+  border-bottom: 1px solid var(--line);
+}
+.aadv-after-list li:last-child { border-bottom: none; }
+.aadv-after-list li::before {
+  content: counter(aadv-after);
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 32px;
+  height: 32px;
+  background: var(--gold);
+  color: var(--evergreen);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+}
+.aadv-after-list strong { color: var(--evergreen); font-weight: 700; }
+
+/* Success state */
+.aadv-success-content { text-align: center; max-width: 720px; margin: 0 auto; }
+.aadv-success-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+  animation: aadvSuccessPop 0.6s ease;
+}
+@keyframes aadvSuccessPop {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.aadv-status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 28px 0;
+}
+.aadv-status-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 22px;
+  text-align: center;
+}
+.aadv-status-card-pending {
+  background: rgba(200,144,46,0.04);
+  border-color: rgba(200,144,46,0.3);
+}
+.aadv-status-num {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.aadv-status-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.aadv-status-detail {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Mobile activate-advertiser */
+@media (max-width: 760px) {
+  .aadv-shell { padding: 16px 18px 60px; }
+  .aadv-headline { font-size: 36px; }
+  .aadv-pillars-grid { grid-template-columns: 1fr; gap: 12px; }
+  .aadv-rule-callout { grid-template-columns: 1fr; gap: 10px; }
+  .aadv-form-row-2 { grid-template-columns: 1fr; gap: 16px; }
+  .aadv-form-row-3 { grid-template-columns: 1fr; gap: 16px; }
+  .aadv-category-grid { grid-template-columns: 1fr; }
+  .aadv-targeting-grid { grid-template-columns: 1fr; }
+  .aadv-estimate-row { grid-template-columns: 1fr; gap: 14px; }
+  .aadv-review-grid { grid-template-columns: 1fr; }
+  .aadv-review-row { grid-template-columns: 1fr; gap: 4px; padding: 10px 0; }
+  .aadv-status-grid { grid-template-columns: 1fr; }
+  .aadv-toggle-row { grid-template-columns: 1fr auto; align-items: flex-start; }
+  .aadv-toggle-row > span:first-child { font-size: 13px; }
+}
+
+/* ========================================================================
+   STUDIO CAMPAIGNS TAB CONTENT (post-activation)
+   ======================================================================== */
+.campaign-business-header {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 24px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 28px 32px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.campaign-business-icon {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+}
+.campaign-business-icon svg { width: 100%; height: 100%; }
+.campaign-business-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.campaign-business-name {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--evergreen);
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.campaign-business-detail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.campaign-dot { color: var(--muted2); }
+.campaign-business-stats {
+  display: flex;
+  gap: 22px;
+  font-size: 12px;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+.campaign-business-stats strong {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--evergreen);
+}
+.campaign-new-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+/* Sub-nav */
+.campaign-subnav {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 28px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.campaign-subnav-item {
+  background: none;
+  border: none;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  font-family: inherit;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.campaign-subnav-item:hover { color: var(--evergreen); }
+.campaign-subnav-item.active {
+  color: var(--evergreen);
+  border-bottom-color: var(--gold);
+}
+.campaign-subnav-count {
+  display: inline-block;
+  margin-left: 6px;
+  background: var(--parchment-2);
+  color: var(--muted);
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+.campaign-subnav-item.active .campaign-subnav-count {
+  background: var(--gold);
+  color: var(--evergreen);
+}
+
+/* Stats strip */
+.campaign-stats-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.campaign-stat {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+.campaign-stat-num {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.campaign-stat-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+/* Pending review banner */
+.campaign-pending-banner {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  align-items: center;
+  background: rgba(200,144,46,0.06);
+  border: 1px solid rgba(200,144,46,0.3);
+  border-radius: 14px;
+  padding: 18px 24px;
+  margin-bottom: 28px;
+}
+.campaign-pending-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+.campaign-pending-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--evergreen);
+  margin-bottom: 4px;
+}
+.campaign-pending-detail {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* Section headers */
+.campaign-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.campaign-section-header h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--evergreen);
+}
+.campaign-section-sub {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 16px;
+  max-width: 720px;
+}
+.campaign-list-tools {
+  display: flex;
+  gap: 8px;
+}
+.campaign-search,
+.campaign-filter {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--evergreen);
+  font-family: inherit;
+  outline: none;
+}
+.campaign-search { width: 220px; }
+.campaign-search:focus, .campaign-filter:focus { border-color: var(--gold); }
+
+/* Campaigns list */
+.campaign-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.campaign-row {
+  display: grid;
+  grid-template-columns: 56px 1fr auto auto;
+  gap: 18px;
+  align-items: center;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 18px;
+  transition: all 0.15s ease;
+}
+.campaign-row:hover { border-color: var(--gold-soft); }
+.campaign-row-pending { background: rgba(200,144,46,0.03); border-color: rgba(200,144,46,0.2); }
+.campaign-row-icon {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+.campaign-row-icon svg { width: 100%; height: 100%; border-radius: 10px; }
+.campaign-row-meta { min-width: 0; }
+.campaign-row-name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--evergreen);
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+.campaign-row-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+.campaign-tag {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 100px;
+}
+.campaign-tag-pending { background: rgba(200,144,46,0.12); color: var(--gold); }
+.campaign-tag-active { background: rgba(45,110,77,0.10); color: #2D6E4D; }
+.campaign-tag-paused { background: var(--parchment-2); color: var(--muted); }
+.campaign-row-stats {
+  display: flex;
+  gap: 18px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.campaign-row-stat-block {
+  text-align: center;
+}
+.campaign-row-stat-block strong {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--evergreen);
+  margin-bottom: 2px;
+}
+.campaign-row-menu {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--muted);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+}
+.campaign-row-menu:hover { background: var(--parchment-2); color: var(--evergreen); }
+
+.campaign-list-empty {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.campaign-list-empty-link {
+  background: none;
+  border: none;
+  color: var(--gold);
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(200,144,46,0.4);
+  padding: 0 0 1px;
+}
+
+/* Tips section */
+.campaign-tips-section {
+  margin-top: 36px;
+}
+.campaign-tips-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.campaign-tip-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px;
+}
+.campaign-tip-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.campaign-tip-num {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--evergreen);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.campaign-tip-detail {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* Creative library */
+.campaign-creative-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.campaign-creative-tile {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: all 0.15s ease;
+}
+.campaign-creative-tile:hover { border-color: var(--gold-soft); }
+.campaign-creative-thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--evergreen);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.campaign-creative-thumb-icon {
+  width: 64px;
+  height: 64px;
+  background: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.campaign-creative-tag {
+  position: absolute;
+  top: 10px; right: 10px;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  padding: 4px 10px;
+  background: var(--gold);
+  color: var(--evergreen);
+  border-radius: 100px;
+}
+.campaign-creative-meta {
+  padding: 14px 18px;
+}
+.campaign-creative-name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--evergreen);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.campaign-creative-detail {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.campaign-creative-status {
+  font-size: 12px;
+  color: var(--gold);
+  font-weight: 600;
+}
+.campaign-creative-add {
+  background: var(--parchment-2);
+  border: 2px dashed var(--line);
+  border-radius: 14px;
+  padding: 32px 24px;
+  text-align: center;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.15s ease;
+}
+.campaign-creative-add:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(200,144,46,0.04);
+}
+
+/* Audiences */
+.campaign-audience-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.campaign-audience-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px 28px;
+}
+.campaign-audience-card-premium {
+  background: rgba(200,144,46,0.04);
+  border-color: rgba(200,144,46,0.3);
+}
+.campaign-audience-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.campaign-audience-card h4 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--evergreen);
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+.campaign-audience-size {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.campaign-audience-card p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.campaign-audience-add {
+  background: var(--parchment-2);
+  border: 2px dashed var(--line);
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+.campaign-audience-add:hover {
+  border-color: var(--gold);
+  background: rgba(200,144,46,0.04);
+}
+.campaign-audience-add-icon {
+  font-size: 24px;
+  color: var(--gold);
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+
+/* Billing */
+.campaign-billing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.campaign-billing-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px 28px;
+}
+.campaign-billing-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.campaign-billing-num {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--evergreen);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.campaign-billing-detail {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 10px;
+}
+.campaign-billing-payment-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--evergreen);
+  font-family: var(--font-display);
+  margin-bottom: 10px;
+}
+.campaign-billing-edit {
+  background: none;
+  border: none;
+  color: var(--gold);
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  padding: 0;
+  border-bottom: 1px solid rgba(200,144,46,0.4);
+}
+.campaign-billing-empty {
+  background: var(--parchment-2);
+  border-radius: 14px;
+  padding: 28px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* Wizard modal */
+.campaign-wizard-modal[hidden] { display: none !important; }
+.campaign-wizard-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: aadvFade 0.2s ease;
+}
+.campaign-wizard-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15,42,36,0.7);
+  backdrop-filter: blur(6px);
+}
+.campaign-wizard-card {
+  position: relative;
+  background: var(--white);
+  border-radius: 18px;
+  padding: 36px 40px;
+  max-width: 540px;
+  width: 100%;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+}
+.campaign-wizard-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 36px; height: 36px;
+  background: var(--parchment-2);
+  border: none;
+  border-radius: 50%;
+  font-size: 22px;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 300;
+  line-height: 1;
+}
+.campaign-wizard-close:hover { color: var(--evergreen); background: var(--line); }
+.campaign-wizard-h2 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--evergreen);
+  margin-bottom: 8px;
+}
+.campaign-wizard-sub {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 24px;
+  line-height: 1.55;
+}
+.campaign-wizard-helpinfo {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.campaign-wizard-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+/* Campaigns advertiser-active state for sidebar nav */
+.studio-advertiser-active {
+  background: linear-gradient(135deg, var(--gold), var(--gold-soft));
+  color: var(--evergreen) !important;
+  border: 1px solid var(--gold);
+  box-shadow: 0 4px 12px rgba(200, 144, 46, 0.3);
+}
+.studio-advertiser-active svg { color: var(--evergreen) !important; }
+
+/* Mobile campaigns tab */
+@media (max-width: 900px) {
+  .campaign-business-header {
+    grid-template-columns: 48px 1fr;
+    gap: 14px;
+    padding: 18px 20px;
+  }
+  .campaign-business-icon { width: 48px; height: 48px; }
+  .campaign-business-name { font-size: 20px; }
+  .campaign-business-actions { grid-column: 1 / -1; }
+  .campaign-new-btn { width: 100%; justify-content: center; }
+  .campaign-stats-strip { grid-template-columns: repeat(2, 1fr); }
+  .campaign-pending-banner { grid-template-columns: 1fr; gap: 8px; text-align: center; }
+  .campaign-row { grid-template-columns: 56px 1fr; gap: 12px; padding: 12px 14px; }
+  .campaign-row-stats { grid-column: 1 / -1; padding-top: 8px; border-top: 1px dashed var(--line); justify-content: space-around; }
+  .campaign-row-menu { grid-column: 1 / -1; justify-self: stretch; }
+  .campaign-tips-grid { grid-template-columns: 1fr; }
+  .campaign-creative-grid { grid-template-columns: 1fr; }
+  .campaign-audience-grid { grid-template-columns: 1fr; }
+  .campaign-billing-grid { grid-template-columns: 1fr; }
+  .campaign-search { width: 100%; }
+}
+
+/* ========================================================================
    Identity panel — appears in profile, shows masked phone + birth year + ZIP + re-roll
    ======================================================================== */
 .identity-panel {
@@ -14056,7 +16319,7 @@ input, textarea, select {
             <div class="profile-stream-label">FROM ADVERTISING</div>
             <div class="profile-stream-source">Run a campaign for your business</div>
           </div>
-          <button class="profile-stream-cta" data-view="advertiser">Activate →</button>
+          <button class="profile-stream-cta" data-view="activate-advertiser">Activate →</button>
         </div>
       </div>
     </div>
@@ -14141,14 +16404,14 @@ input, textarea, select {
           <div class="profile-grow-cta">Apply now →</div>
         </div>
 
-        <div class="profile-grow-card" data-view="advertiser">
+        <div class="profile-grow-card" data-view="activate-advertiser">
           <div class="profile-grow-tag">ADVERTISERS</div>
           <h3>Run a campaign</h3>
           <p>Bid for verified human attention. Pay only for slide-confirmed, phone-verified watches. No bots, no data brokers.</p>
           <div class="profile-grow-cta">Get verified to advertise →</div>
         </div>
 
-        <div class="profile-grow-card" data-view="standards">
+        <div class="profile-grow-card" data-view="activate-practitioner">
           <div class="profile-grow-tag profile-grow-tag-evergreen">PRACTITIONERS</div>
           <h3>Verify with NPI</h3>
           <p>If you're a licensed health professional, add your NPI for instant verification. Unlock the gold practitioner badge and premium ad inventory.</p>
@@ -14758,6 +17021,868 @@ input, textarea, select {
 </section>
 
 <!-- ========================================================================
+     ACTIVATE PRACTITIONER VIEW — NPI verification flow
+     Step 1: Welcome / what the badge unlocks
+     Step 2: Enter NPI number
+     Step 3: Verification animation (mock CMS NPPES API call)
+     Step 4: Success — badge unlocked, credential details displayed
+     Failure state: NPI not found / inactive
+     ======================================================================== -->
+<section class="view" data-view="activate-practitioner">
+  <div class="apract-shell">
+
+    <!-- Progress -->
+    <div class="apract-progress">
+      <div class="apract-progress-bar">
+        <div class="apract-progress-fill" id="apract-progress-fill" style="width: 33%"></div>
+      </div>
+      <div class="apract-progress-steps">
+        <div class="apract-step-marker active" data-step="1"><span>1</span></div>
+        <div class="apract-step-marker" data-step="2"><span>2</span></div>
+        <div class="apract-step-marker" data-step="3"><span>3</span></div>
+      </div>
+    </div>
+
+    <!-- ============= STEP 1: Welcome ============= -->
+    <div class="apract-step active" data-apract-step="1">
+      <div class="apract-step-content">
+        <div class="apract-eyebrow">⏤ Step 1 of 3 · Verified Practitioner</div>
+        <h1 class="apract-headline">
+          The gold badge.<br><em>Earned in 30 seconds.</em>
+        </h1>
+        <p class="apract-lede">If you're a licensed health professional with an NPI, the most valuable badge on TipJip is yours in under a minute. We hit the federal CMS NPPES registry directly — no paperwork, no faxing licenses, no waiting for human review. The badge appears on your profile and every piece of content you publish.</p>
+
+        <!-- Big badge preview -->
+        <div class="apract-badge-preview">
+          <div class="apract-badge-card">
+            <div class="apract-badge-icon">
+              <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="40" cy="40" r="36" fill="#0F2A24"/>
+                <circle cx="40" cy="40" r="36" fill="none" stroke="#C8902E" stroke-width="3"/>
+                <path d="M 40 16 L 46 30 L 60 32 L 50 42 L 53 56 L 40 49 L 27 56 L 30 42 L 20 32 L 34 30 Z"
+                      fill="#C8902E" stroke="#ECC881" stroke-width="1.5" stroke-linejoin="round"/>
+                <text x="40" y="46" text-anchor="middle" fill="#0F2A24" font-weight="900" font-size="14" font-family="serif">✓</text>
+              </svg>
+            </div>
+            <div class="apract-badge-meta">
+              <div class="apract-badge-tag">VERIFIED PRACTITIONER</div>
+              <div class="apract-badge-name" id="apract-preview-name">Your name, credentials</div>
+              <div class="apract-badge-detail">CMS NPPES registry-verified · NPI on file</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="apract-section-h3">What the badge unlocks.</h3>
+        <div class="apract-benefits-grid">
+          <div class="apract-benefit-card">
+            <div class="apract-benefit-icon">⭐</div>
+            <div class="apract-benefit-meta">
+              <h4>Premium ad inventory</h4>
+              <p>Health &amp; wellness brands pay 2–3× more for ads against verified-practitioner audiences. The lift goes straight to your jar.</p>
+            </div>
+          </div>
+          <div class="apract-benefit-card">
+            <div class="apract-benefit-icon">🛡️</div>
+            <div class="apract-benefit-meta">
+              <h4>Trust signal that compounds</h4>
+              <p>Gold badge on your handle, every video, every comment, every search result. Viewers see a real licensed clinician, not a "wellness influencer."</p>
+            </div>
+          </div>
+          <div class="apract-benefit-card">
+            <div class="apract-benefit-icon">📊</div>
+            <div class="apract-benefit-meta">
+              <h4>Pulse-eligible analytics</h4>
+              <p>Patient-cohort engagement data unlocks. Track which content drives clinic retention, referrals, and patient outcomes.</p>
+            </div>
+          </div>
+          <div class="apract-benefit-card">
+            <div class="apract-benefit-icon">🎙️</div>
+            <div class="apract-benefit-meta">
+              <h4>Practitioner-only ad slots</h4>
+              <p>Some campaigns (Rx-adjacent, supplements requiring practitioner endorsement) are reserved for verified clinicians — you become eligible automatically.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Eligible providers list -->
+        <div class="apract-eligibility-card">
+          <div class="apract-eligibility-eyebrow">ELIGIBLE NPI HOLDERS</div>
+          <div class="apract-eligibility-grid">
+            <div>Physicians (MD, DO)</div>
+            <div>Chiropractors (DC)</div>
+            <div>Nurse Practitioners (NP)</div>
+            <div>Physician Assistants (PA)</div>
+            <div>Dentists (DDS, DMD)</div>
+            <div>Psychologists (PhD, PsyD)</div>
+            <div>Physical &amp; Occupational Therapists</div>
+            <div>Registered Dietitians (RDN)</div>
+            <div>Licensed Mental Health Counselors</div>
+            <div>Pharmacists, Optometrists, Podiatrists</div>
+            <div>Acupuncturists, Naturopaths</div>
+            <div>Any other CMS-recognized provider</div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg apract-btn" onclick="apractGoToStep(2)">
+          Verify my NPI now →
+        </button>
+
+        <button class="apract-skip" data-view="studio">
+          ← Don't have an NPI? Back to Studio
+        </button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 2: Enter NPI ============= -->
+    <div class="apract-step" data-apract-step="2">
+      <div class="apract-step-content apract-step-narrow">
+        <div class="apract-eyebrow">⏤ Step 2 of 3 · Your NPI</div>
+        <h1 class="apract-headline">
+          Enter your<br><em>10-digit NPI.</em>
+        </h1>
+        <p class="apract-lede">Your National Provider Identifier — the same 10-digit number you use on insurance claims and prescription pads. We'll send it to the federal CMS NPPES registry to verify your credential is active and in good standing. Takes about 2 seconds.</p>
+
+        <div class="apract-npi-input">
+          <label class="apract-input-label">NATIONAL PROVIDER IDENTIFIER</label>
+          <div class="apract-npi-wrap">
+            <input
+              type="text"
+              class="apract-input apract-input-large"
+              id="apract-npi"
+              placeholder="0000000000"
+              maxlength="12"
+              inputmode="numeric"
+              autocomplete="off"
+              aria-describedby="apract-npi-help">
+          </div>
+          <div class="apract-input-help" id="apract-npi-help">10 digits, no dashes. <a href="https://npiregistry.cms.hhs.gov" target="_blank" rel="noopener" class="apract-input-link">Forgot your NPI? Look it up →</a></div>
+        </div>
+
+        <div class="apract-privacy-note">
+          <div class="apract-privacy-icon">🔒</div>
+          <div>
+            <strong>What we do with your NPI:</strong> Send it to <a href="https://npiregistry.cms.hhs.gov/api-page" target="_blank" rel="noopener">npiregistry.cms.hhs.gov</a>, receive your provider record, store the verified status (active/inactive) and credential letters on your TipJip account. We don't store your home address, SSN, or any data CMS doesn't already publish in the public registry.
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg apract-btn" id="apract-step2-btn" onclick="apractStartVerification()" disabled>
+          <span class="apract-btn-text">Verify with CMS NPPES →</span>
+        </button>
+
+        <button class="apract-skip" onclick="apractGoToStep(1)">
+          ← Go back
+        </button>
+
+        <!-- Demo NPI hints -->
+        <div class="apract-demo-hint">
+          <div class="apract-demo-hint-label">DEMO MODE — TRY THESE</div>
+          <div class="apract-demo-hint-row">
+            <button class="apract-demo-npi" onclick="apractFillDemo('1437291203')">
+              <strong>1437291203</strong> <span>Chiropractor (success)</span>
+            </button>
+            <button class="apract-demo-npi" onclick="apractFillDemo('1295730104')">
+              <strong>1295730104</strong> <span>NP (success)</span>
+            </button>
+            <button class="apract-demo-npi" onclick="apractFillDemo('0000000000')">
+              <strong>0000000000</strong> <span>Not found (failure)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============= STEP 3: Verification animation ============= -->
+    <div class="apract-step" data-apract-step="3">
+      <div class="apract-step-content apract-step-narrow apract-step-verifying">
+
+        <!-- Loading state -->
+        <div class="apract-verify-state" data-apract-state="loading">
+          <div class="apract-verify-loader">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="40" cy="40" r="32" fill="none" stroke="#E8E2D4" stroke-width="4"/>
+              <circle cx="40" cy="40" r="32" fill="none" stroke="#C8902E" stroke-width="4"
+                      stroke-dasharray="50 200" stroke-linecap="round"
+                      transform="rotate(-90 40 40)"
+                      class="apract-verify-spinner"/>
+            </svg>
+          </div>
+          <div class="apract-eyebrow">⏤ VERIFYING WITH CMS</div>
+          <h2 class="apract-verify-h2">Querying federal NPI registry...</h2>
+          <div class="apract-verify-steps">
+            <div class="apract-verify-substep" data-verify-step="1">
+              <span class="apract-verify-substep-dot"></span>
+              <span>Connecting to npiregistry.cms.hhs.gov...</span>
+            </div>
+            <div class="apract-verify-substep" data-verify-step="2">
+              <span class="apract-verify-substep-dot"></span>
+              <span>Fetching provider record for NPI <strong id="apract-verify-npi">1437291203</strong></span>
+            </div>
+            <div class="apract-verify-substep" data-verify-step="3">
+              <span class="apract-verify-substep-dot"></span>
+              <span>Confirming credential is active and in good standing...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success state -->
+        <div class="apract-verify-state" data-apract-state="success" style="display:none;">
+          <div class="apract-success-icon">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="40" cy="40" r="36" fill="#0F2A24"/>
+              <circle cx="40" cy="40" r="36" fill="none" stroke="#C8902E" stroke-width="3"/>
+              <path d="M 40 14 L 47 28 L 62 30 L 51 41 L 54 56 L 40 49 L 26 56 L 29 41 L 18 30 L 33 28 Z"
+                    fill="#C8902E" stroke="#ECC881" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M 32 41 L 38 47 L 50 35" stroke="#0F2A24" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+
+          <div class="apract-eyebrow">⏤ VERIFIED</div>
+          <h2 class="apract-verify-h2">
+            You're a verified practitioner,<br><em id="apract-result-firstname">Doctor.</em>
+          </h2>
+          <p class="apract-verify-sub">CMS NPPES registry returned an active record. Your gold badge is live across TipJip.</p>
+
+          <!-- Provider record card -->
+          <div class="apract-record-card">
+            <div class="apract-record-eyebrow">CMS NPPES RECORD</div>
+            <div class="apract-record-row">
+              <div class="apract-record-label">Name</div>
+              <div class="apract-record-value" id="apract-record-name">—</div>
+            </div>
+            <div class="apract-record-row">
+              <div class="apract-record-label">Credentials</div>
+              <div class="apract-record-value" id="apract-record-creds">—</div>
+            </div>
+            <div class="apract-record-row">
+              <div class="apract-record-label">Primary specialty</div>
+              <div class="apract-record-value" id="apract-record-taxonomy">—</div>
+            </div>
+            <div class="apract-record-row">
+              <div class="apract-record-label">Practice state</div>
+              <div class="apract-record-value" id="apract-record-state">—</div>
+            </div>
+            <div class="apract-record-row">
+              <div class="apract-record-label">NPI</div>
+              <div class="apract-record-value apract-record-mono" id="apract-record-npi">—</div>
+            </div>
+            <div class="apract-record-row">
+              <div class="apract-record-label">Status</div>
+              <div class="apract-record-value">
+                <span class="apract-record-status">
+                  <span class="apract-record-check">✓</span> Active · Verified <span id="apract-record-date">today</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="apract-result-actions">
+            <button class="btn btn-primary btn-lg apract-btn" onclick="apractComplete()">
+              See my new badge in Studio →
+            </button>
+            <button class="apract-skip" data-view="profile" onclick="apractComplete()">
+              View my profile
+            </button>
+          </div>
+        </div>
+
+        <!-- Failure state -->
+        <div class="apract-verify-state" data-apract-state="failure" style="display:none;">
+          <div class="apract-fail-icon">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="40" cy="40" r="36" fill="#9C2A2A" opacity="0.08"/>
+              <circle cx="40" cy="40" r="36" fill="none" stroke="#9C2A2A" stroke-width="2"/>
+              <line x1="28" y1="28" x2="52" y2="52" stroke="#9C2A2A" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="52" y1="28" x2="28" y2="52" stroke="#9C2A2A" stroke-width="3.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="apract-eyebrow apract-eyebrow-fail">⏤ NOT VERIFIED</div>
+          <h2 class="apract-verify-h2">
+            We couldn't find that NPI<br><em>in the CMS registry.</em>
+          </h2>
+          <p class="apract-verify-sub">The federal NPPES registry returned no active record for the number you entered. A few common reasons:</p>
+
+          <div class="apract-fail-reasons">
+            <div class="apract-fail-reason"><span>1</span> Typo in the 10-digit number — most common cause. Double-check.</div>
+            <div class="apract-fail-reason"><span>2</span> Recently issued (last 7 days) — CMS takes a few days to publish new NPIs to the API.</div>
+            <div class="apract-fail-reason"><span>3</span> Deactivated NPI — if your license has lapsed, the NPI is removed from the public registry until reinstated.</div>
+            <div class="apract-fail-reason"><span>4</span> NPI is for an organization, not an individual — Type 2 NPIs aren't eligible. Use your Type 1 (individual provider) NPI.</div>
+          </div>
+
+          <div class="apract-result-actions">
+            <button class="btn btn-primary btn-lg apract-btn" onclick="apractGoToStep(2)">
+              Try again →
+            </button>
+            <a href="mailto:practitioners@tipjip.com" class="apract-skip">
+              Need help? Email practitioners@tipjip.com
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========================================================================
+     ACTIVATE ADVERTISER VIEW — 5-step business verification + first campaign
+     Step 1: Welcome / value prop
+     Step 2: Business verification (KYC)
+     Step 3: Brand safety + payment method
+     Step 4: First campaign quick-launch
+     Step 5: Review + Submit (then success state)
+     ======================================================================== -->
+<section class="view" data-view="activate-advertiser">
+  <div class="aadv-shell">
+
+    <!-- Progress -->
+    <div class="aadv-progress">
+      <div class="aadv-progress-bar">
+        <div class="aadv-progress-fill" id="aadv-progress-fill" style="width: 20%"></div>
+      </div>
+      <div class="aadv-progress-steps">
+        <div class="aadv-step-marker active" data-step="1"><span>1</span></div>
+        <div class="aadv-step-marker" data-step="2"><span>2</span></div>
+        <div class="aadv-step-marker" data-step="3"><span>3</span></div>
+        <div class="aadv-step-marker" data-step="4"><span>4</span></div>
+        <div class="aadv-step-marker" data-step="5"><span>5</span></div>
+      </div>
+    </div>
+
+    <!-- ============= STEP 1: Welcome ============= -->
+    <div class="aadv-step active" data-aadv-step="1">
+      <div class="aadv-step-content">
+        <div class="aadv-eyebrow">⏤ Step 1 of 5 · Become an advertiser</div>
+        <h1 class="aadv-headline">
+          Your ad spend goes<br><em>to humans.</em>
+        </h1>
+        <p class="aadv-lede">Not to a data broker. Not to a bot farm. Not to a black-box auction. Every dollar you spend on TipJip lands directly in the jar of a phone-verified human who finished watching your ad. That's the entire ad model — no impressions, no estimated reach, no proxy metrics.</p>
+
+        <!-- Four key benefits -->
+        <div class="aadv-pillars-grid">
+          <div class="aadv-pillar">
+            <div class="aadv-pillar-num">100%</div>
+            <div class="aadv-pillar-label">VERIFIED HUMANS</div>
+            <div class="aadv-pillar-text">Every viewer is phone-verified at signup. No bots, no MFA fraud, no SDK manipulation. The price is the price for a real person.</div>
+          </div>
+          <div class="aadv-pillar aadv-pillar-featured">
+            <div class="aadv-pillar-num">$0</div>
+            <div class="aadv-pillar-label">FOR INCOMPLETE WATCHES</div>
+            <div class="aadv-pillar-text">You only pay when a viewer completes the full watch with the slide-confirm UX. Mid-watch drop-offs cost you nothing. Best-in-class engagement guarantee.</div>
+          </div>
+          <div class="aadv-pillar">
+            <div class="aadv-pillar-num">$0.50–$3</div>
+            <div class="aadv-pillar-label">DYNAMIC BID RANGE</div>
+            <div class="aadv-pillar-text">You set your max bid per completed watch. Premium audiences (verified practitioners, podcast listeners) cost more. Standard reach is at the floor.</div>
+          </div>
+          <div class="aadv-pillar">
+            <div class="aadv-pillar-num">76%</div>
+            <div class="aadv-pillar-label">AVG TIP RATE</div>
+            <div class="aadv-pillar-text">The most honest engagement signal in advertising. Tip rate is the % of viewers who said "thanks for the ad" by tipping back. Higher than any survey.</div>
+          </div>
+        </div>
+
+        <!-- The Real Human Rule callout for advertisers -->
+        <div class="aadv-rule-callout">
+          <div class="aadv-rule-callout-icon">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="16" cy="16" r="15" fill="#C8902E"/>
+              <text x="16" y="22" text-anchor="middle" fill="#0F2A24" font-weight="900" font-size="20" font-family="serif">!</text>
+            </svg>
+          </div>
+          <div>
+            <div class="aadv-rule-callout-tag">THE 100% REAL HUMAN RULE APPLIES TO ADS TOO</div>
+            <p>Your ad creative must show real people or no people. No AI faces, no synthetic spokespeople, no deepfaked testimonials, no voice clones. You can use product shots, demos, motion graphics, music — but if there's a human in your ad, they are real and have consented. <a href="#" data-view="standards" class="aadv-rule-link">Read the full content rule →</a></p>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg aadv-btn" onclick="aadvGoToStep(2)">
+          Verify my business →
+        </button>
+
+        <button class="aadv-skip" data-view="profile">
+          ← Maybe later, back to my profile
+        </button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 2: Business Verification ============= -->
+    <div class="aadv-step" data-aadv-step="2">
+      <div class="aadv-step-content">
+        <div class="aadv-eyebrow">⏤ Step 2 of 5 · Business KYC</div>
+        <h1 class="aadv-headline">
+          Tell us about<br><em>your business.</em>
+        </h1>
+        <p class="aadv-lede">Standard advertiser KYC. Required by FTC and our payment processor. Your information is encrypted, never shared with creators or other advertisers, and visible only to TipJip's billing and compliance team.</p>
+
+        <div class="aadv-form-section">
+          <label class="aadv-form-label">Legal business name</label>
+          <input type="text" class="aadv-input aadv-input-block" id="aadv-biz-name" placeholder="Cohen Family Chiropractic LLC" maxlength="120">
+          <div class="aadv-input-help">As registered with the IRS or your state. We'll match this against the EIN.</div>
+        </div>
+
+        <div class="aadv-form-row-2">
+          <div class="aadv-form-section">
+            <label class="aadv-form-label">EIN (Tax ID)</label>
+            <input type="text" class="aadv-input aadv-input-block aadv-input-mono" id="aadv-biz-ein" placeholder="00-0000000" maxlength="10">
+            <div class="aadv-input-help">9 digits, in XX-XXXXXXX format. Required for US businesses.</div>
+          </div>
+          <div class="aadv-form-section">
+            <label class="aadv-form-label">Business type</label>
+            <select class="aadv-input aadv-input-block" id="aadv-biz-type">
+              <option value="">Select type...</option>
+              <option>LLC (Limited Liability Company)</option>
+              <option>S-Corporation</option>
+              <option>C-Corporation</option>
+              <option>Sole Proprietorship</option>
+              <option>Partnership</option>
+              <option>Non-profit (501c3)</option>
+              <option>Professional Corporation (PC, PLLC)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="aadv-form-section">
+          <label class="aadv-form-label">Business address</label>
+          <input type="text" class="aadv-input aadv-input-block" id="aadv-biz-street" placeholder="Street address" maxlength="120">
+        </div>
+
+        <div class="aadv-form-row-3">
+          <div class="aadv-form-section">
+            <label class="aadv-form-label">City</label>
+            <input type="text" class="aadv-input aadv-input-block" id="aadv-biz-city" placeholder="Austin" maxlength="60">
+          </div>
+          <div class="aadv-form-section">
+            <label class="aadv-form-label">State</label>
+            <input type="text" class="aadv-input aadv-input-block" id="aadv-biz-state" placeholder="TX" maxlength="2">
+          </div>
+          <div class="aadv-form-section">
+            <label class="aadv-form-label">ZIP</label>
+            <input type="text" class="aadv-input aadv-input-block aadv-input-mono" id="aadv-biz-zip" placeholder="78701" maxlength="10">
+          </div>
+        </div>
+
+        <div class="aadv-form-section">
+          <label class="aadv-form-label">Authorized signer (you)</label>
+          <div class="aadv-form-row-2">
+            <input type="text" class="aadv-input aadv-input-block" id="aadv-biz-signer" placeholder="Sarah Cohen" maxlength="80">
+            <input type="text" class="aadv-input aadv-input-block" id="aadv-biz-title" placeholder="Owner / Authorized officer" maxlength="80">
+          </div>
+          <div class="aadv-input-help">Person legally authorized to commit the business to advertising spend.</div>
+        </div>
+
+        <button class="btn btn-primary btn-lg aadv-btn" onclick="aadvGoToStep(3)">
+          Continue to brand safety →
+        </button>
+        <button class="aadv-skip" onclick="aadvGoToStep(1)">
+          ← Go back
+        </button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 3: Brand Safety + Payment ============= -->
+    <div class="aadv-step" data-aadv-step="3">
+      <div class="aadv-step-content">
+        <div class="aadv-eyebrow">⏤ Step 3 of 5 · Brand safety &amp; payment</div>
+        <h1 class="aadv-headline">
+          What do you<br><em>advertise?</em>
+        </h1>
+        <p class="aadv-lede">We check brand safety before approval — not because we don't trust you, but because TipJip's audience expects vetted brands and your fellow advertisers expect a clean inventory. Health &amp; wellness gets fast-tracked. Restricted categories require extra review.</p>
+
+        <!-- Brand category radio cards -->
+        <div class="aadv-form-section">
+          <label class="aadv-form-label">Primary advertising category</label>
+          <div class="aadv-category-grid">
+            <label class="aadv-category-card">
+              <input type="radio" name="aadv-category" value="healthcare" checked>
+              <span class="aadv-category-content">
+                <span class="aadv-category-icon">🩺</span>
+                <span class="aadv-category-name">Healthcare services</span>
+                <span class="aadv-category-detail">Clinics, practitioners, telehealth · Fast-track</span>
+              </span>
+            </label>
+            <label class="aadv-category-card">
+              <input type="radio" name="aadv-category" value="wellness">
+              <span class="aadv-category-content">
+                <span class="aadv-category-icon">🌿</span>
+                <span class="aadv-category-name">Wellness products</span>
+                <span class="aadv-category-detail">Sleep tech, meditation, recovery · Fast-track</span>
+              </span>
+            </label>
+            <label class="aadv-category-card">
+              <input type="radio" name="aadv-category" value="fitness">
+              <span class="aadv-category-content">
+                <span class="aadv-category-icon">💪</span>
+                <span class="aadv-category-name">Fitness &amp; gyms</span>
+                <span class="aadv-category-detail">Equipment, memberships, programs · Fast-track</span>
+              </span>
+            </label>
+            <label class="aadv-category-card">
+              <input type="radio" name="aadv-category" value="food">
+              <span class="aadv-category-content">
+                <span class="aadv-category-icon">🥗</span>
+                <span class="aadv-category-name">Food &amp; nutrition</span>
+                <span class="aadv-category-detail">Whole foods, meal kits, beverages · Fast-track</span>
+              </span>
+            </label>
+            <label class="aadv-category-card">
+              <input type="radio" name="aadv-category" value="mental">
+              <span class="aadv-category-content">
+                <span class="aadv-category-icon">🧠</span>
+                <span class="aadv-category-name">Mental health</span>
+                <span class="aadv-category-detail">Therapy services, meditation apps · Standard review</span>
+              </span>
+            </label>
+            <label class="aadv-category-card">
+              <input type="radio" name="aadv-category" value="supplements">
+              <span class="aadv-category-content">
+                <span class="aadv-category-icon">💊</span>
+                <span class="aadv-category-name">Supplements</span>
+                <span class="aadv-category-detail">Vitamins, nootropics, herbal · Extra review (FTC)</span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Restricted categories disclosure -->
+        <div class="aadv-restricted-section">
+          <div class="aadv-form-label">Restricted category disclosure (yes/no)</div>
+          <div class="aadv-restricted-list">
+            <label class="aadv-toggle-row">
+              <span>Do you make specific health outcome claims (e.g., "lowers blood pressure," "cures insomnia")?</span>
+              <span class="aadv-toggle-control">
+                <input type="checkbox" id="aadv-claims-health">
+                <span class="aadv-toggle-track"><span class="aadv-toggle-thumb"></span></span>
+              </span>
+            </label>
+            <label class="aadv-toggle-row">
+              <span>Do you advertise products requiring FDA approval (Rx, medical devices)?</span>
+              <span class="aadv-toggle-control">
+                <input type="checkbox" id="aadv-claims-fda">
+                <span class="aadv-toggle-track"><span class="aadv-toggle-thumb"></span></span>
+              </span>
+            </label>
+            <label class="aadv-toggle-row">
+              <span>CBD, alcohol, gambling, weight loss, or anti-aging claims?</span>
+              <span class="aadv-toggle-control">
+                <input type="checkbox" id="aadv-claims-restricted">
+                <span class="aadv-toggle-track"><span class="aadv-toggle-thumb"></span></span>
+              </span>
+            </label>
+          </div>
+          <div class="aadv-restricted-note" id="aadv-restricted-note" style="display:none;">
+            <strong>Heads up:</strong> One or more disclosures triggers extra review. We'll request substantiation documentation (clinical studies, FDA letters, applicable disclaimers) within 24 hours of submission. Doesn't disqualify you — just adds a step.
+          </div>
+        </div>
+
+        <!-- Payment method -->
+        <div class="aadv-payment-section">
+          <div class="aadv-form-label">Payment method</div>
+          <div class="aadv-payment-card">
+            <div class="aadv-payment-card-row">
+              <span class="aadv-payment-method-label">Default method</span>
+              <span class="aadv-payment-method-value">
+                <svg viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:auto;vertical-align:-3px;margin-right:6px;">
+                  <rect width="36" height="24" rx="3" fill="#1A1F71"/>
+                  <text x="18" y="16" text-anchor="middle" fill="#fff" font-family="Arial" font-weight="900" font-size="9" letter-spacing="0.05em">VISA</text>
+                </svg>
+                Visa ending in 4242
+              </span>
+            </div>
+            <div class="aadv-payment-card-row">
+              <span class="aadv-payment-method-label">Spending limit</span>
+              <span class="aadv-payment-method-value">$5,000.00 / month (default — adjustable later)</span>
+            </div>
+            <div class="aadv-payment-card-row">
+              <span class="aadv-payment-method-label">Billing</span>
+              <span class="aadv-payment-method-value">Charged daily for completed watches · Itemized invoice end of month</span>
+            </div>
+            <button class="aadv-payment-edit">Change payment method →</button>
+          </div>
+          <div class="aadv-payment-help">For demo purposes, this is pre-filled. Production: Stripe integration with credit card, ACH, or wire for $5k+ commitments.</div>
+        </div>
+
+        <button class="btn btn-primary btn-lg aadv-btn" onclick="aadvGoToStep(4)">
+          Continue to first campaign →
+        </button>
+        <button class="aadv-skip" onclick="aadvGoToStep(2)">
+          ← Go back
+        </button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 4: First Campaign Setup ============= -->
+    <div class="aadv-step" data-aadv-step="4">
+      <div class="aadv-step-content">
+        <div class="aadv-eyebrow">⏤ Step 4 of 5 · Your first campaign</div>
+        <h1 class="aadv-headline">
+          Launch your first<br><em>campaign now.</em>
+        </h1>
+        <p class="aadv-lede">Most advertisers create their first campaign during onboarding. You can edit, pause, or duplicate it anytime from Studio. The campaign queues for review the moment your KYC clears (usually 24–48 hours).</p>
+
+        <!-- Campaign basics -->
+        <div class="aadv-form-section">
+          <label class="aadv-form-label">Campaign name</label>
+          <input type="text" class="aadv-input aadv-input-block" id="aadv-camp-name" placeholder="Cohen Chiropractic — Austin Spring Promo" maxlength="100">
+          <div class="aadv-input-help">Internal name. Won't show to viewers.</div>
+        </div>
+
+        <div class="aadv-form-section">
+          <label class="aadv-form-label">What you're advertising (one sentence)</label>
+          <textarea class="aadv-input aadv-input-block aadv-input-textarea" id="aadv-camp-desc" placeholder="$79/month chiropractic membership at our Austin clinic — first adjustment free for new patients." maxlength="240" rows="2"></textarea>
+        </div>
+
+        <!-- Creative upload -->
+        <div class="aadv-form-section">
+          <label class="aadv-form-label">Ad creative</label>
+          <div class="aadv-creative-zone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="aadv-creative-icon">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <div class="aadv-creative-title">Upload your ad video</div>
+            <div class="aadv-creative-sub">15 to 60 seconds · MP4, MOV, WebM · 1080p+</div>
+            <button class="aadv-creative-browse">Browse files</button>
+          </div>
+          <!-- Real Human Rule pledge for ads -->
+          <label class="aadv-pledge">
+            <input type="checkbox" id="aadv-pledge-cb">
+            <span class="aadv-pledge-box"></span>
+            <span class="aadv-pledge-text">I confirm: <strong>my ad creative complies with the 100% Real Human Rule.</strong> Any human in my ad is a real, consenting person. No AI faces, no deepfakes, no voice clones. Product-only ads, animations, and demos with no humans are fine.</span>
+          </label>
+        </div>
+
+        <!-- Targeting -->
+        <div class="aadv-form-section">
+          <label class="aadv-form-label">Audience targeting</label>
+          <div class="aadv-targeting-grid">
+            <label class="aadv-target-pill aadv-target-pill-active">
+              <input type="checkbox" checked disabled>
+              <span>All verified humans</span>
+              <span class="aadv-target-pill-detail">Default · Required</span>
+            </label>
+            <label class="aadv-target-pill">
+              <input type="checkbox" id="aadv-target-geo">
+              <span>Geo-targeting</span>
+              <span class="aadv-target-pill-detail">Limit to specific zip codes / states</span>
+            </label>
+            <label class="aadv-target-pill">
+              <input type="checkbox" id="aadv-target-tier">
+              <span>Verified practitioner audience</span>
+              <span class="aadv-target-pill-detail">Premium tier · 2× bid required</span>
+            </label>
+            <label class="aadv-target-pill">
+              <input type="checkbox" id="aadv-target-pod">
+              <span>Podcast listeners only</span>
+              <span class="aadv-target-pill-detail">Higher attention quality · 1.5× bid</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Bid + Budget -->
+        <div class="aadv-form-row-2">
+          <div class="aadv-form-section">
+            <label class="aadv-form-label">Max bid per completed watch</label>
+            <div class="aadv-bid-input">
+              <span class="aadv-bid-prefix">$</span>
+              <input type="range" class="aadv-bid-slider" id="aadv-bid" min="0.50" max="3" step="0.25" value="0.75">
+              <span class="aadv-bid-value" id="aadv-bid-value">0.75</span>
+            </div>
+            <div class="aadv-bid-scale">
+              <span>$0.50 floor</span>
+              <span>$3.00 premium</span>
+            </div>
+          </div>
+          <div class="aadv-form-section">
+            <label class="aadv-form-label">Daily budget cap</label>
+            <div class="aadv-budget-input">
+              <span class="aadv-budget-prefix">$</span>
+              <input type="number" class="aadv-input aadv-input-block aadv-input-mono" id="aadv-budget" placeholder="50" min="10" max="10000" value="50">
+              <span class="aadv-budget-suffix">/ day</span>
+            </div>
+            <div class="aadv-input-help">We'll never charge more than this in a 24-hour window. Stops automatically.</div>
+          </div>
+        </div>
+
+        <!-- Live estimate -->
+        <div class="aadv-estimate-card">
+          <div class="aadv-estimate-eyebrow">ESTIMATED REACH AT THESE SETTINGS</div>
+          <div class="aadv-estimate-row">
+            <div class="aadv-estimate-stat">
+              <div class="aadv-estimate-num" id="aadv-est-watches">~67</div>
+              <div class="aadv-estimate-label">VERIFIED WATCHES / DAY</div>
+            </div>
+            <div class="aadv-estimate-stat">
+              <div class="aadv-estimate-num" id="aadv-est-jar">~$50</div>
+              <div class="aadv-estimate-label">DAILY SPEND TO HUMANS</div>
+            </div>
+            <div class="aadv-estimate-stat">
+              <div class="aadv-estimate-num" id="aadv-est-monthly">~$1,500</div>
+              <div class="aadv-estimate-label">MONTHLY SPEND</div>
+            </div>
+          </div>
+          <div class="aadv-estimate-disclaimer">Estimates based on platform-wide completion and tip rates. Your actual numbers depend on creative quality, audience match, and bid competitiveness. Reviewable in real time once live.</div>
+        </div>
+
+        <button class="btn btn-primary btn-lg aadv-btn" id="aadv-step4-btn" onclick="aadvGoToStep(5)" disabled>
+          Continue to review →
+        </button>
+        <button class="aadv-skip" onclick="aadvGoToStep(3)">
+          ← Go back
+        </button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 5: Review + Submit ============= -->
+    <div class="aadv-step" data-aadv-step="5">
+      <div class="aadv-step-content">
+        <div class="aadv-eyebrow">⏤ Step 5 of 5 · Review &amp; submit</div>
+        <h1 class="aadv-headline">
+          Looks good?<br><em>Submit for review.</em>
+        </h1>
+        <p class="aadv-lede">Two parallel review queues open the moment you submit. Business KYC takes 24–48 hours. Campaign creative review (if uploaded) takes 24–72 hours. We'll email when each clears, and your campaign auto-launches the moment both are green.</p>
+
+        <!-- Review summary cards -->
+        <div class="aadv-review-grid">
+          <!-- Business card -->
+          <div class="aadv-review-card">
+            <div class="aadv-review-card-eyebrow">YOUR BUSINESS</div>
+            <div class="aadv-review-row">
+              <div class="aadv-review-label">Legal name</div>
+              <div class="aadv-review-value" id="aadv-review-bizname">—</div>
+            </div>
+            <div class="aadv-review-row">
+              <div class="aadv-review-label">EIN</div>
+              <div class="aadv-review-value aadv-review-mono" id="aadv-review-ein">—</div>
+            </div>
+            <div class="aadv-review-row">
+              <div class="aadv-review-label">Type</div>
+              <div class="aadv-review-value" id="aadv-review-biztype">—</div>
+            </div>
+            <div class="aadv-review-row">
+              <div class="aadv-review-label">Address</div>
+              <div class="aadv-review-value" id="aadv-review-bizaddr">—</div>
+            </div>
+            <div class="aadv-review-row">
+              <div class="aadv-review-label">Authorized signer</div>
+              <div class="aadv-review-value" id="aadv-review-signer">—</div>
+            </div>
+            <div class="aadv-review-row">
+              <div class="aadv-review-label">Category</div>
+              <div class="aadv-review-value" id="aadv-review-category">Healthcare services</div>
+            </div>
+            <div class="aadv-review-row">
+              <div class="aadv-review-label">Payment</div>
+              <div class="aadv-review-value">Visa ending in 4242 · $5,000/mo limit</div>
+            </div>
+          </div>
+
+          <!-- Campaign card -->
+          <div class="aadv-review-card">
+            <div class="aadv-review-card-eyebrow">YOUR FIRST CAMPAIGN</div>
+            <div class="aadv-review-row">
+              <div class="aadv-review-label">Campaign name</div>
+              <div class="aadv-review-value" id="aadv-review-campname">—</div>
+            </div>
+            <div class="aadv-review-row">
+              <div class="aadv-review-label">Description</div>
+              <div class="aadv-review-value" id="aadv-review-campdesc">—</div>
+            </div>
+            <div class="aadv-review-row">
+              <div class="aadv-review-label">Creative</div>
+              <div class="aadv-review-value" id="aadv-review-creative">Uploaded · pending review</div>
+            </div>
+            <div class="aadv-review-row">
+              <div class="aadv-review-label">Audience</div>
+              <div class="aadv-review-value" id="aadv-review-audience">All verified humans</div>
+            </div>
+            <div class="aadv-review-row">
+              <div class="aadv-review-label">Bid</div>
+              <div class="aadv-review-value" id="aadv-review-bid">$0.75 per completed watch</div>
+            </div>
+            <div class="aadv-review-row">
+              <div class="aadv-review-label">Daily budget</div>
+              <div class="aadv-review-value" id="aadv-review-budget">$50.00 / day</div>
+            </div>
+            <div class="aadv-review-row">
+              <div class="aadv-review-label">Real Human Rule</div>
+              <div class="aadv-review-value">
+                <span class="aadv-review-vh"><span class="aadv-review-check">✓</span> Agreed · Creative compliant</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="aadv-after-section">
+          <div class="aadv-form-label">WHAT HAPPENS NEXT</div>
+          <ol class="aadv-after-list">
+            <li><strong>Within 24 hours:</strong> Business KYC verified against IRS records and OFAC list. Email confirmation when clear.</li>
+            <li><strong>Within 24–72 hours:</strong> Creative reviewed by our brand-safety team. We check Real Human Rule compliance, FTC claims, and category restrictions. Usually approved same day.</li>
+            <li><strong>Auto-launch:</strong> Both green = your campaign goes live and starts spending. Pause anytime from Studio.</li>
+            <li><strong>Daily reporting:</strong> Real-time dashboard shows verified watches, tip rate, jip feedback, and spend. No proxy metrics.</li>
+          </ol>
+        </div>
+
+        <button class="btn btn-primary btn-lg aadv-btn" onclick="aadvSubmit()">
+          Submit for review →
+        </button>
+        <button class="aadv-skip" onclick="aadvGoToStep(4)">
+          ← Edit campaign
+        </button>
+      </div>
+    </div>
+
+    <!-- ============= SUCCESS STATE ============= -->
+    <div class="aadv-step" data-aadv-step="success">
+      <div class="aadv-step-content aadv-success-content">
+        <div class="aadv-success-icon">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="40" r="36" fill="#0F2A24"/>
+            <circle cx="40" cy="40" r="36" fill="none" stroke="#C8902E" stroke-width="2"/>
+            <path d="M 24 40 L 36 52 L 56 28" stroke="#C8902E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+
+        <div class="aadv-eyebrow">⏤ APPLICATION SUBMITTED</div>
+        <h1 class="aadv-headline aadv-headline-center">
+          You're an advertiser,<br><em>pending review.</em>
+        </h1>
+        <p class="aadv-lede aadv-lede-center">Two emails are on the way: one confirming your application, and one when your KYC clears (usually 24–48 hrs). You can already preview your campaign dashboard in Studio.</p>
+
+        <!-- Status pills -->
+        <div class="aadv-status-grid">
+          <div class="aadv-status-card">
+            <div class="aadv-status-num" id="aadv-status-app">#<span id="aadv-status-app-num">2147</span></div>
+            <div class="aadv-status-label">APPLICATION ID</div>
+            <div class="aadv-status-detail">Save this for billing inquiries</div>
+          </div>
+          <div class="aadv-status-card aadv-status-card-pending">
+            <div class="aadv-status-num">⏳</div>
+            <div class="aadv-status-label">KYC REVIEW</div>
+            <div class="aadv-status-detail">In queue · 24–48 hrs typical</div>
+          </div>
+          <div class="aadv-status-card aadv-status-card-pending">
+            <div class="aadv-status-num">⏳</div>
+            <div class="aadv-status-label">CREATIVE REVIEW</div>
+            <div class="aadv-status-detail">In queue · 24–72 hrs typical</div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg aadv-btn aadv-btn-narrow" data-view="studio" onclick="aadvComplete()">
+          Preview my advertiser dashboard →
+        </button>
+        <button class="aadv-skip" data-view="profile" onclick="aadvComplete()">
+          Back to my jar
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========================================================================
      STUDIO VIEW — Unified workspace for creators, podcasters, advertisers
      Adapts based on activated roles. Sidebar nav + main content.
      ======================================================================== -->
@@ -15084,7 +18209,7 @@ input, textarea, select {
               </div>
             </div>
 
-            <button class="btn btn-primary btn-lg" disabled>Verify with NPI (coming Turn 4) →</button>
+            <button class="btn btn-primary btn-lg" data-view="activate-practitioner">Verify with NPI →</button>
           </div>
         </div>
       </div>
@@ -15522,6 +18647,302 @@ input, textarea, select {
         </div>
 
       </div>
+
+<!-- ========================================================================
+     STUDIO CAMPAIGNS TAB CONTENT (post-activation view)
+     Shows after advertiser KYC clears. Manage campaigns, creatives, audiences, billing.
+     Inserted as <div class="studio-tab-content" data-studio-content="campaigns">
+     ======================================================================== -->
+      <div class="studio-tab-content" data-studio-content="campaigns" style="display:none;">
+
+        <!-- Advertiser business header -->
+        <div class="campaign-business-header">
+          <div class="campaign-business-icon">
+            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+              <rect width="60" height="60" rx="10" fill="#0F2A24"/>
+              <path d="M 14 22 L 30 14 L 46 22 L 46 46 L 14 46 Z" fill="#C8902E" opacity="0.15"/>
+              <path d="M 14 22 L 30 14 L 46 22" stroke="#C8902E" stroke-width="2" stroke-linejoin="round" fill="none"/>
+              <rect x="22" y="32" width="6" height="14" fill="#C8902E"/>
+              <rect x="32" y="28" width="10" height="18" fill="#C8902E"/>
+              <circle cx="30" cy="22" r="2.5" fill="#ECC881"/>
+            </svg>
+          </div>
+          <div class="campaign-business-meta">
+            <div class="campaign-business-eyebrow">⏤ ADVERTISER · KYC PENDING REVIEW</div>
+            <h2 class="campaign-business-name" id="campaign-business-name">Cohen Family Chiropractic LLC</h2>
+            <div class="campaign-business-detail">
+              <span>Healthcare services</span>
+              <span class="campaign-dot">·</span>
+              <span>Austin, TX</span>
+              <span class="campaign-dot">·</span>
+              <span>EIN •••••2847</span>
+            </div>
+            <div class="campaign-business-stats">
+              <div><strong>$0</strong> spent today</div>
+              <div><strong>$5,000</strong> monthly cap</div>
+              <div><strong>1</strong> campaign · pending</div>
+              <div><strong>Visa</strong> ••• 4242 default</div>
+            </div>
+          </div>
+          <div class="campaign-business-actions">
+            <button class="btn btn-primary campaign-new-btn" onclick="campaignOpenWizard()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              New campaign
+            </button>
+          </div>
+        </div>
+
+        <!-- Sub-nav: Campaigns / Creative library / Audience / Billing -->
+        <div class="campaign-subnav">
+          <button class="campaign-subnav-item active" data-camptab="campaigns">Campaigns <span class="campaign-subnav-count">1</span></button>
+          <button class="campaign-subnav-item" data-camptab="creative">Creative library</button>
+          <button class="campaign-subnav-item" data-camptab="audience">Audiences</button>
+          <button class="campaign-subnav-item" data-camptab="billing">Billing</button>
+        </div>
+
+        <!-- ======== Campaigns sub-tab ======== -->
+        <div class="campaign-content" data-camptab-content="campaigns">
+
+          <!-- Stats strip across all campaigns -->
+          <div class="campaign-stats-strip">
+            <div class="campaign-stat">
+              <div class="campaign-stat-num">$0</div>
+              <div class="campaign-stat-label">SPENT THIS MONTH</div>
+            </div>
+            <div class="campaign-stat">
+              <div class="campaign-stat-num">0</div>
+              <div class="campaign-stat-label">VERIFIED WATCHES</div>
+            </div>
+            <div class="campaign-stat">
+              <div class="campaign-stat-num">—</div>
+              <div class="campaign-stat-label">TIP RATE</div>
+            </div>
+            <div class="campaign-stat">
+              <div class="campaign-stat-num">—</div>
+              <div class="campaign-stat-label">EFFECTIVE CPM</div>
+            </div>
+          </div>
+
+          <!-- Pending review banner -->
+          <div class="campaign-pending-banner">
+            <div class="campaign-pending-icon">⏳</div>
+            <div class="campaign-pending-content">
+              <div class="campaign-pending-title">Your account is in review.</div>
+              <div class="campaign-pending-detail">KYC review is in queue (24–48 hrs typical). We'll email when it clears, and your campaigns auto-launch the moment both KYC and creative review go green. You can edit the campaign below in the meantime.</div>
+            </div>
+          </div>
+
+          <!-- Campaigns list -->
+          <div class="campaign-section-header">
+            <h3>Active &amp; pending campaigns</h3>
+            <div class="campaign-list-tools">
+              <input type="search" class="campaign-search" placeholder="Search campaigns..." aria-label="Search">
+              <select class="campaign-filter">
+                <option>All campaigns</option>
+                <option>Active</option>
+                <option>Paused</option>
+                <option>Pending</option>
+                <option>Ended</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="campaign-list">
+            <!-- The campaign just submitted -->
+            <div class="campaign-row campaign-row-pending">
+              <div class="campaign-row-icon">
+                <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="40" height="40" rx="8" fill="#0F2A24"/>
+                  <path d="M 14 14 L 22 14 L 22 18 L 18 18 L 18 26 L 14 26 Z" fill="#C8902E"/>
+                  <circle cx="26" cy="20" r="4" fill="#C8902E"/>
+                </svg>
+              </div>
+              <div class="campaign-row-meta">
+                <div class="campaign-row-name">Cohen Chiropractic — Austin Spring Promo</div>
+                <div class="campaign-row-detail">
+                  <span class="campaign-tag campaign-tag-pending">PENDING REVIEW</span>
+                  <span class="campaign-dot">·</span>
+                  <span>$0.75 max bid</span>
+                  <span class="campaign-dot">·</span>
+                  <span>$50/day cap</span>
+                  <span class="campaign-dot">·</span>
+                  <span>Created today</span>
+                </div>
+              </div>
+              <div class="campaign-row-stats">
+                <div class="campaign-row-stat-block">
+                  <strong>$0</strong>
+                  <span>spent</span>
+                </div>
+                <div class="campaign-row-stat-block">
+                  <strong>0</strong>
+                  <span>watches</span>
+                </div>
+                <div class="campaign-row-stat-block">
+                  <strong>—</strong>
+                  <span>tip rate</span>
+                </div>
+              </div>
+              <button class="campaign-row-menu" aria-label="Actions">⋯</button>
+            </div>
+
+            <!-- Empty state if they want to see more -->
+            <div class="campaign-list-empty">
+              <p>This is your only campaign so far. <button class="campaign-list-empty-link" onclick="campaignOpenWizard()">Create another →</button></p>
+            </div>
+          </div>
+
+          <!-- Suggested optimization tips -->
+          <div class="campaign-tips-section">
+            <h3>Tips for your first campaign.</h3>
+            <div class="campaign-tips-grid">
+              <div class="campaign-tip-card">
+                <div class="campaign-tip-eyebrow">CREATIVE</div>
+                <div class="campaign-tip-num">15–30s</div>
+                <div class="campaign-tip-detail">Sweet spot for healthcare ads. Long enough to land the offer, short enough to keep completion rate above 85%.</div>
+              </div>
+              <div class="campaign-tip-card">
+                <div class="campaign-tip-eyebrow">BID STRATEGY</div>
+                <div class="campaign-tip-num">$0.75–$1.25</div>
+                <div class="campaign-tip-detail">Healthcare services typically clear at this range for general audience. Higher for verified-practitioner audience (premium tier).</div>
+              </div>
+              <div class="campaign-tip-card">
+                <div class="campaign-tip-eyebrow">AUDIENCE</div>
+                <div class="campaign-tip-num">Geo-target</div>
+                <div class="campaign-tip-detail">Local clinics see best returns when geo-limited to a 25-mile radius. National only makes sense if you ship/serve nationally.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ======== Creative library sub-tab ======== -->
+        <div class="campaign-content" data-camptab-content="creative" style="display:none;">
+          <div class="campaign-section-header">
+            <h3>Creative library</h3>
+          </div>
+          <p class="campaign-section-sub">Reusable ad creatives across campaigns. Upload once, run in multiple campaigns. All creatives undergo Real Human Rule review before going live.</p>
+
+          <div class="campaign-creative-grid">
+            <div class="campaign-creative-tile campaign-creative-tile-pending">
+              <div class="campaign-creative-thumb">
+                <div class="campaign-creative-thumb-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;color:#C8902E;">
+                    <polygon points="5,3 19,12 5,21" fill="currentColor"/>
+                  </svg>
+                </div>
+                <div class="campaign-creative-tag">PENDING</div>
+              </div>
+              <div class="campaign-creative-meta">
+                <div class="campaign-creative-name">Cohen Chiropractic — Spring Promo</div>
+                <div class="campaign-creative-detail">28s · Uploaded today</div>
+                <div class="campaign-creative-status">⏳ Real Human Rule review in progress</div>
+              </div>
+            </div>
+            <button class="campaign-creative-add" onclick="campaignOpenWizard()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px;color:#C8902E;">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              <div>Upload another creative</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- ======== Audiences sub-tab ======== -->
+        <div class="campaign-content" data-camptab-content="audience" style="display:none;">
+          <div class="campaign-section-header">
+            <h3>Audiences</h3>
+          </div>
+          <p class="campaign-section-sub">Reusable audience definitions. Build once, target across campaigns. Every audience starts with TipJip's verified-human guarantee — no third-party data, no inferred profiles.</p>
+
+          <div class="campaign-audience-grid">
+            <div class="campaign-audience-card">
+              <div class="campaign-audience-eyebrow">DEFAULT · ALWAYS AVAILABLE</div>
+              <h4>All verified humans</h4>
+              <div class="campaign-audience-size">~847,000 active</div>
+              <p>Every phone-verified TipJip user. The base for all campaigns. No filters — broadest reach, lowest CPM.</p>
+            </div>
+            <div class="campaign-audience-card campaign-audience-card-premium">
+              <div class="campaign-audience-eyebrow">PREMIUM TIER · 2× BID</div>
+              <h4>Verified practitioners</h4>
+              <div class="campaign-audience-size">~12,400 active</div>
+              <p>Licensed health professionals (NPI-verified via CMS). Ideal for B2B medical, supplements requiring practitioner endorsement, professional services.</p>
+            </div>
+            <div class="campaign-audience-card campaign-audience-card-premium">
+              <div class="campaign-audience-eyebrow">PREMIUM TIER · 1.5× BID</div>
+              <h4>Podcast listeners</h4>
+              <div class="campaign-audience-size">~94,000 active</div>
+              <p>Users who listen to TipJip podcasts at least weekly. Higher attention quality, longer ad tolerance, deeper engagement signals.</p>
+            </div>
+            <button class="campaign-audience-card campaign-audience-add" onclick="alert('Custom audience builder — coming soon')">
+              <div class="campaign-audience-add-icon">+</div>
+              <h4>Build a custom audience</h4>
+              <p>Combine geo, interests, watch history, and tier filters into a reusable audience. Coming soon.</p>
+            </button>
+          </div>
+        </div>
+
+        <!-- ======== Billing sub-tab ======== -->
+        <div class="campaign-content" data-camptab-content="billing" style="display:none;">
+          <div class="campaign-section-header">
+            <h3>Billing &amp; spend</h3>
+          </div>
+
+          <div class="campaign-billing-grid">
+            <div class="campaign-billing-card">
+              <div class="campaign-billing-eyebrow">CURRENT BALANCE</div>
+              <div class="campaign-billing-num">$0.00</div>
+              <div class="campaign-billing-detail">Charged daily based on completed watches. No minimums.</div>
+            </div>
+            <div class="campaign-billing-card">
+              <div class="campaign-billing-eyebrow">MONTHLY CAP</div>
+              <div class="campaign-billing-num">$5,000</div>
+              <div class="campaign-billing-detail">We'll never charge more than this in a calendar month. Adjustable.</div>
+              <button class="campaign-billing-edit">Adjust cap →</button>
+            </div>
+            <div class="campaign-billing-card">
+              <div class="campaign-billing-eyebrow">PAYMENT METHOD</div>
+              <div class="campaign-billing-payment-row">
+                <svg viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg" style="width:36px;height:auto;">
+                  <rect width="36" height="24" rx="3" fill="#1A1F71"/>
+                  <text x="18" y="16" text-anchor="middle" fill="#fff" font-family="Arial" font-weight="900" font-size="9" letter-spacing="0.05em">VISA</text>
+                </svg>
+                <span>Visa ending in 4242</span>
+              </div>
+              <div class="campaign-billing-detail">Default · Charged daily</div>
+              <button class="campaign-billing-edit">Add another method →</button>
+            </div>
+          </div>
+
+          <div class="campaign-section-header" style="margin-top:32px;">
+            <h3>Spend history</h3>
+          </div>
+          <div class="campaign-billing-empty">
+            <p>No charges yet. Once your campaign launches, daily spend will itemize here. Monthly invoices arrive by email on the 1st.</p>
+          </div>
+        </div>
+
+      </div>
+
+<!-- ============================================
+     CAMPAIGN WIZARD MODAL — for creating subsequent campaigns
+     ============================================ -->
+<div class="campaign-wizard-modal" id="campaign-wizard-modal" hidden>
+  <div class="campaign-wizard-overlay" onclick="campaignCloseWizard()"></div>
+  <div class="campaign-wizard-card">
+    <button class="campaign-wizard-close" onclick="campaignCloseWizard()" aria-label="Close">×</button>
+    <div class="aadv-eyebrow">⏤ NEW CAMPAIGN</div>
+    <h2 class="campaign-wizard-h2">Create another campaign.</h2>
+    <p class="campaign-wizard-sub">Quick setup using your verified business and existing creative library. Takes about 2 minutes.</p>
+
+    <div class="campaign-wizard-link-section">
+      <p class="campaign-wizard-helpinfo">For now, the full multi-step wizard is part of the activation flow. You can also adjust your existing campaign or duplicate it from the campaigns list.</p>
+      <div class="campaign-wizard-actions">
+        <button class="btn btn-outline" onclick="campaignCloseWizard()">Maybe later</button>
+        <button class="btn btn-primary" data-view="activate-advertiser" onclick="campaignCloseWizard()">Open full campaign builder →</button>
+      </div>
+    </div>
+  </div>
+</div>
 
       <!-- SETTINGS TAB -->
       <div class="studio-tab-content" data-studio-content="settings" style="display:none;">
@@ -19758,6 +23179,551 @@ document.querySelectorAll('.why-cta-btn').forEach(btn => {
 
   // Wire up the activate-creator button on Profile to point to activate-podcast as well
   // (already done in HTML via data-view attributes — nothing needed here)
+
+})();
+</script>
+<script>
+// ============================================
+// ACTIVATE PRACTITIONER — NPI verification flow
+// Mocks the CMS NPPES API call structure exactly
+// In production: replace mockNppesAPI() with a real fetch to
+//   https://npiregistry.cms.hhs.gov/api/?number={NPI}&version=2.1
+// ============================================
+(function() {
+
+  // -------- MOCK NPPES API --------
+  // Mirrors the actual CMS NPPES API response structure (v2.1).
+  // Real endpoint: https://npiregistry.cms.hhs.gov/api/?number={NPI}&version=2.1
+  // To go live: replace the mock fetch below with the real one.
+  const MOCK_NPI_DATABASE = {
+    '1437291203': {
+      result_count: 1,
+      results: [{
+        number: '1437291203',
+        enumeration_type: 'NPI-1',
+        last_updated: '2024-08-15',
+        basic: {
+          first_name: 'SARAH',
+          last_name: 'COHEN',
+          middle_name: 'M',
+          credential: 'DC',
+          gender: 'F',
+          name_prefix: 'Dr.',
+          status: 'A'
+        },
+        taxonomies: [{
+          desc: 'Chiropractor',
+          primary: true,
+          state: 'TX',
+          license: 'TX-DC-12847'
+        }],
+        addresses: [{
+          city: 'AUSTIN',
+          state: 'TX',
+          country_code: 'US',
+          address_purpose: 'LOCATION'
+        }]
+      }]
+    },
+    '1295730104': {
+      result_count: 1,
+      results: [{
+        number: '1295730104',
+        enumeration_type: 'NPI-1',
+        last_updated: '2025-02-03',
+        basic: {
+          first_name: 'JAMES',
+          last_name: 'PATEL',
+          middle_name: 'A',
+          credential: 'NP, MSN',
+          gender: 'M',
+          name_prefix: '',
+          status: 'A'
+        },
+        taxonomies: [{
+          desc: 'Nurse Practitioner, Family',
+          primary: true,
+          state: 'CA',
+          license: 'CA-NP-89132'
+        }],
+        addresses: [{
+          city: 'SAN FRANCISCO',
+          state: 'CA',
+          country_code: 'US',
+          address_purpose: 'LOCATION'
+        }]
+      }]
+    }
+    // Anything else returns result_count: 0 (failure case)
+  };
+
+  function mockNppesAPI(npi) {
+    // Simulate network delay
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const record = MOCK_NPI_DATABASE[npi];
+        if (record) {
+          resolve(record);
+        } else {
+          resolve({ result_count: 0, results: [] });
+        }
+      }, 2400); // 2.4 seconds — feels like a real federal API call
+    });
+  }
+
+  // -------- STEP NAVIGATION --------
+  window.apractGoToStep = function(step) {
+    document.querySelectorAll('.apract-step').forEach(s => s.classList.remove('active'));
+    const target = document.querySelector('.apract-step[data-apract-step="' + step + '"]');
+    if (target) target.classList.add('active');
+
+    const fill = document.getElementById('apract-progress-fill');
+    if (fill && typeof step === 'number') {
+      fill.style.width = (step / 3 * 100) + '%';
+    }
+    document.querySelectorAll('.apract-step-marker').forEach(m => {
+      const ms = parseInt(m.dataset.step);
+      m.classList.remove('active', 'complete');
+      if (typeof step === 'number') {
+        if (ms < step) m.classList.add('complete');
+        else if (ms === step) m.classList.add('active');
+      }
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (step === 2) {
+      // Focus NPI input
+      setTimeout(() => {
+        const i = document.getElementById('apract-npi');
+        if (i) i.focus();
+      }, 300);
+    }
+  };
+
+  // NPI input: digits only, validate length to enable button
+  document.addEventListener('input', function(e) {
+    if (e.target && e.target.id === 'apract-npi') {
+      // Strip non-digits
+      const v = e.target.value.replace(/\D/g, '').slice(0, 10);
+      if (v !== e.target.value) e.target.value = v;
+      const btn = document.getElementById('apract-step2-btn');
+      if (btn) btn.disabled = v.length !== 10;
+    }
+  });
+
+  window.apractFillDemo = function(npi) {
+    const input = document.getElementById('apract-npi');
+    if (input) {
+      input.value = npi;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.focus();
+    }
+  };
+
+  // -------- VERIFICATION FLOW --------
+  window.apractStartVerification = async function() {
+    const input = document.getElementById('apract-npi');
+    if (!input || input.value.length !== 10) return;
+    const npi = input.value;
+
+    // Update verify-step display NPI
+    const npiDisplay = document.getElementById('apract-verify-npi');
+    if (npiDisplay) npiDisplay.textContent = npi;
+
+    // Show only loading state
+    document.querySelectorAll('.apract-verify-state').forEach(s => s.style.display = 'none');
+    const loadingState = document.querySelector('[data-apract-state="loading"]');
+    if (loadingState) loadingState.style.display = '';
+
+    // Reset verify substep states
+    document.querySelectorAll('.apract-verify-substep').forEach(s => {
+      s.classList.remove('active', 'complete');
+    });
+
+    apractGoToStep(3);
+
+    // Animate substep progression
+    const substeps = document.querySelectorAll('.apract-verify-substep');
+
+    // Substep 1: Connecting (immediate)
+    setTimeout(() => {
+      if (substeps[0]) substeps[0].classList.add('active');
+    }, 100);
+
+    // Substep 1 → complete, Substep 2: Fetching
+    setTimeout(() => {
+      if (substeps[0]) {
+        substeps[0].classList.remove('active');
+        substeps[0].classList.add('complete');
+      }
+      if (substeps[1]) substeps[1].classList.add('active');
+    }, 800);
+
+    // Substep 2 → complete, Substep 3: Confirming
+    setTimeout(() => {
+      if (substeps[1]) {
+        substeps[1].classList.remove('active');
+        substeps[1].classList.add('complete');
+      }
+      if (substeps[2]) substeps[2].classList.add('active');
+    }, 1700);
+
+    // Hit the "API"
+    try {
+      const data = await mockNppesAPI(npi);
+
+      // Substep 3 → complete
+      if (substeps[2]) {
+        substeps[2].classList.remove('active');
+        substeps[2].classList.add('complete');
+      }
+
+      // Brief pause before showing result
+      await new Promise(r => setTimeout(r, 400));
+
+      if (data.result_count > 0) {
+        showSuccess(data.results[0]);
+      } else {
+        showFailure(npi);
+      }
+    } catch (err) {
+      console.error('NPI lookup failed:', err);
+      showFailure(npi);
+    }
+  };
+
+  function showSuccess(record) {
+    document.querySelectorAll('.apract-verify-state').forEach(s => s.style.display = 'none');
+    const successState = document.querySelector('[data-apract-state="success"]');
+    if (successState) successState.style.display = '';
+
+    // Populate fields from the record
+    const basic = record.basic || {};
+    const tax = (record.taxonomies && record.taxonomies[0]) || {};
+    const addr = (record.addresses && record.addresses[0]) || {};
+
+    const titleCase = (s) => s ? s.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ') : '';
+    const fullName = [titleCase(basic.first_name), titleCase(basic.middle_name), titleCase(basic.last_name)].filter(Boolean).join(' ');
+
+    const setIf = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    };
+
+    setIf('apract-result-firstname', titleCase(basic.first_name) + (basic.credential ? ', ' + basic.credential : '') + '.');
+    setIf('apract-record-name', (basic.name_prefix ? basic.name_prefix + ' ' : '') + fullName);
+    setIf('apract-record-creds', basic.credential || '—');
+    setIf('apract-record-taxonomy', tax.desc || '—');
+    setIf('apract-record-state', addr.state ? `${titleCase(addr.city)}, ${addr.state}` : '—');
+    setIf('apract-record-npi', record.number || '—');
+
+    const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    setIf('apract-record-date', today);
+
+    // Save the activation status globally for badge propagation
+    window._tipjipPractitionerVerified = {
+      verified: true,
+      record: record,
+      verifiedDate: today
+    };
+  }
+
+  function showFailure(npi) {
+    document.querySelectorAll('.apract-verify-state').forEach(s => s.style.display = 'none');
+    const failState = document.querySelector('[data-apract-state="failure"]');
+    if (failState) failState.style.display = '';
+  }
+
+  // -------- COMPLETION + BADGE PROPAGATION --------
+  window.apractComplete = function() {
+    if (!window._tipjipPractitionerVerified) return;
+    const record = window._tipjipPractitionerVerified.record;
+    const basic = record.basic || {};
+    const tax = (record.taxonomies && record.taxonomies[0]) || {};
+    const titleCase = (s) => s ? s.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ') : '';
+    const fullName = [titleCase(basic.first_name), titleCase(basic.last_name)].filter(Boolean).join(' ');
+    const credential = basic.credential || '';
+    const specialty = tax.desc || '';
+
+    // Activate practitioner state on Studio sidebar
+    const navItem = document.querySelector('.studio-nav-item[data-studio-tab="practitioner"]');
+    if (navItem) {
+      navItem.classList.add('studio-practitioner-active');
+      const tag = navItem.querySelector('.studio-nav-tag');
+      if (tag) tag.textContent = '✓';
+    }
+
+    // Inject practitioner badge into Studio identity (next to handle)
+    const studioId = document.querySelector('.studio-identity-handle');
+    if (studioId && !studioId.querySelector('.practitioner-badge-mini')) {
+      const star = document.createElement('span');
+      star.className = 'practitioner-badge-mini';
+      star.innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M 12 2 L 14.4 8.4 L 21 9.3 L 16.2 13.8 L 17.4 20.4 L 12 17.4 L 6.6 20.4 L 7.8 13.8 L 3 9.3 L 9.6 8.4 Z" fill="#C8902E" stroke="#ECC881" stroke-width="0.6" stroke-linejoin="round"/><path d="M 9.5 12 L 11 13.5 L 14.5 10" stroke="#0F2A24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>';
+      star.title = 'Verified Practitioner · ' + credential;
+      studioId.appendChild(star);
+    }
+
+    // Add to profile verified-human badge area
+    const profileBadgeText = document.querySelector('.profile-vh-text');
+    if (profileBadgeText && !profileBadgeText.querySelector('.profile-practitioner-line')) {
+      const newLine = document.createElement('div');
+      newLine.className = 'profile-practitioner-line';
+      newLine.style.cssText = 'font-size: 11px; color: var(--gold); font-weight: 700; margin-top: 2px;';
+      newLine.innerHTML = '⭐ ' + (credential ? credential : 'Verified Practitioner');
+      profileBadgeText.appendChild(newLine);
+    }
+
+    // Update Studio practitioner tab content to show "verified" instead of promo
+    // (the tab still exists; we'll just visually mark the upgrade as done)
+    const practBtn = document.querySelector('[data-studio-content="practitioner"] .btn-primary');
+    if (practBtn) {
+      practBtn.textContent = '✓ Verified · ' + (credential || 'Practitioner');
+      practBtn.classList.remove('btn-primary');
+      practBtn.classList.add('btn-outline');
+      practBtn.disabled = true;
+    }
+
+    // Switch to Studio
+    if (typeof switchView === 'function') switchView('studio');
+  };
+
+  // Hook into view switches to wire jar number into the preview
+  const _origSwitch = window.switchView;
+  if (_origSwitch && !window._apractSwitchHooked) {
+    window._apractSwitchHooked = true;
+    window.switchView = function(v) {
+      _origSwitch.apply(this, arguments);
+      if (v === 'activate-practitioner') {
+        setTimeout(() => {
+          // Update preview name placeholder if studio-handle is set
+          const handle = document.getElementById('studio-handle');
+          if (handle && handle.textContent && handle.textContent !== 'jar4471') {
+            const previewName = document.getElementById('apract-preview-name');
+            if (previewName) previewName.textContent = '@' + handle.textContent + ', credentials';
+          }
+        }, 100);
+      }
+    };
+  }
+
+})();
+</script>
+<script>
+// ============================================
+// ACTIVATE ADVERTISER + STUDIO CAMPAIGNS TAB interactions
+// ============================================
+(function() {
+
+  // -------- STEP NAVIGATION --------
+  window.aadvGoToStep = function(step) {
+    document.querySelectorAll('.aadv-step').forEach(s => s.classList.remove('active'));
+    const target = document.querySelector('.aadv-step[data-aadv-step="' + step + '"]');
+    if (target) target.classList.add('active');
+
+    const fill = document.getElementById('aadv-progress-fill');
+    if (fill && typeof step === 'number') {
+      fill.style.width = (step / 5 * 100) + '%';
+    }
+    document.querySelectorAll('.aadv-step-marker').forEach(m => {
+      const ms = parseInt(m.dataset.step);
+      m.classList.remove('active', 'complete');
+      if (typeof step === 'number') {
+        if (ms < step) m.classList.add('complete');
+        else if (ms === step) m.classList.add('active');
+      }
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Populate review when entering step 5
+    if (step === 5) populateAadvReview();
+  };
+
+  // -------- EIN AUTO-FORMATTING --------
+  document.addEventListener('input', function(e) {
+    if (e.target && e.target.id === 'aadv-biz-ein') {
+      let digits = e.target.value.replace(/\D/g, '').slice(0, 9);
+      if (digits.length > 2) {
+        e.target.value = digits.slice(0, 2) + '-' + digits.slice(2);
+      } else {
+        e.target.value = digits;
+      }
+    }
+  });
+
+  // -------- RESTRICTED CATEGORY DISCLOSURE --------
+  document.addEventListener('change', function(e) {
+    if (e.target && (e.target.id === 'aadv-claims-health' || e.target.id === 'aadv-claims-fda' || e.target.id === 'aadv-claims-restricted')) {
+      const anyChecked = ['aadv-claims-health', 'aadv-claims-fda', 'aadv-claims-restricted'].some(id => {
+        const el = document.getElementById(id);
+        return el && el.checked;
+      });
+      const note = document.getElementById('aadv-restricted-note');
+      if (note) note.style.display = anyChecked ? '' : 'none';
+    }
+    // Pledge checkbox enables step 4 button
+    if (e.target && e.target.id === 'aadv-pledge-cb') {
+      const btn = document.getElementById('aadv-step4-btn');
+      if (btn) btn.disabled = !e.target.checked;
+    }
+  });
+
+  // -------- BID SLIDER + BUDGET LIVE UPDATE --------
+  function updateAadvEstimate() {
+    const bidEl = document.getElementById('aadv-bid');
+    const budgetEl = document.getElementById('aadv-budget');
+    const bidValue = document.getElementById('aadv-bid-value');
+    const estWatches = document.getElementById('aadv-est-watches');
+    const estJar = document.getElementById('aadv-est-jar');
+    const estMonthly = document.getElementById('aadv-est-monthly');
+
+    if (!bidEl || !budgetEl) return;
+    const bid = parseFloat(bidEl.value);
+    const budget = parseFloat(budgetEl.value) || 0;
+
+    if (bidValue) bidValue.textContent = bid.toFixed(2);
+
+    const daily = Math.round(budget / bid);
+    const dailySpend = budget;
+    const monthlySpend = budget * 30;
+
+    if (estWatches) estWatches.textContent = '~' + daily;
+    if (estJar) estJar.textContent = '~$' + dailySpend.toFixed(0);
+    if (estMonthly) estMonthly.textContent = '~$' + monthlySpend.toLocaleString('en-US', {maximumFractionDigits: 0});
+  }
+  document.addEventListener('input', function(e) {
+    if (e.target && (e.target.id === 'aadv-bid' || e.target.id === 'aadv-budget')) {
+      updateAadvEstimate();
+    }
+  });
+
+  // -------- POPULATE REVIEW --------
+  function populateAadvReview() {
+    const setIf = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    };
+    const getVal = (id, fallback) => {
+      const el = document.getElementById(id);
+      return (el && el.value && el.value.trim()) || fallback;
+    };
+
+    // Business
+    setIf('aadv-review-bizname', getVal('aadv-biz-name', '—'));
+    setIf('aadv-review-ein', getVal('aadv-biz-ein', '—'));
+    setIf('aadv-review-biztype', getVal('aadv-biz-type', '—'));
+    const street = getVal('aadv-biz-street', '');
+    const city = getVal('aadv-biz-city', '');
+    const state = getVal('aadv-biz-state', '');
+    const zip = getVal('aadv-biz-zip', '');
+    const addr = [street, city, state, zip].filter(Boolean).join(', ');
+    setIf('aadv-review-bizaddr', addr || '—');
+    const signer = getVal('aadv-biz-signer', '—');
+    const title = getVal('aadv-biz-title', '');
+    setIf('aadv-review-signer', signer + (title ? ' · ' + title : ''));
+
+    // Category
+    const catRadio = document.querySelector('input[name="aadv-category"]:checked');
+    const catLabels = {
+      healthcare: 'Healthcare services',
+      wellness: 'Wellness products',
+      fitness: 'Fitness & gyms',
+      food: 'Food & nutrition',
+      mental: 'Mental health',
+      supplements: 'Supplements'
+    };
+    setIf('aadv-review-category', catLabels[catRadio?.value] || 'Healthcare services');
+
+    // Campaign
+    setIf('aadv-review-campname', getVal('aadv-camp-name', '—'));
+    setIf('aadv-review-campdesc', getVal('aadv-camp-desc', '—'));
+    setIf('aadv-review-bid', '$' + (parseFloat(getVal('aadv-bid', '0.75'))).toFixed(2) + ' per completed watch');
+    setIf('aadv-review-budget', '$' + (parseFloat(getVal('aadv-budget', '50'))).toFixed(2) + ' / day');
+
+    // Audience targeting
+    const audiences = ['All verified humans'];
+    if (document.getElementById('aadv-target-geo')?.checked) audiences.push('Geo-targeted');
+    if (document.getElementById('aadv-target-tier')?.checked) audiences.push('Verified practitioner premium');
+    if (document.getElementById('aadv-target-pod')?.checked) audiences.push('Podcast listeners');
+    setIf('aadv-review-audience', audiences.join(', '));
+  }
+
+  // -------- SUBMIT --------
+  window.aadvSubmit = function() {
+    populateAadvReview();
+    // Random application ID #1500–9999
+    const appId = Math.floor(1500 + Math.random() * 8499);
+    const appNum = document.getElementById('aadv-status-app-num');
+    if (appNum) appNum.textContent = appId;
+
+    // Save advertiser business state for badge propagation
+    window._tipjipAdvertiserActivated = {
+      businessName: document.getElementById('aadv-biz-name')?.value || 'Cohen Family Chiropractic LLC',
+      campaignName: document.getElementById('aadv-camp-name')?.value || 'Spring Promo',
+      applicationId: appId
+    };
+
+    aadvGoToStep('success');
+  };
+
+  // -------- COMPLETION + STUDIO UNLOCK --------
+  window.aadvComplete = function() {
+    const data = window._tipjipAdvertiserActivated;
+    if (!data) return;
+
+    // Unlock Campaigns nav in Studio
+    const lockedItem = document.querySelector('.studio-nav-item[data-studio-locked="advertiser"]');
+    if (lockedItem) {
+      lockedItem.classList.remove('studio-nav-locked');
+      lockedItem.removeAttribute('data-studio-locked');
+      lockedItem.setAttribute('data-studio-tab', 'campaigns');
+      const lock = lockedItem.querySelector('.studio-nav-lock');
+      if (lock) lock.remove();
+    }
+
+    // Propagate business name to campaigns header
+    const bizNameEl = document.getElementById('campaign-business-name');
+    if (bizNameEl) bizNameEl.textContent = data.businessName;
+  };
+
+  // -------- STUDIO CAMPAIGNS SUB-TAB SWITCHING --------
+  document.addEventListener('click', function(e) {
+    const sub = e.target.closest('[data-camptab]');
+    if (sub && sub.classList.contains('campaign-subnav-item')) {
+      const tabName = sub.dataset.camptab;
+      document.querySelectorAll('.campaign-subnav-item').forEach(t => t.classList.remove('active'));
+      sub.classList.add('active');
+      document.querySelectorAll('[data-camptab-content]').forEach(c => {
+        c.style.display = c.dataset.camptabContent === tabName ? '' : 'none';
+      });
+    }
+  });
+
+  window.campaignOpenWizard = function() {
+    const m = document.getElementById('campaign-wizard-modal');
+    if (m) {
+      m.hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+  };
+  window.campaignCloseWizard = function() {
+    const m = document.getElementById('campaign-wizard-modal');
+    if (m) {
+      m.hidden = true;
+      document.body.style.overflow = '';
+    }
+  };
+
+  // ESC closes wizard
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const m = document.getElementById('campaign-wizard-modal');
+      if (m && !m.hidden) campaignCloseWizard();
+    }
+  });
+
+  // Initial estimate calc
+  document.addEventListener('DOMContentLoaded', updateAadvEstimate);
+  setTimeout(updateAadvEstimate, 500);
 
 })();
 </script>
