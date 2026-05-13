@@ -87,12 +87,159 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .brand .jar { width: 28px; height: 32px; }
 .brand .tip { color: var(--evergreen); }
 .brand .jip { color: var(--gold); }
-.nav-divider { width: 1px; height: 24px; background: var(--line); }
-.show-id {
+.brand { text-decoration: none; }
+
+/* ============================================================
+   Shared TipJip nav (desktop) + mobile drawer
+   ============================================================ */
+.tj-nav {
   flex: 1;
   display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+.tj-nav-link {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--evergreen);
+  padding: 8px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.tj-nav-link:hover { background: var(--line-soft); color: var(--gold-2); }
+.tj-nav-link.active {
+  color: var(--gold-2);
+  font-weight: 700;
+}
+.tj-nav-signup {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--gold-2);
+  padding: 8px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.tj-nav-signup:hover { background: var(--line-soft); }
+
+.tj-hamburger {
+  display: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+}
+.tj-hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--evergreen);
+  border-radius: 2px;
+}
+.tj-hamburger:hover { background: var(--line-soft); }
+
+.tj-drawer-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(15, 42, 36, 0.55);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s;
+  z-index: 200;
+}
+.tj-drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+.tj-drawer {
+  position: fixed;
+  top: 0; right: 0;
+  width: 320px; max-width: 88vw;
+  height: 100vh;
+  background: var(--evergreen);
+  z-index: 210;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+  display: flex; flex-direction: column;
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.18);
+}
+.tj-drawer.open { transform: translateX(0); }
+.tj-drawer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid rgba(245, 241, 234, 0.08);
+}
+.tj-drawer-eyebrow {
+  font-size: 11px; font-weight: 700;
+  color: var(--gold-soft, #ECC881);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.tj-drawer-close {
+  background: transparent; border: none;
+  color: var(--parchment); padding: 4px;
+  cursor: pointer; opacity: 0.7;
+}
+.tj-drawer-close:hover { opacity: 1; }
+.tj-drawer-list { flex: 1; padding: 12px 0; overflow-y: auto; }
+.tj-drawer-section {
+  font-size: 10px; font-weight: 700;
+  color: var(--gold-soft, #ECC881); opacity: 0.7;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 16px 22px 6px;
+}
+.tj-drawer-link {
+  display: block;
+  padding: 12px 22px;
+  font-family: var(--font-body);
+  color: var(--parchment); text-decoration: none;
+  font-weight: 600; font-size: 15px;
+  transition: background 0.15s;
+}
+.tj-drawer-link:hover { background: rgba(245, 241, 234, 0.05); }
+.tj-drawer-link.active {
+  color: var(--gold-soft, #ECC881);
+  background: rgba(236, 200, 129, 0.06);
+}
+.tj-drawer-link.signup {
+  color: var(--gold-soft, #ECC881);
+  font-weight: 700;
+  margin-top: 8px;
+  border-top: 1px solid rgba(245, 241, 234, 0.08);
+  padding-top: 14px;
+}
+.tj-drawer-sub {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(245, 241, 234, 0.55);
+  margin-top: 1px;
+}
+
+@media (max-width: 880px) {
+  .tj-nav { display: none; }
+  .tj-hamburger { display: flex; }
+}
+
+.nav-divider { width: 1px; height: 24px; background: var(--line); }
+
+/* Show identity — now lives in body, was in nav */
+.show-id {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  position: relative;
   min-width: 0;
   position: relative;
 }
@@ -1875,7 +2022,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 <nav class="topnav">
   <div class="topnav-inner">
-    <div class="brand">
+    <a href="index.html" class="brand">
       <svg class="jar" viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg" fill="none">
         <rect x="22" y="1" width="16" height="5.5" rx="1.5" fill="#C8902E"/>
         <rect x="6" y="9" width="48" height="58" rx="8" stroke="#0F2A24" stroke-width="2.6" fill="none"/>
@@ -1884,58 +2031,20 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
         <path d="M16 50 Q30 60 44 50" stroke="#0F2A24" stroke-width="3" stroke-linecap="round" fill="none"/>
       </svg>
       <span><span class="tip">Tip</span><span class="jip">Jip</span></span>
-    </div>
+    </a>
 
-    <div class="nav-divider"></div>
-
-    <div class="show-id" id="show-id">
-      <div class="show-avatar" id="show-avatar">SH</div>
-      <div class="show-info">
-        <div class="show-name-row">
-          <div class="show-name" id="show-name">Sally Functional Wellness Podcast</div>
-          <button class="edit-show-btn" id="edit-show-btn" aria-label="Edit show name">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-            </svg>
-          </button>
-        </div>
-        <div class="show-sub">
-          <span class="pulse-dot"></span>
-          <span id="show-host-line">Dr. Sally Hart · Podcaster Studio</span>
-          <span class="joined-badge" id="joined-badge">Joined TipJip · Nov 2025</span>
-        </div>
-      </div>
-
-      <div class="edit-show-panel" id="edit-show-panel">
-        <h4>Personalize this dashboard</h4>
-        <p>Try the demo with your own show name. Stays in your browser.</p>
-        <div class="edit-show-field">
-          <label>Show name</label>
-          <input type="text" id="input-show" placeholder="e.g. Root Cause Radio" />
-        </div>
-        <div class="edit-show-field">
-          <label>Host name (full)</label>
-          <input type="text" id="input-host" placeholder="e.g. Dr. Marcus Pellegrini" />
-        </div>
-        <div class="edit-show-row">
-          <div class="edit-show-field">
-            <label>First name</label>
-            <input type="text" id="input-firstname" placeholder="Marcus" />
-          </div>
-          <div class="edit-show-field">
-            <label>Initials</label>
-            <input type="text" id="input-initials" placeholder="MP" maxlength="2" />
-          </div>
-        </div>
-        <div class="edit-show-actions">
-          <button class="cancel" id="edit-cancel">Cancel</button>
-          <button class="save" id="edit-save">Save</button>
-        </div>
-      </div>
+    <div class="tj-nav">
+      <a href="index.html" class="tj-nav-link">Home</a>
+      <a href="listener.html" class="tj-nav-link">Your Jar</a>
+      <a href="dashboard.html" class="tj-nav-link active">Podcaster</a>
+      <a href="index.html#advertiser" class="tj-nav-link">Advertiser</a>
+      <a href="index.html#signup" class="tj-nav-signup">Sign up</a>
     </div>
 
     <div class="nav-actions">
+      <button class="tj-hamburger" id="tj-hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
       <div class="reset-menu" id="reset-menu">
         <button class="btn-ghost reset-btn" id="reset-toggle" aria-label="Menu">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -1952,7 +2061,83 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   </div>
 </nav>
 
+<!-- Mobile drawer -->
+<div class="tj-drawer-backdrop" id="tj-drawer-backdrop"></div>
+<aside class="tj-drawer" id="tj-drawer">
+  <div class="tj-drawer-head">
+    <span class="tj-drawer-eyebrow">Menu</span>
+    <button class="tj-drawer-close" id="tj-drawer-close" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="tj-drawer-list">
+    <a href="index.html" class="tj-drawer-link">Home</a>
+    <div class="tj-drawer-section">⏤ Sample accounts</div>
+    <a href="listener.html" class="tj-drawer-link">
+      <div>Your Jar</div>
+      <span class="tj-drawer-sub">Sample listener account</span>
+    </a>
+    <a href="dashboard.html" class="tj-drawer-link active">
+      <div>Podcaster</div>
+      <span class="tj-drawer-sub">Sample creator dashboard</span>
+    </a>
+    <a href="index.html#advertiser" class="tj-drawer-link">
+      <div>Advertiser</div>
+      <span class="tj-drawer-sub">Sample sponsor account</span>
+    </a>
+    <a href="index.html#signup" class="tj-drawer-link signup">Sign up</a>
+  </nav>
+</aside>
+
 <main class="container">
+
+  <!-- Show identity (moved out of nav) -->
+  <div class="show-id" id="show-id">
+    <div class="show-avatar" id="show-avatar">SH</div>
+    <div class="show-info">
+      <div class="show-name-row">
+        <div class="show-name" id="show-name">Sally Functional Wellness Podcast</div>
+        <button class="edit-show-btn" id="edit-show-btn" aria-label="Edit show name">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+        </button>
+      </div>
+      <div class="show-sub">
+        <span class="pulse-dot"></span>
+        <span id="show-host-line">Dr. Sally Hart · Podcaster Studio</span>
+        <span class="joined-badge" id="joined-badge">Joined TipJip · Nov 2025</span>
+      </div>
+    </div>
+
+    <div class="edit-show-panel" id="edit-show-panel">
+      <h4>Personalize this dashboard</h4>
+      <p>Try the demo with your own show name. Stays in your browser.</p>
+      <div class="edit-show-field">
+        <label>Show name</label>
+        <input type="text" id="input-show" placeholder="e.g. Root Cause Radio" />
+      </div>
+      <div class="edit-show-field">
+        <label>Host name (full)</label>
+        <input type="text" id="input-host" placeholder="e.g. Dr. Marcus Pellegrini" />
+      </div>
+      <div class="edit-show-row">
+        <div class="edit-show-field">
+          <label>First name</label>
+          <input type="text" id="input-firstname" placeholder="Marcus" />
+        </div>
+        <div class="edit-show-field">
+          <label>Initials</label>
+          <input type="text" id="input-initials" placeholder="MP" maxlength="2" />
+        </div>
+      </div>
+      <div class="edit-show-actions">
+        <button class="cancel" id="edit-cancel">Cancel</button>
+        <button class="save" id="edit-save">Save</button>
+      </div>
+    </div>
+  </div>
 
   <div class="welcome">
     <span class="sample-account-pill" style="margin-bottom: 14px;">Sample podcaster account &middot; explore freely</span>
@@ -3328,6 +3513,17 @@ document.getElementById('alts-marketplace-cta').addEventListener('click', () => 
 applyVertical();
 renderAll();
 startLiveFeed();
+
+// Hamburger drawer toggle
+const tjHamburger = document.getElementById('tj-hamburger');
+const tjDrawer = document.getElementById('tj-drawer');
+const tjDrawerBackdrop = document.getElementById('tj-drawer-backdrop');
+const tjDrawerClose = document.getElementById('tj-drawer-close');
+function openTjDrawer() { tjDrawer.classList.add('open'); tjDrawerBackdrop.classList.add('open'); }
+function closeTjDrawer() { tjDrawer.classList.remove('open'); tjDrawerBackdrop.classList.remove('open'); }
+if (tjHamburger) tjHamburger.addEventListener('click', openTjDrawer);
+if (tjDrawerClose) tjDrawerClose.addEventListener('click', closeTjDrawer);
+if (tjDrawerBackdrop) tjDrawerBackdrop.addEventListener('click', closeTjDrawer);
 </script>
 
 </body>

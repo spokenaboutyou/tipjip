@@ -89,6 +89,206 @@ a { color: var(--evergreen); }
 .brand .jar { width: 28px; height: 32px; }
 .brand .tip { color: var(--evergreen); }
 .brand .jip { color: var(--gold); }
+.brand { text-decoration: none; }
+
+/* ============================================================
+   Shared TipJip nav (desktop) + mobile drawer
+   ============================================================ */
+.tj-nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+.tj-nav-link {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--evergreen);
+  padding: 8px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.tj-nav-link:hover { background: var(--line-soft); color: var(--gold-2); }
+.tj-nav-link.active {
+  color: var(--gold-2);
+  font-weight: 700;
+}
+.tj-nav-signup {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--gold-2);
+  padding: 8px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.tj-nav-signup:hover { background: var(--line-soft); }
+
+/* Hamburger button */
+.tj-hamburger {
+  display: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+}
+.tj-hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--evergreen);
+  border-radius: 2px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+.tj-hamburger:hover { background: var(--line-soft); }
+
+/* Mobile drawer */
+.tj-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 42, 36, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+  z-index: 200;
+}
+.tj-drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+.tj-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 320px;
+  max-width: 88vw;
+  height: 100vh;
+  background: var(--evergreen);
+  z-index: 210;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.18);
+}
+.tj-drawer.open { transform: translateX(0); }
+.tj-drawer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid rgba(245, 241, 234, 0.08);
+}
+.tj-drawer-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold-soft);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.tj-drawer-close {
+  background: transparent;
+  border: none;
+  color: var(--parchment);
+  padding: 4px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.tj-drawer-close:hover { opacity: 1; }
+.tj-drawer-list {
+  flex: 1;
+  padding: 12px 0;
+  overflow-y: auto;
+}
+.tj-drawer-section {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gold-soft);
+  opacity: 0.7;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 16px 22px 6px;
+}
+.tj-drawer-link {
+  display: block;
+  padding: 12px 22px;
+  font-family: var(--font-body);
+  color: var(--parchment);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  transition: background 0.15s;
+}
+.tj-drawer-link:hover { background: rgba(245, 241, 234, 0.05); }
+.tj-drawer-link.active { color: var(--gold-soft); background: rgba(236, 200, 129, 0.06); }
+.tj-drawer-link.signup { color: var(--gold-soft); font-weight: 700; margin-top: 8px; border-top: 1px solid rgba(245, 241, 234, 0.08); padding-top: 14px; }
+.tj-drawer-sub {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(245, 241, 234, 0.55);
+  margin-top: 1px;
+}
+
+/* Listener identity block (moved out of nav into body) */
+.listener-identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+.li-avatar {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--gold-2, #B07A1F));
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.li-avatar svg { width: 28px; height: 30px; }
+.li-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.012em;
+  color: var(--evergreen);
+}
+.li-sub {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+  flex-wrap: wrap;
+}
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--success);
+  background: rgba(47, 122, 79, 0.12);
+  padding: 1px 7px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+.verified-badge svg { width: 10px; height: 10px; }
+
+@media (max-width: 880px) {
+  .tj-nav { display: none; }
+  .tj-hamburger { display: flex; }
+}
 .nav-divider { width: 1px; height: 24px; background: var(--line); }
 
 .jar-id {
@@ -1010,7 +1210,7 @@ a { color: var(--evergreen); }
 
 <nav class="topnav">
   <div class="topnav-inner">
-    <div class="brand">
+    <a href="index.html" class="brand">
       <svg class="jar" viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg" fill="none">
         <rect x="22" y="1" width="16" height="5.5" rx="1.5" fill="#C8902E"/>
         <rect x="6" y="9" width="48" height="58" rx="8" stroke="#0F2A24" stroke-width="2.6" fill="none"/>
@@ -1019,37 +1219,20 @@ a { color: var(--evergreen); }
         <path d="M16 50 Q30 60 44 50" stroke="#0F2A24" stroke-width="3" stroke-linecap="round" fill="none"/>
       </svg>
       <span><span class="tip">Tip</span><span class="jip">Jip</span></span>
-    </div>
+    </a>
 
-    <div class="nav-divider"></div>
-
-    <div class="jar-id">
-      <div class="jar-avatar">
-        <svg viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg" fill="none">
-          <rect x="22" y="1" width="16" height="5.5" rx="1.5" fill="#0F2A24"/>
-          <rect x="6" y="9" width="48" height="58" rx="8" stroke="#0F2A24" stroke-width="3" fill="none"/>
-          <circle cx="30" cy="34" r="5.5" fill="#0F2A24"/>
-          <path d="M16 50 Q30 60 44 50" stroke="#0F2A24" stroke-width="3" stroke-linecap="round" fill="none"/>
-        </svg>
-      </div>
-      <div class="jar-info">
-        <div class="jar-name-row">
-          <div class="jar-name" id="jar-name">Tip Jar #4,471</div>
-        </div>
-        <div class="jar-sub">
-          <span class="pulse-dot"></span>
-          <span id="jar-tagline">Verified human · since Jan 2026</span>
-          <span class="verified-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
-            Phone-verified
-          </span>
-        </div>
-      </div>
+    <div class="tj-nav">
+      <a href="index.html" class="tj-nav-link">Home</a>
+      <a href="listener.html" class="tj-nav-link active">Your Jar</a>
+      <a href="dashboard.html" class="tj-nav-link">Podcaster</a>
+      <a href="index.html#advertiser" class="tj-nav-link">Advertiser</a>
+      <a href="index.html#signup" class="tj-nav-signup">Sign up</a>
     </div>
 
     <div class="nav-actions">
-      <a href="index.html" class="nav-link">← Marketing site</a>
-      <a href="dashboard.html" class="nav-link" style="color: var(--gold-2);">For podcasters →</a>
+      <button class="tj-hamburger" id="tj-hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
       <div class="reset-menu" id="reset-menu">
         <button class="btn-ghost reset-btn" id="reset-toggle" aria-label="Menu">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -1058,15 +1241,64 @@ a { color: var(--evergreen); }
         </button>
         <div class="reset-dropdown">
           <button id="btn-reset-state" class="danger">Reset demo state</button>
-          <a href="dashboard.html">Switch to podcaster view →</a>
-          <a href="index.html">Back to marketing site</a>
+          <a href="index.html">Back to home</a>
         </div>
       </div>
     </div>
   </div>
 </nav>
 
+<!-- Mobile drawer -->
+<div class="tj-drawer-backdrop" id="tj-drawer-backdrop"></div>
+<aside class="tj-drawer" id="tj-drawer">
+  <div class="tj-drawer-head">
+    <span class="tj-drawer-eyebrow">Menu</span>
+    <button class="tj-drawer-close" id="tj-drawer-close" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="tj-drawer-list">
+    <a href="index.html" class="tj-drawer-link">Home</a>
+    <div class="tj-drawer-section">⏤ Sample accounts</div>
+    <a href="listener.html" class="tj-drawer-link active">
+      <div>Your Jar</div>
+      <span class="tj-drawer-sub">Sample listener account</span>
+    </a>
+    <a href="dashboard.html" class="tj-drawer-link">
+      <div>Podcaster</div>
+      <span class="tj-drawer-sub">Sample creator dashboard</span>
+    </a>
+    <a href="index.html#advertiser" class="tj-drawer-link">
+      <div>Advertiser</div>
+      <span class="tj-drawer-sub">Sample sponsor account</span>
+    </a>
+    <a href="index.html#signup" class="tj-drawer-link signup">Sign up</a>
+  </nav>
+</aside>
+
 <main class="container">
+
+  <!-- Identity moved into welcome from nav -->
+  <div class="listener-identity">
+    <div class="li-avatar">
+      <svg viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <rect x="22" y="1" width="16" height="5.5" rx="1.5" fill="#0F2A24"/>
+        <rect x="6" y="9" width="48" height="58" rx="8" stroke="#0F2A24" stroke-width="3" fill="none"/>
+        <circle cx="30" cy="34" r="5.5" fill="#0F2A24"/>
+        <path d="M16 50 Q30 60 44 50" stroke="#0F2A24" stroke-width="3" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+    <div class="li-text">
+      <div class="li-name" id="jar-name">Tip Jar #4,471</div>
+      <div class="li-sub">
+        <span id="jar-tagline">Verified human · since Jan 2026</span>
+        <span class="verified-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+          Phone-verified
+        </span>
+      </div>
+    </div>
+  </div>
 
   <div class="welcome">
     <span class="sample-account-pill" style="margin-bottom: 14px;">Sample listener account &middot; explore freely</span>
@@ -1553,6 +1785,17 @@ function showToast(message) {
 }
 
 renderAll();
+
+// Hamburger drawer toggle
+const tjHamburger = document.getElementById('tj-hamburger');
+const tjDrawer = document.getElementById('tj-drawer');
+const tjDrawerBackdrop = document.getElementById('tj-drawer-backdrop');
+const tjDrawerClose = document.getElementById('tj-drawer-close');
+function openTjDrawer() { tjDrawer.classList.add('open'); tjDrawerBackdrop.classList.add('open'); }
+function closeTjDrawer() { tjDrawer.classList.remove('open'); tjDrawerBackdrop.classList.remove('open'); }
+if (tjHamburger) tjHamburger.addEventListener('click', openTjDrawer);
+if (tjDrawerClose) tjDrawerClose.addEventListener('click', closeTjDrawer);
+if (tjDrawerBackdrop) tjDrawerBackdrop.addEventListener('click', closeTjDrawer);
 </script>
 
 </body>
