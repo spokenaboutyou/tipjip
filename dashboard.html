@@ -258,6 +258,35 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .welcome { margin-bottom: 36px; }
 .welcome h1 { font-size: 38px; font-weight: 700; margin-bottom: 6px; }
 .welcome p { font-size: 17px; color: var(--muted); }
+
+/* Sample account preview pill */
+.sample-account-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(200, 144, 46, 0.12);
+  border: 1px solid rgba(200, 144, 46, 0.32);
+  color: var(--gold-2, #B07A1F);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.sample-account-pill::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold-2, #B07A1F);
+  flex-shrink: 0;
+  animation: sample-pulse 2.4s infinite;
+}
+@keyframes sample-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
 .welcome .greeting-time {
   font-size: 13px;
   color: var(--muted-2);
@@ -1926,6 +1955,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 <main class="container">
 
   <div class="welcome">
+    <span class="sample-account-pill" style="margin-bottom: 14px;">Sample podcaster account &middot; explore freely</span>
     <div class="greeting-time" id="greeting-time">— Today · <span id="today-date"></span></div>
     <h1>Welcome back, <span id="welcome-firstname">Sally</span>.</h1>
     <p>Here's how your jar's looking. <span id="welcome-status"></span></p>
