@@ -1,0 +1,3304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TipJip — Podcaster Dashboard</title>
+<meta name="description" content="The TipJip podcaster dashboard — live demo." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --evergreen: #0F2A24;
+  --evergreen-2: #1B3A33;
+  --evergreen-3: #2C4F46;
+  --parchment: #F5F1EA;
+  --parchment-2: #EDE7D9;
+  --parchment-3: #E2DBC9;
+  --gold: #C8902E;
+  --gold-2: #B07A1F;
+  --gold-soft: #ECC881;
+  --sage: #C9D2C2;
+  --sage-soft: #DCE2D8;
+  --charcoal: #1A1F1B;
+  --muted: #6B7268;
+  --muted-2: #94998F;
+  --line: rgba(15, 42, 36, 0.10);
+  --line-soft: rgba(15, 42, 36, 0.05);
+  --danger: #B23A3A;
+  --warn: #C97A2B;
+  --success: #2F7A4F;
+  --font-display: 'Quicksand', 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --container: 1240px;
+  --radius-sm: 6px;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--charcoal);
+  background: var(--parchment);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--evergreen);
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* Top nav */
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(245, 241, 234, 0.92);
+  backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.topnav-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  color: var(--evergreen);
+}
+.brand .jar { width: 28px; height: 32px; }
+.brand .tip { color: var(--evergreen); }
+.brand .jip { color: var(--gold); }
+.nav-divider { width: 1px; height: 24px; background: var(--line); }
+.show-id {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  position: relative;
+}
+.show-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--evergreen-3), var(--evergreen));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-soft);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.show-info { min-width: 0; flex: 1; }
+.show-name-row { display: flex; align-items: center; gap: 8px; }
+.show-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--evergreen);
+  letter-spacing: -0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.show-sub {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.show-sub .pulse-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--success);
+  animation: pulse 2s infinite;
+}
+.joined-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--gold-2);
+  background: rgba(200, 144, 46, 0.1);
+  padding: 1px 7px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+.edit-show-btn {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted);
+  transition: all 0.15s;
+  opacity: 0.6;
+}
+.edit-show-btn:hover {
+  background: var(--line-soft);
+  color: var(--evergreen);
+  opacity: 1;
+}
+.edit-show-panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  width: 320px;
+  box-shadow: 0 18px 40px rgba(15, 42, 36, 0.15);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: all 0.18s;
+  z-index: 60;
+}
+.show-id.editing .edit-show-panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.edit-show-panel h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.edit-show-panel p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.edit-show-field { margin-bottom: 10px; }
+.edit-show-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.edit-show-field input {
+  width: 100%;
+  padding: 8px 10px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--charcoal);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--parchment);
+}
+.edit-show-field input:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: white;
+}
+.edit-show-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.edit-show-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.edit-show-actions button {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 12px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  transition: all 0.15s;
+}
+.edit-show-actions .save { background: var(--evergreen); color: var(--parchment); }
+.edit-show-actions .save:hover { background: var(--evergreen-2); }
+.edit-show-actions .cancel { color: var(--muted); }
+.edit-show-actions .cancel:hover { color: var(--evergreen); }
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.btn-ghost {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--muted);
+  padding: 8px 14px;
+  border-radius: 999px;
+  transition: all 0.2s;
+}
+.btn-ghost:hover { background: var(--line-soft); color: var(--evergreen); }
+
+/* Main */
+.container { max-width: var(--container); margin: 0 auto; padding: 40px 28px 80px; }
+.welcome { margin-bottom: 36px; }
+.welcome h1 { font-size: 38px; font-weight: 700; margin-bottom: 6px; }
+.welcome p { font-size: 17px; color: var(--muted); }
+.welcome .greeting-time {
+  font-size: 13px;
+  color: var(--muted-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.welcome .greeting-time::before {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
+}
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.stat-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px 22px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+.stat-card.featured {
+  background: var(--evergreen);
+  border-color: transparent;
+  color: var(--parchment);
+}
+.stat-card.featured::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(236, 200, 129, 0.18), transparent 65%);
+}
+.stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.stat-card.featured .stat-label { color: var(--gold-soft); }
+.stat-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 34px;
+  letter-spacing: -0.02em;
+  color: var(--evergreen);
+  line-height: 1.05;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.stat-card.featured .stat-value { color: var(--parchment); }
+.stat-value .unit { font-size: 16px; font-weight: 600; color: var(--muted); }
+.stat-card.featured .stat-value .unit { color: var(--sage); }
+.stat-foot {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+}
+.stat-card.featured .stat-foot { color: var(--sage); }
+.stat-foot .delta { color: var(--success); font-weight: 600; }
+.stat-card.featured .stat-foot .delta { color: var(--gold-soft); }
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(236, 200, 129, 0.15);
+  color: var(--gold-soft);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.live-badge .live-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--gold-soft);
+  animation: pulse 1.5s infinite;
+}
+
+/* Section heading */
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin: 44px 0 18px;
+  gap: 24px;
+}
+.section-head .heading { flex: 1; min-width: 0; }
+.section-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-eyebrow::before { content: "⏤"; color: var(--gold); }
+.section-head h2 { font-size: 26px; font-weight: 700; }
+.section-head h2 em { font-style: normal; color: var(--gold-2); }
+.section-head .sub { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+/* Tip rate breakdown */
+.tiprate-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+.tiprate-banner {
+  background: linear-gradient(135deg, var(--evergreen) 0%, var(--evergreen-2) 100%);
+  color: var(--parchment);
+  padding: 22px 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.tiprate-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 90% 50%, rgba(236, 200, 129, 0.15), transparent 50%);
+}
+.tiprate-banner-content { flex: 1; position: relative; z-index: 1; }
+.tiprate-banner-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold-soft);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.tiprate-banner h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--parchment);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+.tiprate-banner h3 em { font-style: italic; color: var(--gold-soft); font-weight: 700; }
+.tiprate-banner p { font-size: 14px; color: var(--sage); margin-top: 6px; max-width: 580px; }
+.tiprate-body { padding: 24px 28px 28px; }
+.tiprate-slots { display: flex; flex-direction: column; gap: 18px; margin-bottom: 22px; }
+.tiprate-slot {
+  display: grid;
+  grid-template-columns: 180px 1fr 80px;
+  align-items: center;
+  gap: 18px;
+}
+.slot-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--evergreen);
+}
+.slot-label .slot-sub {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+  letter-spacing: 0.02em;
+}
+.slot-label .premium-star { color: var(--gold); font-size: 12px; margin-left: 4px; }
+.slot-bar {
+  height: 10px;
+  background: var(--parchment-2);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+.slot-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-2), var(--gold));
+  border-radius: 999px;
+  width: 0;
+  transition: width 1.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.slot-bar.premium .slot-bar-fill {
+  background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+  box-shadow: 0 0 12px rgba(236, 200, 129, 0.5);
+}
+.slot-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--evergreen);
+  text-align: right;
+}
+.slot-insight {
+  grid-column: 1 / -1;
+  margin-top: -8px;
+  padding: 6px 0 0 0;
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.slot-insight .insight-dot { font-size: 10px; line-height: 1; }
+.slot-insight.great { color: var(--success); }
+.slot-insight.great .insight-dot { color: var(--gold); }
+.slot-insight.ok { color: var(--muted); }
+.slot-insight.ok .insight-dot { color: var(--success); }
+.slot-insight.warn { color: var(--warn); }
+.slot-insight.warn .insight-dot { color: var(--warn); }
+.insight-link {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--evergreen);
+  background: var(--parchment-2);
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-left: 4px;
+  transition: all 0.15s;
+}
+.insight-link:hover { background: var(--gold-soft); color: var(--evergreen); }
+.tiprate-context {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+.context-item { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.context-item strong {
+  display: block;
+  color: var(--evergreen);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 2px;
+  letter-spacing: -0.005em;
+}
+
+/* Alternatives modal */
+.alts-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 42, 36, 0.4);
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.alts-modal.open { opacity: 1; pointer-events: auto; }
+.alts-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 28px;
+  max-width: 560px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  transform: translateY(20px);
+  transition: transform 0.25s;
+  box-shadow: 0 24px 60px rgba(15, 42, 36, 0.2);
+}
+.alts-modal.open .alts-card { transform: translateY(0); }
+.alts-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 18px;
+  gap: 18px;
+}
+.alts-head h3 { font-size: 20px; font-weight: 700; }
+.alts-head p { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.alts-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.alts-close:hover { background: var(--line-soft); color: var(--evergreen); }
+.alts-current {
+  background: var(--parchment-2);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+.alts-current strong { color: var(--evergreen); font-weight: 700; }
+.alts-current .rate {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--warn);
+  font-size: 16px;
+  margin-left: auto;
+}
+.alts-list { display: flex; flex-direction: column; gap: 10px; }
+.alt-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  transition: all 0.15s;
+}
+.alt-row:hover { border-color: var(--gold); background: rgba(236, 200, 129, 0.04); }
+.alt-avatar {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.alt-info { flex: 1; min-width: 0; }
+.alt-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--evergreen);
+}
+.alt-cat { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.alt-meta { text-align: right; }
+.alt-rate {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--success);
+  font-size: 16px;
+}
+.alt-rate-label {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.alt-bid {
+  font-size: 12px;
+  color: var(--gold-2);
+  font-weight: 700;
+  margin-top: 4px;
+}
+.alts-footer {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.alts-marketplace-cta {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--parchment);
+  background: var(--evergreen);
+  padding: 12px 20px;
+  border-radius: 999px;
+  transition: all 0.2s;
+  align-self: flex-start;
+}
+.alts-marketplace-cta:hover {
+  background: var(--evergreen-2);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(15, 42, 36, 0.15);
+}
+.alts-footer-note {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Episode list */
+.episode-list { display: flex; flex-direction: column; gap: 12px; }
+.episode-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  display: grid;
+  grid-template-columns: 84px 1fr auto;
+  gap: 22px;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+.episode-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(15, 42, 36, 0.06);
+}
+.episode-card.featured {
+  border-left: 4px solid var(--gold);
+  background: linear-gradient(90deg, rgba(200, 144, 46, 0.04), white 200px);
+}
+.ep-thumb {
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--evergreen), var(--evergreen-2));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--gold-soft);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.ep-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(236, 200, 129, 0.18), transparent 50%);
+}
+.ep-thumb .ep-num { position: relative; z-index: 1; }
+.ep-info { min-width: 0; }
+.ep-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--evergreen);
+  letter-spacing: -0.012em;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.ep-title .new-pill {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--gold);
+  color: var(--evergreen);
+  padding: 2px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.ep-meta {
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.ep-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--muted-2); }
+.ep-meta strong { color: var(--evergreen); font-weight: 600; }
+.ep-meta .tiprate { color: var(--gold-2); font-weight: 700; }
+.ep-action { display: flex; align-items: center; gap: 10px; }
+.ep-earnings { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
+.ep-earnings-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+  color: var(--evergreen);
+  letter-spacing: -0.015em;
+}
+.ep-earnings-label {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.btn-preview {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--evergreen);
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--evergreen);
+  background: transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-preview:hover { background: var(--evergreen); color: var(--parchment); }
+
+/* Two-col */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 36px;
+}
+.activity-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.activity-head {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.activity-head h3 { font-size: 16px; font-weight: 700; }
+.activity-body {
+  flex: 1;
+  padding: 8px 0;
+  max-height: 360px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+.activity-body::-webkit-scrollbar { width: 6px; }
+.activity-body::-webkit-scrollbar-track { background: transparent; }
+.activity-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+.activity-row {
+  padding: 12px 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border-left: 3px solid transparent;
+  transition: background 0.15s;
+  animation: slideInActivity 0.4s ease-out;
+}
+@keyframes slideInActivity {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.activity-row.new-event {
+  border-left-color: var(--gold);
+  background: rgba(200, 144, 46, 0.04);
+}
+.activity-row.you-event {
+  border-left-color: var(--gold);
+  background: linear-gradient(90deg, rgba(200, 144, 46, 0.1), transparent);
+}
+.activity-icon {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+.activity-icon.tip { background: var(--gold); color: var(--evergreen); }
+.activity-icon.jip {
+  background: transparent;
+  color: var(--gold-2);
+  border: 1.5px solid var(--gold-2);
+}
+.activity-body-text {
+  flex: 1; min-width: 0;
+  font-size: 13px; line-height: 1.4;
+  color: var(--charcoal);
+}
+.activity-body-text strong {
+  color: var(--evergreen);
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+.activity-body-text .activity-amount { color: var(--gold-2); font-weight: 700; }
+.activity-time {
+  font-size: 11px;
+  color: var(--muted-2);
+  margin-top: 2px;
+  letter-spacing: 0.03em;
+}
+.activity-time .you-tag {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--evergreen);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  margin-left: 4px;
+  letter-spacing: 0.06em;
+}
+.activity-note {
+  margin-top: 6px;
+  padding: 8px 10px;
+  background: var(--parchment-2);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+}
+.activity-footer {
+  padding: 10px 22px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--parchment-2);
+}
+.activity-footer svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+.sponsors-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.sponsor-row {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.sponsor-row:last-child { border-bottom: none; }
+.sponsor-avatar {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  color: white;
+  flex-shrink: 0;
+}
+.sponsor-info { flex: 1; min-width: 0; }
+.sponsor-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--evergreen);
+  letter-spacing: -0.01em;
+}
+.sponsor-slot-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.sponsor-meta { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.sponsor-bid {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--gold-2);
+}
+.sponsor-tiprate {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Cash out */
+.cashout {
+  margin-top: 40px;
+  background: var(--evergreen);
+  color: var(--parchment);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.cashout::before {
+  content: "";
+  position: absolute;
+  top: -50%; left: -10%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(236, 200, 129, 0.13), transparent 70%);
+}
+.cashout-info { flex: 1; position: relative; z-index: 1; }
+.cashout-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold-soft);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.cashout-amount {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 36px;
+  letter-spacing: -0.02em;
+}
+.cashout-note { font-size: 13px; color: var(--sage); margin-top: 6px; }
+.cashout-fees {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--gold-soft);
+  background: rgba(236, 200, 129, 0.1);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.cashout-progress { margin-top: 12px; max-width: 320px; }
+.cashout-progress-label {
+  font-size: 11px;
+  color: var(--sage);
+  margin-bottom: 4px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.cashout-progress-bar {
+  height: 6px;
+  background: rgba(245, 241, 234, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.cashout-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-2), var(--gold-soft));
+  border-radius: 999px;
+  transition: width 1s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.btn-cashout {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--evergreen);
+  padding: 14px 26px;
+  border-radius: 999px;
+  background: var(--gold);
+  letter-spacing: 0.02em;
+  transition: all 0.2s;
+}
+.btn-cashout:hover {
+  background: var(--gold-soft);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(236, 200, 129, 0.25);
+}
+.btn-cashout:disabled {
+  background: var(--evergreen-3);
+  color: var(--sage);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Reset menu */
+.reset-menu { position: relative; }
+.reset-btn {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted);
+  transition: all 0.2s;
+}
+.reset-btn:hover { background: var(--line-soft); color: var(--evergreen); }
+.reset-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 6px;
+  min-width: 220px;
+  box-shadow: 0 12px 32px rgba(15, 42, 36, 0.12);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: all 0.15s;
+  z-index: 50;
+}
+.reset-menu.open .reset-dropdown {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.reset-dropdown button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--charcoal);
+  border-radius: var(--radius-sm);
+  transition: background 0.1s;
+}
+.reset-dropdown button:hover { background: var(--parchment-2); }
+.reset-dropdown button.danger { color: var(--danger); }
+
+/* Player */
+.player {
+  position: fixed;
+  inset: 0;
+  background: var(--evergreen);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.player.open { opacity: 1; pointer-events: auto; }
+.player-head {
+  padding: 18px 28px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border-bottom: 1px solid rgba(245, 241, 234, 0.1);
+}
+.player-close {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--parchment);
+  background: rgba(245, 241, 234, 0.08);
+  transition: background 0.2s;
+}
+.player-close:hover { background: rgba(245, 241, 234, 0.15); }
+.player-mode-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold-soft);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border: 1px solid var(--gold-soft);
+  border-radius: 999px;
+}
+.player-ep-title {
+  flex: 1;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--parchment);
+  letter-spacing: -0.005em;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.player-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  position: relative;
+}
+.player-frame {
+  width: 100%;
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.video-stage {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--evergreen-2);
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+}
+.video-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.video-content.hidden { opacity: 0; pointer-events: none; }
+.podcast-scene {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background:
+    radial-gradient(ellipse at 30% 60%, rgba(236, 200, 129, 0.12), transparent 50%),
+    radial-gradient(ellipse at 70% 60%, rgba(200, 144, 46, 0.1), transparent 50%),
+    linear-gradient(180deg, var(--evergreen-2), var(--evergreen));
+  display: flex; align-items: center; justify-content: center;
+}
+.podcast-scene svg { width: 80%; height: 80%; }
+.podcast-overlay-name {
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
+  color: var(--parchment);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+.podcast-overlay-name .sub {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sage);
+  margin-top: 2px;
+  letter-spacing: 0.02em;
+}
+.ad-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 18px;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.ad-screen.active { opacity: 1; }
+.ad-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 42px;
+  letter-spacing: -0.02em;
+  color: white;
+}
+.ad-brand-sub {
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+}
+.ad-screen.lmnt { background: linear-gradient(135deg, #3D6F8A, #2A4A5F); }
+.ad-screen.meno { background: linear-gradient(135deg, #8B5A2B, #6B3F1B); }
+.ad-screen.meno .ad-brand-sub { color: var(--gold-soft); }
+.ad-screen.eight { background: linear-gradient(135deg, #1F2937, #0F1419); }
+.demo-note {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  color: var(--parchment);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 6px 14px;
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+}
+.demo-note.active { opacity: 1; }
+.video-chrome {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 14px 18px;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.chrome-progress {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.chrome-progress-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 999px;
+  width: 0;
+  transition: width 0.1s linear;
+}
+.chrome-time {
+  font-size: 12px;
+  color: var(--parchment);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.ad-tag {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0,0,0,0.5);
+  color: var(--gold-soft);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+}
+.ad-tag-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold-soft);
+  animation: pulse 1.4s infinite;
+}
+.decision-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 42, 36, 0.92);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 28px;
+  padding: 32px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.decision-overlay.active { opacity: 1; pointer-events: auto; }
+.decision-prompt { text-align: center; }
+.decision-prompt .coin-rim {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--evergreen);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+  animation: coinHover 2.2s ease-in-out infinite;
+  box-shadow: 0 0 30px rgba(236, 200, 129, 0.4);
+}
+@keyframes coinHover {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.decision-prompt-eyebrow {
+  font-size: 11px;
+  color: var(--gold-soft);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.decision-prompt h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--parchment);
+  letter-spacing: -0.015em;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+.decision-prompt p { font-size: 14px; color: var(--sage); max-width: 480px; }
+.decision-buttons {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+  max-width: 520px;
+}
+.decision-btn {
+  flex: 1;
+  padding: 22px 18px;
+  border-radius: var(--radius);
+  border: 2px solid transparent;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -0.005em;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.decision-btn .btn-amount { font-size: 24px; letter-spacing: -0.015em; }
+.decision-btn .btn-where {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 2px;
+  opacity: 0.8;
+}
+.decision-btn.tip { background: var(--gold); color: var(--evergreen); }
+.decision-btn.tip:hover { background: var(--gold-soft); transform: translateY(-2px); }
+.decision-btn.jip {
+  background: transparent;
+  color: var(--parchment);
+  border-color: var(--parchment);
+}
+.decision-btn.jip:hover { background: rgba(245, 241, 234, 0.1); transform: translateY(-2px); }
+
+/* Founder CTA — the closer */
+.founder-cta {
+  margin-top: 32px;
+  background:
+    radial-gradient(ellipse at top right, rgba(236, 200, 129, 0.18), transparent 60%),
+    linear-gradient(135deg, var(--parchment-2) 0%, var(--parchment) 100%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 36px 36px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.founder-cta::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-soft), var(--gold));
+}
+.founder-cta-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+}
+.founder-cta-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold-2);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.founder-cta h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--evergreen);
+  letter-spacing: -0.018em;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.founder-cta p {
+  font-size: 15px;
+  color: var(--charcoal);
+  line-height: 1.5;
+  margin-bottom: 22px;
+  max-width: 540px;
+}
+.founder-cta-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+.founder-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 24px;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.2s;
+  letter-spacing: 0.01em;
+}
+.founder-cta-btn.primary {
+  background: var(--evergreen);
+  color: var(--parchment);
+}
+.founder-cta-btn.primary:hover {
+  background: var(--evergreen-2);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(15, 42, 36, 0.2);
+}
+.founder-cta-btn.ghost {
+  color: var(--muted);
+  background: transparent;
+}
+.founder-cta-btn.ghost:hover {
+  color: var(--evergreen);
+  background: var(--line-soft);
+}
+.founder-cta-footer {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 12px;
+  color: var(--muted);
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.founder-cta-footer span:first-child {
+  font-weight: 700;
+  color: var(--gold-2);
+  letter-spacing: 0.04em;
+  margin-right: 6px;
+}
+@media (max-width: 880px) {
+  .founder-cta { padding: 28px 22px 22px; }
+  .founder-cta h3 { font-size: 22px; }
+  .founder-cta-actions { flex-direction: column; }
+  .founder-cta-btn { width: 100%; justify-content: center; }
+}
+
+/* Flying coin */
+.flying-coin {
+  position: fixed;
+  z-index: 1500;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--evergreen);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 24px rgba(236, 200, 129, 0.6);
+  pointer-events: none;
+}
+.flying-coin.jip {
+  background: transparent;
+  color: var(--gold-soft);
+  border: 2px solid var(--gold-soft);
+}
+.flying-coin-label {
+  position: fixed;
+  z-index: 1500;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--gold-soft);
+  pointer-events: none;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+
+.jip-note-prompt {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 42, 36, 0.95);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 18px;
+  padding: 32px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.jip-note-prompt.active { opacity: 1; pointer-events: auto; }
+.jip-note-prompt h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--parchment);
+  text-align: center;
+}
+.jip-note-prompt textarea {
+  width: 100%;
+  max-width: 480px;
+  background: rgba(245, 241, 234, 0.06);
+  border: 1px solid rgba(245, 241, 234, 0.18);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  color: var(--parchment);
+  font-family: var(--font-body);
+  font-size: 14px;
+  resize: vertical;
+  min-height: 80px;
+}
+.jip-note-prompt textarea:focus { outline: none; border-color: var(--gold); }
+.jip-note-prompt textarea::placeholder { color: var(--muted-2); }
+.jip-note-actions { display: flex; gap: 10px; }
+.jip-note-actions button {
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+.jip-note-actions .send { background: var(--gold); color: var(--evergreen); }
+.jip-note-actions .send:hover { background: var(--gold-soft); }
+.jip-note-actions .skip { background: transparent; color: var(--sage); }
+.jip-note-actions .skip:hover { color: var(--parchment); }
+
+.summary-screen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--evergreen), var(--evergreen-2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+.summary-screen.active { opacity: 1; pointer-events: auto; }
+.summary-card { width: 100%; max-width: 560px; text-align: center; }
+.summary-eyebrow {
+  font-size: 11px;
+  color: var(--gold-soft);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.summary-card h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--parchment);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+.summary-totals {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 22px 0;
+}
+.summary-total {
+  background: rgba(245, 241, 234, 0.06);
+  border: 1px solid rgba(245, 241, 234, 0.12);
+  border-radius: var(--radius);
+  padding: 18px 14px;
+}
+.summary-total .label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 8px;
+}
+.summary-total .amount {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--parchment);
+  letter-spacing: -0.015em;
+}
+.summary-total .amount.tip { color: var(--gold-soft); }
+.summary-total .sub { font-size: 11px; color: var(--muted-2); margin-top: 4px; }
+
+/* Reciprocity loop */
+.reciprocity {
+  margin: 22px 0 4px;
+  padding: 22px;
+  background: rgba(245, 241, 234, 0.04);
+  border: 1px solid rgba(245, 241, 234, 0.08);
+  border-radius: var(--radius);
+}
+.reciprocity-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.reciprocity-eyebrow::before { content: "⏤ "; }
+.phone-mockup {
+  display: inline-block;
+  background: #1A1F1B;
+  border-radius: 22px;
+  padding: 6px;
+  margin: 0 auto;
+  position: relative;
+  box-shadow:
+    inset 0 0 0 1.5px rgba(245, 241, 234, 0.18),
+    0 12px 40px rgba(0, 0, 0, 0.35);
+}
+.phone-mockup::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 18px;
+  background: #1A1F1B;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  z-index: 2;
+}
+.phone-screen {
+  width: 280px;
+  background: linear-gradient(180deg, #1B3A33 0%, #0F2A24 100%);
+  border-radius: 16px;
+  padding: 38px 12px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.phone-notif {
+  background: rgba(245, 241, 234, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  text-align: left;
+  animation: notifSlideIn 0.6s 0.2s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+}
+@keyframes notifSlideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.phone-notif .notif-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--evergreen-3), var(--evergreen));
+  color: var(--gold-soft);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.phone-notif .notif-body { flex: 1; min-width: 0; }
+.phone-notif .notif-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1px;
+}
+.phone-notif .notif-app {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--evergreen);
+  letter-spacing: -0.005em;
+}
+.phone-notif .notif-time { font-size: 10px; color: var(--muted); }
+.phone-notif .notif-msg {
+  font-size: 12px;
+  color: var(--charcoal);
+  line-height: 1.35;
+  font-weight: 500;
+}
+.phone-notif .notif-msg strong { color: var(--gold-2); font-weight: 700; }
+.reciprocity-caption {
+  font-size: 12px;
+  color: var(--sage);
+  margin-top: 12px;
+  font-style: italic;
+}
+.reciprocity-caption strong { color: var(--gold-soft); font-style: normal; }
+
+.summary-cta {
+  margin-top: 18px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--evergreen);
+  transition: all 0.2s;
+}
+.summary-cta:hover { background: var(--gold-soft); }
+
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--evergreen);
+  color: var(--parchment);
+  padding: 14px 22px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s;
+  z-index: 2000;
+  box-shadow: 0 12px 32px rgba(15, 42, 36, 0.25);
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.coin-burst {
+  position: fixed;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
+  pointer-events: none;
+  z-index: 1500;
+}
+.coin-particle {
+  position: absolute;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--evergreen);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  animation: coinFly 1.4s ease-out forwards;
+}
+@keyframes coinFly {
+  0% { opacity: 1; transform: translate(0, 0) scale(0.4); }
+  60% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(1); }
+}
+
+@media (max-width: 880px) {
+  .topnav-inner { padding: 12px 18px; gap: 12px; }
+  .brand { font-size: 18px; }
+  .show-info .show-name { font-size: 13px; }
+  .nav-divider { display: none; }
+  .edit-show-panel { width: 280px; left: -40px; }
+  .container { padding: 28px 18px 60px; }
+  .welcome h1 { font-size: 28px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .tiprate-banner { flex-direction: column; align-items: flex-start; gap: 8px; padding: 18px; }
+  .tiprate-body { padding: 18px; }
+  .tiprate-slot { grid-template-columns: 1fr; gap: 8px; }
+  .slot-value { text-align: left; font-size: 22px; }
+  .slot-insight { margin-top: 0; }
+  .tiprate-context { grid-template-columns: 1fr; }
+  .episode-card { grid-template-columns: 60px 1fr; gap: 14px; padding: 16px; }
+  .ep-action { grid-column: 1 / -1; justify-content: space-between; }
+  .ep-thumb { font-size: 16px; }
+  .ep-title { font-size: 15px; }
+  .two-col { grid-template-columns: 1fr; gap: 20px; }
+  .cashout { flex-direction: column; align-items: flex-start; padding: 22px; }
+  .cashout-amount { font-size: 30px; }
+  .decision-prompt h3 { font-size: 22px; }
+  .decision-buttons { flex-direction: column; }
+  .summary-card h3 { font-size: 24px; }
+  .alts-card { padding: 22px 18px; }
+  .phone-screen { width: 240px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="brand">
+      <svg class="jar" viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <rect x="22" y="1" width="16" height="5.5" rx="1.5" fill="#C8902E"/>
+        <rect x="6" y="9" width="48" height="58" rx="8" stroke="#0F2A24" stroke-width="2.6" fill="none"/>
+        <line x1="30" y1="14" x2="30" y2="28" stroke="#0F2A24" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="30" cy="34" r="5.5" fill="#C8902E"/>
+        <path d="M16 50 Q30 60 44 50" stroke="#0F2A24" stroke-width="3" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span><span class="tip">Tip</span><span class="jip">Jip</span></span>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <div class="show-id" id="show-id">
+      <div class="show-avatar" id="show-avatar">SH</div>
+      <div class="show-info">
+        <div class="show-name-row">
+          <div class="show-name" id="show-name">Sally Functional Wellness Podcast</div>
+          <button class="edit-show-btn" id="edit-show-btn" aria-label="Edit show name">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+          </button>
+        </div>
+        <div class="show-sub">
+          <span class="pulse-dot"></span>
+          <span id="show-host-line">Dr. Sally Hart · Podcaster Studio</span>
+          <span class="joined-badge" id="joined-badge">Joined TipJip · Nov 2025</span>
+        </div>
+      </div>
+
+      <div class="edit-show-panel" id="edit-show-panel">
+        <h4>Personalize this dashboard</h4>
+        <p>Try the demo with your own show name. Stays in your browser.</p>
+        <div class="edit-show-field">
+          <label>Show name</label>
+          <input type="text" id="input-show" placeholder="e.g. Root Cause Radio" />
+        </div>
+        <div class="edit-show-field">
+          <label>Host name (full)</label>
+          <input type="text" id="input-host" placeholder="e.g. Dr. Marcus Pellegrini" />
+        </div>
+        <div class="edit-show-row">
+          <div class="edit-show-field">
+            <label>First name</label>
+            <input type="text" id="input-firstname" placeholder="Marcus" />
+          </div>
+          <div class="edit-show-field">
+            <label>Initials</label>
+            <input type="text" id="input-initials" placeholder="MP" maxlength="2" />
+          </div>
+        </div>
+        <div class="edit-show-actions">
+          <button class="cancel" id="edit-cancel">Cancel</button>
+          <button class="save" id="edit-save">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <div class="reset-menu" id="reset-menu">
+        <button class="btn-ghost reset-btn" id="reset-toggle" aria-label="Menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/>
+          </svg>
+        </button>
+        <div class="reset-dropdown">
+          <button id="btn-reset-state" class="danger">Reset demo state</button>
+          <button id="btn-reset-all" class="danger">Reset everything</button>
+          <button id="btn-marketing">View marketing site →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+
+  <div class="welcome">
+    <div class="greeting-time" id="greeting-time">— Today · <span id="today-date"></span></div>
+    <h1>Welcome back, <span id="welcome-firstname">Sally</span>.</h1>
+    <p>Here's how your jar's looking. <span id="welcome-status"></span></p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">In Jar</div>
+      <div class="stat-value">$<span id="stat-jar">387.42</span></div>
+      <div class="stat-foot">
+        <span class="delta">+$<span id="stat-jar-today">12.40</span></span> today
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Earnings on TipJip</div>
+      <div class="stat-value">$<span id="stat-lifetime">244,180</span></div>
+      <div class="stat-foot">across <strong id="stat-episodes">26</strong> episodes · since Nov '25</div>
+    </div>
+
+    <div class="stat-card featured">
+      <div class="stat-label">
+        Show Tip Rate
+        <span class="live-badge"><span class="live-dot"></span>Live</span>
+      </div>
+      <div class="stat-value"><span id="stat-tiprate">92</span><span class="unit">%</span></div>
+      <div class="stat-foot">Reviews, but better — see breakdown below ↓</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Verified Listeners</div>
+      <div class="stat-value"><span id="stat-listeners">47,820</span></div>
+      <div class="stat-foot">
+        unique · last 90 days <span class="delta">↑ 8%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tiprate-card">
+    <div class="tiprate-banner">
+      <div class="tiprate-banner-content">
+        <div class="tiprate-banner-eyebrow">Tip Rate · The new metric for podcasters</div>
+        <h3>Reviews, but <em>better.</em></h3>
+        <p>Reviews are one-shot, easy to fake, and stale by next week. Tip rate is a continuously-running, money-backed referendum on every minute of your show. <strong>Every verified listener votes with real money on every ad.</strong></p>
+      </div>
+    </div>
+
+    <div class="tiprate-body">
+      <div class="tiprate-slots" id="tiprate-slots"></div>
+
+      <div class="tiprate-context">
+        <div class="context-item">
+          <strong>Real-time</strong>
+          Updates the moment a listener taps tip or jip — not weeks after a star rating.
+        </div>
+        <div class="context-item">
+          <strong>Money-backed</strong>
+          Every vote is a verified human choosing between $1+ and a thank-you. Cheap reviews don't exist here.
+        </div>
+        <div class="context-item">
+          <strong>Bot-proof</strong>
+          Every voter is phone-verified. A 92% tip rate means 92% of <em>actual humans</em> said yes.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="heading">
+      <div class="section-eyebrow">Your shows</div>
+      <h2>Recent <em>episodes</em></h2>
+      <div class="sub">Click <strong>Preview as listener</strong> on any episode to see what your audience experiences. Tips you place will land in your jar above.</div>
+    </div>
+  </div>
+
+  <div class="episode-list" id="episode-list"></div>
+
+  <div class="two-col">
+    <div class="activity-card">
+      <div class="activity-head">
+        <h3>Live activity</h3>
+        <span class="live-badge"><span class="live-dot"></span>Streaming</span>
+      </div>
+      <div class="activity-body" id="activity-feed"></div>
+      <div class="activity-footer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+        Every jar in this feed is phone-verified. No bots. No farms.
+      </div>
+    </div>
+
+    <div class="sponsors-card">
+      <div class="activity-head">
+        <h3>Your sponsors · latest ep</h3>
+        <span style="font-size: 12px; color: var(--muted);">$4 per listener</span>
+      </div>
+      <div id="sponsors-list"></div>
+    </div>
+  </div>
+
+  <div class="cashout">
+    <div class="cashout-info">
+      <div class="cashout-label">Ready to cash out</div>
+      <div class="cashout-amount">$<span id="cashout-amount">387.42</span></div>
+      <div class="cashout-note">Transfer to your bank or PayPal. <span class="cashout-fees">$0 fees · TipJip absorbs processing</span></div>
+      <div class="cashout-progress" id="cashout-progress" style="display:none;">
+        <div class="cashout-progress-label" id="cashout-progress-label">$0.00 of $20.00 minimum</div>
+        <div class="cashout-progress-bar">
+          <div class="cashout-progress-fill" id="cashout-progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-cashout" id="btn-cashout">Empty the jar</button>
+  </div>
+
+  <!-- Founder CTA — turns the demo into a close. Copy adapts to whether visitor is URL-personalized. -->
+  <div class="founder-cta" id="founder-cta">
+    <div class="founder-cta-inner">
+      <div class="founder-cta-eyebrow">Ready to make it real?</div>
+      <h3 id="founder-cta-headline">Ready to set this up for your show?</h3>
+      <p id="founder-cta-sub">Founding podcaster slots are filling. Book a 20-minute call to claim yours and we'll get you live in 14 days.</p>
+      <div class="founder-cta-actions">
+        <a href="mailto:randall@spokenabout.com?subject=TipJip%20founding%20podcaster" class="founder-cta-btn primary">Book a 20-min call with Randall →</a>
+        <a href="index.html" class="founder-cta-btn ghost">Back to the marketing site</a>
+      </div>
+      <div class="founder-cta-footer">
+        <span>⏤ Founding podcasters get:</span>
+        <span>Free year of platform fees</span>
+        <span>·</span>
+        <span>Priority sponsor matching</span>
+        <span>·</span>
+        <span>Custom onboarding</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div class="alts-modal" id="alts-modal">
+  <div class="alts-card">
+    <div class="alts-head">
+      <div>
+        <h3 id="alts-title">Higher-rated alternatives for your post-roll</h3>
+        <p id="alts-sub">These sponsors are running on similar hormone-health shows.</p>
+      </div>
+      <button class="alts-close" id="alts-close" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="alts-current" id="alts-current"></div>
+    <div class="alts-list" id="alts-list"></div>
+    <div class="alts-footer">
+      <button class="alts-marketplace-cta" id="alts-marketplace-cta">Browse the full sponsor marketplace →</button>
+      <span class="alts-footer-note">Indicative platform averages. Your actual tip rate may vary by audience overlap.</span>
+    </div>
+  </div>
+</div>
+
+<div class="player" id="player">
+  <div class="player-head">
+    <button class="player-close" id="player-close" aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="player-mode-badge">Preview Mode · You are Tip Jar #756</div>
+    <div class="player-ep-title" id="player-ep-title">Episode title</div>
+  </div>
+
+  <div class="player-stage">
+    <div class="player-frame">
+
+      <div class="video-stage">
+        <div class="video-content" id="video-content-show">
+          <div class="podcast-scene">
+            <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="lampGlow" cx="50%" cy="20%" r="55%">
+                  <stop offset="0%" stop-color="#ECC881" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#ECC881" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <ellipse cx="200" cy="40" rx="200" ry="100" fill="url(#lampGlow)"/>
+              <rect x="40" y="150" width="320" height="14" rx="3" fill="#1B3A33"/>
+              <rect x="40" y="164" width="320" height="46" fill="#0F2A24"/>
+              <g transform="translate(120, 80)">
+                <path d="M-22 60 Q-22 30 0 30 Q22 30 22 60 L22 70 L-22 70 Z" fill="#2C4F46"/>
+                <circle cx="0" cy="14" r="14" fill="#E2B97F"/>
+                <path d="M-14 6 Q-12 -2 0 -2 Q12 -2 14 6 Q12 4 0 6 Q-12 4 -14 6 Z" fill="#2C2117"/>
+              </g>
+              <g transform="translate(280, 80)">
+                <path d="M-22 60 Q-22 30 0 30 Q22 30 22 60 L22 70 L-22 70 Z" fill="#3D5048"/>
+                <circle cx="0" cy="14" r="14" fill="#D6A579"/>
+                <path d="M-12 4 Q-8 -2 0 -2 Q8 -2 12 4 L8 8 Q0 4 -8 8 Z" fill="#1C1410"/>
+              </g>
+              <g transform="translate(155, 130)">
+                <line x1="0" y1="0" x2="0" y2="-30" stroke="#C8902E" stroke-width="2"/>
+                <ellipse cx="0" cy="-36" rx="7" ry="10" fill="#1A1F1B" stroke="#C8902E" stroke-width="1.5"/>
+                <circle cx="0" cy="-36" r="14" fill="none" stroke="#ECC881" stroke-width="1" opacity="0.5">
+                  <animate attributeName="r" values="14;22;14" dur="2.4s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0.5;0;0.5" dur="2.4s" repeatCount="indefinite"/>
+                </circle>
+              </g>
+              <g transform="translate(245, 130)">
+                <line x1="0" y1="0" x2="0" y2="-30" stroke="#C8902E" stroke-width="2"/>
+                <ellipse cx="0" cy="-36" rx="7" ry="10" fill="#1A1F1B" stroke="#C8902E" stroke-width="1.5"/>
+                <circle cx="0" cy="-36" r="14" fill="none" stroke="#ECC881" stroke-width="1" opacity="0.5">
+                  <animate attributeName="r" values="14;22;14" dur="2.8s" repeatCount="indefinite" begin="0.6s"/>
+                  <animate attributeName="opacity" values="0.5;0;0.5" dur="2.8s" repeatCount="indefinite" begin="0.6s"/>
+                </circle>
+              </g>
+              <g transform="translate(200, 145)">
+                <rect x="-8" y="-2" width="16" height="3" rx="1" fill="#C8902E"/>
+                <rect x="-10" y="1" width="20" height="20" rx="2" fill="#0F2A24" stroke="#C8902E" stroke-width="1"/>
+                <circle cx="0" cy="14" r="2" fill="#C8902E"/>
+                <circle cx="-4" cy="16" r="2" fill="#ECC881"/>
+                <circle cx="4" cy="16" r="2" fill="#C8902E"/>
+              </g>
+            </svg>
+          </div>
+          <div class="podcast-overlay-name">
+            <span id="podcast-overlay-show">Sally Functional Wellness Podcast</span>
+            <span class="sub" id="podcast-overlay-ep">Ep 47 · Perimenopause supplements that actually work</span>
+          </div>
+        </div>
+
+        <div class="ad-screen lmnt" id="ad-lmnt">
+          <div class="ad-brand-sub">LMNT</div>
+          <div class="ad-brand">Electrolytes.</div>
+          <div class="ad-brand-sub">A better way to hydrate.</div>
+        </div>
+
+        <div class="ad-screen meno" id="ad-meno">
+          <div class="ad-brand-sub" id="meno-sub">Sally Reads · Meno Supplements</div>
+          <div class="ad-brand" id="meno-brand">Built for women 40+.</div>
+          <div class="ad-brand-sub" id="meno-brand-sub-bottom">Backed by clinical research.</div>
+        </div>
+
+        <div class="ad-screen eight" id="ad-eight">
+          <div class="ad-brand-sub">Eight Sleep</div>
+          <div class="ad-brand">Sleep, optimized.</div>
+          <div class="ad-brand-sub">The Pod 4 Ultra.</div>
+        </div>
+
+        <div class="demo-note" id="demo-note">Demo speed · Real ads run 30–60s</div>
+
+        <div class="ad-tag" id="ad-tag" style="display:none;">
+          <span class="ad-tag-dot"></span>
+          <span id="ad-tag-text">PRE-ROLL · LMNT</span>
+        </div>
+
+        <div class="video-chrome">
+          <div class="chrome-progress">
+            <div class="chrome-progress-fill" id="chrome-progress-fill"></div>
+          </div>
+          <div class="chrome-time" id="chrome-time">0:00 / 1:27:14</div>
+        </div>
+
+        <div class="decision-overlay" id="decision-overlay">
+          <div class="decision-prompt">
+            <div class="coin-rim" id="decision-coin">$1</div>
+            <div class="decision-prompt-eyebrow" id="decision-eyebrow">Pre-roll · LMNT just played</div>
+            <h3 id="decision-headline">Your coin's at the rim.</h3>
+            <p id="decision-sub">Tip it into the jar, or keep it in yours with a note.</p>
+          </div>
+
+          <div class="decision-buttons">
+            <button class="decision-btn tip" id="btn-tip">
+              <span class="btn-amount" id="btn-tip-amount">$1</span>
+              Tip
+              <span class="btn-where" id="btn-tip-where">to host's jar</span>
+            </button>
+            <button class="decision-btn jip" id="btn-jip">
+              <span class="btn-amount" id="btn-jip-amount">$1</span>
+              Jip
+              <span class="btn-where">to your jar + note</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="jip-note-prompt" id="jip-note-prompt">
+          <h3 id="jip-note-title">Tell the host why <em style="color: var(--gold-soft); font-style: italic;">(optional)</em></h3>
+          <textarea id="jip-note-text" placeholder="e.g., Love your show — just not a sleep tech person."></textarea>
+          <div class="jip-note-actions">
+            <button class="skip" id="btn-jip-skip">Skip note</button>
+            <button class="send" id="btn-jip-send">Send note</button>
+          </div>
+        </div>
+
+        <div class="summary-screen" id="summary-screen">
+          <div class="summary-card">
+            <div class="summary-eyebrow">Episode complete</div>
+            <h3>You decided. <em style="color: var(--gold-soft); font-style: italic;">Three times.</em></h3>
+
+            <div class="summary-totals">
+              <div class="summary-total">
+                <div class="label" id="summary-tip-label">Sally's jar</div>
+                <div class="amount tip">$<span id="summary-tip">0</span></div>
+                <div class="sub" id="summary-tip-sub">— from your tips —</div>
+              </div>
+              <div class="summary-total">
+                <div class="label">Your jar</div>
+                <div class="amount">$<span id="summary-jip">0</span></div>
+                <div class="sub" id="summary-jip-sub">— from your jips —</div>
+              </div>
+            </div>
+
+            <div class="reciprocity" id="reciprocity">
+              <div class="reciprocity-eyebrow">The loop, in real time</div>
+              <div class="phone-mockup">
+                <div class="phone-screen">
+                  <div class="phone-notif">
+                    <div class="notif-icon" id="notif-icon">SH</div>
+                    <div class="notif-body">
+                      <div class="notif-head">
+                        <span class="notif-app" id="notif-app">TipJip</span>
+                        <span class="notif-time">just now</span>
+                      </div>
+                      <div class="notif-msg" id="notif-msg">
+                        <strong>+$0</strong> to Sally Functional Wellness Podcast · Ep 47
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="reciprocity-caption" id="reciprocity-caption">Sally's phone just lit up. <strong>That's the loop.</strong></p>
+            </div>
+
+            <button class="summary-cta" id="summary-close">Back to the dashboard</button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Reset!</div>
+
+<script>
+const STATE_KEY = 'tipjip-dashboard-state-v2';
+const PERSONA_KEY = 'tipjip-dashboard-persona-v2';
+
+const DEFAULT_PERSONA = {
+  showName: "Sally Functional Wellness Podcast",
+  hostName: "Dr. Sally Hart",
+  firstName: "Sally",
+  initials: "SH"
+};
+
+const DEFAULT_STATE = {
+  podcaster: {
+    jarBalance: 387.42,
+    todayEarned: 12.40,
+    lifetimeEarnings: 244180,
+    showTipRate: 92,
+    listenersTotal: 47820,
+    episodesCount: 26,
+    joinedDate: "Nov 2025"
+  },
+  slotTipRates: { preroll: 87, midstream: 97, postroll: 92 },
+  episodes: [
+    { id: 47, num: "47", title: "Perimenopause supplements that actually work", runtime: "1:27:14", releaseDays: 3, listeners: 12000, tipRate: 94, earnings: 44200, isFeatured: true, previewable: true },
+    { id: 46, num: "46", title: "The 3 lab tests every woman over 40 should run", runtime: "1:14:08", releaseDays: 10, listeners: 11200, tipRate: 91, earnings: 38800, previewable: true },
+    { id: 45, num: "45", title: "Cortisol, sleep, and the perimenopause connection", runtime: "1:32:51", releaseDays: 17, listeners: 10800, tipRate: 93, earnings: 39200, previewable: true },
+    { id: 44, num: "44", title: "Why your thyroid panel is probably wrong", runtime: "0:58:22", releaseDays: 24, listeners: 9200, tipRate: 88, earnings: 28600, previewable: true }
+  ],
+  sponsors: [
+    { id: "lmnt", name: "LMNT", slot: "Pre-roll", slotKey: "preroll", bid: 1, tipRate: 87, brandColor: "#3D6F8A", initial: "L", adLength: 30 },
+    { id: "meno", name: "Meno Supplements", slot: "Mid-stream · host-read", slotKey: "midstream", bid: 2, tipRate: 97, brandColor: "#8B5A2B", initial: "M", adLength: 60 },
+    { id: "eight", name: "Eight Sleep", slot: "Post-roll", slotKey: "postroll", bid: 1, tipRate: 92, brandColor: "#1F2937", initial: "8", adLength: 30 }
+  ],
+  feed: []
+};
+
+// Vertical system — drives episode titles, mid-stream sponsor, alternatives, and insight label text.
+// Default vertical is 'hormone-health' (Sally). Add ?vertical=metabolic-health or ?vertical=longevity to swap.
+const VERTICALS = {
+  'hormone-health': {
+    label: 'hormone health',
+    episodeTitles: [
+      "Perimenopause supplements that actually work",
+      "The 3 lab tests every woman over 40 should run",
+      "Cortisol, sleep, and the perimenopause connection",
+      "Why your thyroid panel is probably wrong"
+    ],
+    midstream: { name: "Meno Supplements", initial: "M", brandColor: "#8B5A2B", tagline: "Built for women 40+.", subtagline: "Backed by clinical research." },
+    alternatives: {
+      postroll: [
+        { name: "AG1", category: "Greens · daily nutrition", avgTipRate: 94, bid: 1.50, color: "#2D5016", initial: "A" },
+        { name: "Levels Health", category: "CGM · metabolic tracking", avgTipRate: 93, bid: 1.25, color: "#1E40AF", initial: "L" },
+        { name: "Bon Charge", category: "Red light therapy", avgTipRate: 92, bid: 1.00, color: "#7C2D12", initial: "B" }
+      ],
+      preroll: [
+        { name: "Athletic Greens", category: "Greens · daily nutrition", avgTipRate: 89, bid: 1.25, color: "#2D5016", initial: "A" },
+        { name: "Element Health", category: "Electrolytes (premium)", avgTipRate: 88, bid: 1.00, color: "#3D6F8A", initial: "E" }
+      ],
+      midstream: []
+    }
+  },
+  'metabolic-health': {
+    label: 'metabolic health',
+    episodeTitles: [
+      "Why your fasting glucose is lying to you",
+      "Continuous glucose monitoring for non-diabetics",
+      "The carnivore-keto-Mediterranean debate, settled",
+      "Insulin resistance: the test your doctor isn't running"
+    ],
+    midstream: { name: "Levels Health", initial: "L", brandColor: "#1E40AF", tagline: "See your metabolism.", subtagline: "CGM for non-diabetics." },
+    alternatives: {
+      postroll: [
+        { name: "AG1", category: "Greens · daily nutrition", avgTipRate: 94, bid: 1.50, color: "#2D5016", initial: "A" },
+        { name: "Lumen", category: "Metabolic breath analyzer", avgTipRate: 92, bid: 1.25, color: "#0EA5E9", initial: "L" },
+        { name: "Zoe", category: "Personalized nutrition", avgTipRate: 91, bid: 1.00, color: "#7C3AED", initial: "Z" }
+      ],
+      preroll: [
+        { name: "Athletic Greens", category: "Greens · daily nutrition", avgTipRate: 89, bid: 1.25, color: "#2D5016", initial: "A" },
+        { name: "Element Health", category: "Electrolytes (premium)", avgTipRate: 88, bid: 1.00, color: "#3D6F8A", initial: "E" }
+      ],
+      midstream: []
+    }
+  },
+  'longevity': {
+    label: 'longevity',
+    episodeTitles: [
+      "Zone 2 cardio: the longevity protocol nobody follows",
+      "Rapamycin, metformin, and the longevity stack debate",
+      "Why VO2 max is the single best longevity biomarker",
+      "Strength training after 50: the non-negotiables"
+    ],
+    midstream: { name: "Function Health", initial: "F", brandColor: "#0F766E", tagline: "100+ lab tests, one membership.", subtagline: "Find what's broken before it breaks." },
+    alternatives: {
+      postroll: [
+        { name: "InsideTracker", category: "Bloodwork analytics", avgTipRate: 94, bid: 1.50, color: "#0EA5E9", initial: "I" },
+        { name: "Lifeforce", category: "Hormone optimization", avgTipRate: 92, bid: 1.25, color: "#4F46E5", initial: "L" },
+        { name: "Tally Health", category: "Biological age testing", avgTipRate: 91, bid: 1.00, color: "#059669", initial: "T" }
+      ],
+      preroll: [
+        { name: "Athletic Greens", category: "Greens · daily nutrition", avgTipRate: 89, bid: 1.25, color: "#2D5016", initial: "A" },
+        { name: "Bon Charge", category: "Red light therapy", avgTipRate: 87, bid: 1.00, color: "#7C2D12", initial: "B" }
+      ],
+      midstream: []
+    }
+  }
+};
+
+function getVertical() {
+  return VERTICALS[persona && persona.vertical] || VERTICALS['hormone-health'];
+}
+
+const FAKE_JAR_IDS = [
+  4471, 18233, 104887, 47901, 8923, 2104, 312540, 5556, 9912, 28741,
+  3387, 7741, 1265, 6630, 4408, 218905, 2299, 7102, 5641, 3920,
+  88142, 1107, 6789, 4523, 9341, 156722, 2876, 5008, 7290, 3145,
+  6611, 8420, 1593, 4760, 9081, 281074, 2748, 423019, 67188, 11405
+];
+
+const JIP_NOTES = [
+  "this guest was monotone, hard to focus",
+  "the sponsor read felt like 4 minutes long",
+  "i fast-forward your ads at this point",
+  "great show, dont need this product",
+  "love you but already use this brand",
+  "didn't need this reminder, already a customer",
+  "not the target audience for this one",
+  "tried this last year, didnt work for me",
+  "save this one for the menopause episodes",
+  "felt rushed, wasn't paying attention",
+  "saving up for one — but not today",
+  "out of my budget right now",
+  "loved the mid-roll, this one missed me",
+  "great episode, sponsor felt off-topic",
+  "i'm not in the market for sleep tech",
+  "this brand doesn't match my health goals",
+  "skipped this read, sorry"
+];
+
+let state = loadState();
+let persona = loadPersona();
+
+function loadState() {
+  try {
+    const stored = localStorage.getItem(STATE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      return { ...DEFAULT_STATE, ...parsed, podcaster: {...DEFAULT_STATE.podcaster, ...(parsed.podcaster||{})} };
+    }
+  } catch(e) {}
+  return JSON.parse(JSON.stringify(DEFAULT_STATE));
+}
+
+function loadPersona() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlShow = urlParams.get('show');
+  const urlHost = urlParams.get('host');
+  const urlFirstName = urlParams.get('firstName') || urlParams.get('first');
+  const urlInitials = urlParams.get('initials');
+  const urlVertical = urlParams.get('vertical');
+
+  let saved = {};
+  try {
+    const stored = localStorage.getItem(PERSONA_KEY);
+    if (stored) saved = JSON.parse(stored);
+  } catch(e) {}
+
+  const result = {
+    showName: urlShow || saved.showName || DEFAULT_PERSONA.showName,
+    hostName: urlHost || saved.hostName || DEFAULT_PERSONA.hostName,
+    firstName: urlFirstName || saved.firstName || (urlHost ? extractFirstName(urlHost) : DEFAULT_PERSONA.firstName),
+    initials: (urlInitials || '').toUpperCase() || saved.initials || (urlHost ? extractInitials(urlHost) : DEFAULT_PERSONA.initials),
+    vertical: urlVertical || saved.vertical || null,
+    // Track whether this is a URL-personalized visit (drives the "Projected · 6 months in" badge)
+    isPersonalized: !!(urlShow || urlHost || urlFirstName || urlInitials || urlVertical) || !!(saved.isPersonalized)
+  };
+
+  if (urlShow || urlHost || urlFirstName || urlInitials || urlVertical) {
+    savePersona(result);
+  }
+
+  return result;
+}
+
+function extractFirstName(host) {
+  const cleaned = host.replace(/^(Dr|Mr|Mrs|Ms|Mx|Prof)\.?\s+/i, '');
+  return (cleaned.split(/[\s,]+/)[0] || host).trim();
+}
+
+function extractInitials(host) {
+  const cleaned = host.replace(/^(Dr|Mr|Mrs|Ms|Mx|Prof)\.?\s+/i, '').replace(/,.*$/, '');
+  const parts = cleaned.split(/\s+/).filter(Boolean);
+  if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return 'SH';
+}
+
+function saveState() { try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch(e) {} }
+function savePersona(p) { try { localStorage.setItem(PERSONA_KEY, JSON.stringify(p)); } catch(e) {} }
+
+// Apply the current vertical's data into state (episode titles, mid-stream sponsor).
+// Runs once on init after persona is loaded. Only updates if state hasn't been customized by a user already.
+function applyVertical() {
+  const v = getVertical();
+  state.episodes.forEach((ep, i) => {
+    if (v.episodeTitles[i]) ep.title = v.episodeTitles[i];
+  });
+  const midIdx = state.sponsors.findIndex(s => s.slotKey === 'midstream');
+  if (midIdx >= 0) {
+    state.sponsors[midIdx].name = v.midstream.name;
+    state.sponsors[midIdx].brandColor = v.midstream.brandColor;
+    state.sponsors[midIdx].initial = v.midstream.initial;
+  }
+}
+
+function renderAll() {
+  renderPersona();
+  renderStats();
+  renderTipRateSlots();
+  renderEpisodes();
+  renderSponsors();
+  renderToday();
+  renderCashOut();
+}
+
+function renderPersona() {
+  const v = getVertical();
+  document.getElementById('show-avatar').textContent = persona.initials;
+  document.getElementById('show-name').textContent = persona.showName;
+  document.getElementById('show-host-line').textContent = `${persona.hostName} · Podcaster Studio`;
+
+  // Conditional joined badge: for URL-personalized prospect visits, reframe as aspirational projection.
+  // For default Sally demo, keep as historical "Joined Nov 2025".
+  const joinedBadge = document.getElementById('joined-badge');
+  if (persona.isPersonalized) {
+    joinedBadge.textContent = `Projected · 6 months in`;
+    joinedBadge.style.background = 'rgba(47, 122, 79, 0.12)';
+    joinedBadge.style.color = 'var(--success)';
+  } else {
+    joinedBadge.textContent = `Joined TipJip · ${state.podcaster.joinedDate}`;
+    joinedBadge.style.background = '';
+    joinedBadge.style.color = '';
+  }
+
+  document.getElementById('welcome-firstname').textContent = persona.firstName;
+  document.getElementById('podcast-overlay-show').textContent = persona.showName;
+  document.getElementById('notif-icon').textContent = persona.initials;
+  // Notification app name is always "TipJip" (it's the sending app), show name moves into the message body.
+  document.getElementById('notif-app').textContent = 'TipJip';
+  document.getElementById('summary-tip-label').textContent = `${persona.firstName}'s jar`;
+  document.getElementById('reciprocity-caption').innerHTML = `${persona.firstName}'s phone just lit up. <strong>That's the loop.</strong>`;
+  document.getElementById('jip-note-title').innerHTML = `Tell ${persona.firstName} why <em style="color: var(--gold-soft); font-style: italic;">(optional)</em>`;
+  document.getElementById('btn-tip-where').textContent = `to ${persona.firstName}'s jar`;
+  // Mid-stream ad screen text from vertical
+  document.getElementById('meno-sub').textContent = `${persona.firstName} Reads · ${v.midstream.name}`;
+  const adBrand = document.getElementById('meno-brand');
+  const adSubBottom = document.getElementById('meno-brand-sub-bottom');
+  if (adBrand) adBrand.textContent = v.midstream.tagline;
+  if (adSubBottom) adSubBottom.textContent = v.midstream.subtagline;
+
+  // Founder CTA: swap headline for personalized visits
+  const cta = document.getElementById('founder-cta-headline');
+  const ctaSub = document.getElementById('founder-cta-sub');
+  if (persona.isPersonalized) {
+    cta.textContent = `Ready to set this up for ${persona.showName}?`;
+    ctaSub.textContent = `Founding podcaster slots are filling fast. Book a 20-minute call to claim yours and we'll get ${persona.showName} live in 14 days.`;
+  } else {
+    cta.textContent = `Ready to set this up for your show?`;
+    ctaSub.textContent = `Founding podcaster slots are filling. Book a 20-minute call to claim yours and we'll get you live in 14 days.`;
+  }
+}
+
+function renderToday() {
+  const today = new Date();
+  const opts = { weekday: 'long', month: 'short', day: 'numeric' };
+  document.getElementById('today-date').textContent = today.toLocaleDateString('en-US', opts);
+
+  const status = document.getElementById('welcome-status');
+  const yourEvents = state.feed.filter(e => e.isYou).length;
+  if (yourEvents > 0) {
+    status.innerHTML = `Your <strong style="color: var(--gold-2)">${yourEvents} test ${yourEvents === 1 ? 'decision' : 'decisions'}</strong> just landed in your jar.`;
+  } else {
+    status.innerHTML = `Three sponsors are running on your latest ep. Tips are coming in.`;
+  }
+}
+
+function renderStats() {
+  document.getElementById('stat-jar').textContent = state.podcaster.jarBalance.toFixed(2);
+  document.getElementById('stat-jar-today').textContent = state.podcaster.todayEarned.toFixed(2);
+  document.getElementById('stat-lifetime').textContent = state.podcaster.lifetimeEarnings.toLocaleString();
+  document.getElementById('stat-episodes').textContent = state.podcaster.episodesCount;
+  document.getElementById('stat-tiprate').textContent = state.podcaster.showTipRate;
+  document.getElementById('stat-listeners').textContent = state.podcaster.listenersTotal.toLocaleString();
+  document.getElementById('cashout-amount').textContent = state.podcaster.jarBalance.toFixed(2);
+}
+
+const SLOT_DEFS = [
+  {
+    key: 'preroll',
+    label: 'Pre-roll',
+    sub: 'LMNT · 30s cold ad',
+    insight: function(rate) {
+      const label = getVertical().label;
+      if (rate >= 90) return { tier: 'great', icon: '★', text: 'Top performer · keep this slot' };
+      if (rate >= 82) return { tier: 'ok', icon: '●', text: `On par with ${label} pre-roll average` };
+      return { tier: 'warn', icon: '▲', text: `${85 - rate} pts below platform average`, showAlts: true };
+    }
+  },
+  {
+    key: 'midstream',
+    label: 'Mid-stream',
+    sub: 'host-read',
+    premium: true,
+    insight: function(rate) {
+      const label = getVertical().label;
+      if (rate >= 93) return { tier: 'great', icon: '★', text: `Top 5% in ${label} · your read style is winning` };
+      if (rate >= 88) return { tier: 'ok', icon: '●', text: 'On par with category average' };
+      return { tier: 'warn', icon: '▲', text: 'Below category average · consider re-scripting', showAlts: true };
+    }
+  },
+  {
+    key: 'postroll',
+    label: 'Post-roll',
+    sub: 'Eight Sleep · 30s cold ad',
+    insight: function(rate) {
+      const label = getVertical().label;
+      const avg = 95;
+      if (rate >= avg + 1) return { tier: 'great', icon: '★', text: 'Above category average' };
+      if (rate >= avg - 2) return { tier: 'ok', icon: '●', text: 'On par with category average' };
+      return { tier: 'warn', icon: '▲', text: `${avg - rate} pts below ${label} average`, showAlts: true };
+    }
+  }
+];
+
+function renderTipRateSlots() {
+  const container = document.getElementById('tiprate-slots');
+  const midSponsor = state.sponsors.find(s => s.slotKey === 'midstream');
+  container.innerHTML = SLOT_DEFS.map(slot => {
+    const rate = state.slotTipRates[slot.key];
+    const insight = slot.insight(rate);
+    // Inject mid-stream sponsor name dynamically (varies by vertical)
+    const subText = slot.key === 'midstream' && midSponsor
+      ? `${midSponsor.name} · host-read`
+      : slot.sub;
+    const altsButton = insight.showAlts
+      ? `<button class="insight-link" data-show-alternatives="${slot.key}">See alternatives →</button>`
+      : '';
+    return `
+      <div class="tiprate-slot">
+        <div class="slot-label">
+          ${slot.label}${slot.premium ? ' <span class="premium-star">★</span>' : ''}
+          <span class="slot-sub">${subText}</span>
+        </div>
+        <div class="slot-bar ${slot.premium ? 'premium' : ''}">
+          <div class="slot-bar-fill" data-pct="${rate}"></div>
+        </div>
+        <div class="slot-value">${rate}%</div>
+        <div class="slot-insight ${insight.tier}">
+          <span class="insight-dot">${insight.icon}</span>
+          <span>${insight.text}</span>
+          ${altsButton}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  container.querySelectorAll('.slot-bar-fill').forEach((bar, i) => {
+    bar.style.width = '0%';
+    setTimeout(() => { bar.style.width = bar.dataset.pct + '%'; }, 100 + i * 120);
+  });
+
+  container.querySelectorAll('[data-show-alternatives]').forEach(btn => {
+    btn.addEventListener('click', () => openAlternatives(btn.dataset.showAlternatives));
+  });
+}
+
+function renderEpisodes() {
+  const container = document.getElementById('episode-list');
+  container.innerHTML = state.episodes.map(ep => `
+    <div class="episode-card ${ep.isFeatured ? 'featured' : ''}">
+      <div class="ep-thumb"><span class="ep-num">${ep.num}</span></div>
+      <div class="ep-info">
+        <div class="ep-title">
+          Ep ${ep.num} — ${ep.title}
+          ${ep.isFeatured ? '<span class="new-pill">New</span>' : ''}
+        </div>
+        <div class="ep-meta">
+          <span>${ep.runtime}</span>
+          <span class="dot"></span>
+          <span><strong>${ep.listeners.toLocaleString()}</strong> listeners</span>
+          <span class="dot"></span>
+          <span class="tiprate">${ep.tipRate}% tip rate</span>
+          <span class="dot"></span>
+          <span>${ep.releaseDays}d ago</span>
+        </div>
+      </div>
+      <div class="ep-action">
+        <div class="ep-earnings">
+          <div class="ep-earnings-num">$${ep.earnings.toLocaleString()}</div>
+          <div class="ep-earnings-label">earned</div>
+        </div>
+        <button class="btn-preview" data-ep-id="${ep.id}">Preview as listener →</button>
+      </div>
+    </div>
+  `).join('');
+
+  container.querySelectorAll('.btn-preview').forEach(btn => {
+    btn.addEventListener('click', () => openPlayer(parseInt(btn.dataset.epId)));
+  });
+}
+
+function renderSponsors() {
+  const container = document.getElementById('sponsors-list');
+  container.innerHTML = state.sponsors.map(s => `
+    <div class="sponsor-row">
+      <div class="sponsor-avatar" style="background: ${s.brandColor};">${s.initial}</div>
+      <div class="sponsor-info">
+        <div class="sponsor-name">${s.name}</div>
+        <div class="sponsor-slot-label">${s.slot}</div>
+      </div>
+      <div class="sponsor-meta">
+        <div class="sponsor-bid">$${s.bid.toFixed(2)}</div>
+        <div class="sponsor-tiprate">${s.tipRate}% tipped</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderCashOut() {
+  const balance = state.podcaster.jarBalance;
+  const cashoutBtn = document.getElementById('btn-cashout');
+  const progress = document.getElementById('cashout-progress');
+  const progressFill = document.getElementById('cashout-progress-fill');
+  const progressLabel = document.getElementById('cashout-progress-label');
+
+  if (balance < 20) {
+    cashoutBtn.disabled = true;
+    cashoutBtn.textContent = `Need $${(20 - balance).toFixed(2)} more`;
+    progress.style.display = 'block';
+    const pct = (balance / 20) * 100;
+    progressLabel.textContent = `$${balance.toFixed(2)} of $20.00 minimum`;
+    setTimeout(() => { progressFill.style.width = pct + '%'; }, 50);
+  } else {
+    cashoutBtn.disabled = false;
+    cashoutBtn.textContent = 'Empty the jar';
+    progress.style.display = 'none';
+  }
+}
+
+const altsModal = document.getElementById('alts-modal');
+const altsTitle = document.getElementById('alts-title');
+const altsSub = document.getElementById('alts-sub');
+const altsCurrent = document.getElementById('alts-current');
+const altsList = document.getElementById('alts-list');
+
+function openAlternatives(slotKey) {
+  const slot = SLOT_DEFS.find(s => s.key === slotKey);
+  const sponsor = state.sponsors.find(s => s.slotKey === slotKey);
+  const vertical = getVertical();
+  const alts = vertical.alternatives[slotKey] || [];
+  const currentRate = state.slotTipRates[slotKey];
+
+  altsTitle.textContent = `Higher-rated alternatives for your ${slot.label.toLowerCase()}`;
+  altsSub.textContent = `These sponsors are running on similar ${vertical.label} shows. Tip rates shown are platform averages for shows your size.`;
+
+  altsCurrent.innerHTML = `
+    <span>Your current ${slot.label.toLowerCase()}: <strong>${sponsor.name}</strong></span>
+    <span class="rate">${currentRate}%</span>
+  `;
+
+  if (alts.length === 0) {
+    altsList.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--muted); font-size: 13px;">Your ${slot.label.toLowerCase()} is already in the top tier for this category. No alternatives to suggest.</div>`;
+  } else {
+    altsList.innerHTML = alts.map(a => `
+      <div class="alt-row">
+        <div class="alt-avatar" style="background: ${a.color};">${a.initial}</div>
+        <div class="alt-info">
+          <div class="alt-name">${a.name}</div>
+          <div class="alt-cat">${a.category}</div>
+        </div>
+        <div class="alt-meta">
+          <div class="alt-rate">${a.avgTipRate}%</div>
+          <div class="alt-rate-label">avg tip rate</div>
+          <div class="alt-bid">$${a.bid.toFixed(2)} bid</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  altsModal.classList.add('open');
+}
+
+function closeAlternatives() { altsModal.classList.remove('open'); }
+document.getElementById('alts-close').addEventListener('click', closeAlternatives);
+altsModal.addEventListener('click', (e) => { if (e.target === altsModal) closeAlternatives(); });
+
+function renderFeed() {
+  const feed = document.getElementById('activity-feed');
+  const recent = state.feed.slice(0, 25);
+  feed.innerHTML = recent.map((e, i) => {
+    const iconClass = e.type === 'tip' ? 'tip' : 'jip';
+    const iconLabel = e.type === 'tip' ? 'TIP' : 'JIP';
+    const isYou = e.isYou;
+    const sponsorName = e.sponsor || 'sponsor';
+    const epRef = e.epRef ? ` <span style="color: var(--muted-2); font-weight: 500;">· Ep ${e.epRef}</span>` : '';
+    const action = e.type === 'tip'
+      ? `tipped <span class="activity-amount">$${e.amount.toFixed(2)}</span> on the <strong>${sponsorName}</strong> read${epRef}`
+      : `jipped <span class="activity-amount">$${e.amount.toFixed(2)}</span> on the <strong>${sponsorName}</strong> slot${epRef}`;
+    const youTag = isYou ? '<span class="you-tag">YOU</span>' : '';
+    return `
+      <div class="activity-row ${iconClass} ${isYou ? 'you-event' : (i === 0 && e.fresh ? 'new-event' : '')}">
+        <div class="activity-icon ${iconClass}">${iconLabel}</div>
+        <div class="activity-body-text">
+          <strong>Tip Jar #${e.jar.toLocaleString()}</strong> ${action}
+          <div class="activity-time">${e.timeLabel}${youTag}</div>
+          ${e.note ? `<div class="activity-note">"${e.note}"</div>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+  state.feed = state.feed.map(e => ({...e, fresh: false}));
+}
+
+function addFeedEvent(event) {
+  state.feed.unshift({...event, fresh: true});
+  if (state.feed.length > 100) state.feed = state.feed.slice(0, 100);
+  saveState();
+  renderFeed();
+}
+
+function startLiveFeed() {
+  if (state.feed.length === 0) seedInitialFeed();
+  renderFeed();
+  function scheduleNext() {
+    const delay = 4000 + Math.random() * 4000;
+    setTimeout(() => { simulateFeedEvent(); scheduleNext(); }, delay);
+  }
+  scheduleNext();
+}
+
+function seedInitialFeed() {
+  for (let i = 0; i < 12; i++) {
+    const minsAgo = (i + 1) * (1 + Math.floor(Math.random() * 3));
+    const evt = generateRandomEvent();
+    evt.timeLabel = minsAgo < 60 ? `${minsAgo}m ago` : `${Math.floor(minsAgo/60)}h ago`;
+    state.feed.push(evt);
+  }
+}
+
+function simulateFeedEvent() {
+  const evt = generateRandomEvent();
+  evt.timeLabel = 'just now';
+  addFeedEvent(evt);
+}
+
+function generateRandomEvent() {
+  const sponsor = state.sponsors[Math.floor(Math.random() * state.sponsors.length)];
+  const isTip = Math.random() * 100 < sponsor.tipRate;
+  const jar = FAKE_JAR_IDS[Math.floor(Math.random() * FAKE_JAR_IDS.length)];
+  // ~40% of events reference an older episode (shows long-tail revenue from back catalog)
+  const referenceOlderEp = Math.random() < 0.4;
+  const olderEpNum = referenceOlderEp ? state.episodes[1 + Math.floor(Math.random() * 3)].num : null;
+  return {
+    type: isTip ? 'tip' : 'jip',
+    sponsor: sponsor.name,
+    sponsorKey: sponsor.slotKey,
+    jar,
+    amount: sponsor.bid,
+    epRef: olderEpNum, // null = latest ep, otherwise older ep num
+    note: !isTip && Math.random() > 0.5 ? JIP_NOTES[Math.floor(Math.random() * JIP_NOTES.length)] : null
+  };
+}
+
+const player = document.getElementById('player');
+const playerCloseBtn = document.getElementById('player-close');
+const videoContentShow = document.getElementById('video-content-show');
+const adScreens = {
+  preroll: document.getElementById('ad-lmnt'),
+  midstream: document.getElementById('ad-meno'),
+  postroll: document.getElementById('ad-eight')
+};
+const adTag = document.getElementById('ad-tag');
+const adTagText = document.getElementById('ad-tag-text');
+const chromeProgressFill = document.getElementById('chrome-progress-fill');
+const chromeTime = document.getElementById('chrome-time');
+const decisionOverlay = document.getElementById('decision-overlay');
+const decisionCoin = document.getElementById('decision-coin');
+const decisionEyebrow = document.getElementById('decision-eyebrow');
+const decisionHeadline = document.getElementById('decision-headline');
+const decisionSub = document.getElementById('decision-sub');
+const btnTip = document.getElementById('btn-tip');
+const btnJip = document.getElementById('btn-jip');
+const btnTipAmount = document.getElementById('btn-tip-amount');
+const btnJipAmount = document.getElementById('btn-jip-amount');
+const jipNotePrompt = document.getElementById('jip-note-prompt');
+const jipNoteText = document.getElementById('jip-note-text');
+const btnJipSkip = document.getElementById('btn-jip-skip');
+const btnJipSend = document.getElementById('btn-jip-send');
+const summaryScreen = document.getElementById('summary-screen');
+const summaryTip = document.getElementById('summary-tip');
+const summaryJip = document.getElementById('summary-jip');
+const summaryTipSub = document.getElementById('summary-tip-sub');
+const summaryJipSub = document.getElementById('summary-jip-sub');
+const summaryClose = document.getElementById('summary-close');
+const playerEpTitle = document.getElementById('player-ep-title');
+const podcastOverlayEp = document.getElementById('podcast-overlay-ep');
+const demoNote = document.getElementById('demo-note');
+const notifMsg = document.getElementById('notif-msg');
+
+let playerState = {
+  active: false,
+  currentEp: null,
+  slotIndex: 0,
+  decisions: [],
+  pendingDecision: null,
+  episodeProgressSec: 0
+};
+
+const AD_SEQUENCE = ['preroll', 'midstream', 'postroll'];
+const AD_DURATIONS_MS = [8000, 4000, 4000];
+const INTERLUDE_MS = 1500;
+
+let _adTimer, _chromeTimer, _contentTimer;
+
+function openPlayer(epId) {
+  const ep = state.episodes.find(e => e.id === epId);
+  if (!ep) return;
+
+  playerState = {
+    active: true,
+    currentEp: ep,
+    slotIndex: 0,
+    decisions: [],
+    pendingDecision: null,
+    episodeProgressSec: 0
+  };
+
+  playerEpTitle.textContent = `Ep ${ep.num} — ${ep.title}`;
+  podcastOverlayEp.textContent = `Ep ${ep.num} · ${ep.title}`;
+  chromeTime.textContent = `0:00 / ${ep.runtime}`;
+  chromeProgressFill.style.width = '0%';
+
+  Object.values(adScreens).forEach(s => s.classList.remove('active'));
+  decisionOverlay.classList.remove('active');
+  jipNotePrompt.classList.remove('active');
+  summaryScreen.classList.remove('active');
+  videoContentShow.classList.remove('hidden');
+  adTag.style.display = 'none';
+  demoNote.classList.remove('active');
+
+  player.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  startContentInterlude(() => playAdSlot(0));
+}
+
+function closePlayer() {
+  player.classList.remove('open');
+  document.body.style.overflow = '';
+  clearTimeout(_contentTimer); clearTimeout(_adTimer); clearInterval(_chromeTimer);
+  playerState.active = false;
+}
+
+function startContentInterlude(onComplete) {
+  Object.values(adScreens).forEach(s => s.classList.remove('active'));
+  videoContentShow.classList.remove('hidden');
+  adTag.style.display = 'none';
+  demoNote.classList.remove('active');
+
+  const startProgress = playerState.episodeProgressSec;
+  const endProgress = startProgress + 12;
+  let elapsed = 0;
+  clearInterval(_chromeTimer);
+  _chromeTimer = setInterval(() => {
+    elapsed += 50;
+    const progress = elapsed / INTERLUDE_MS;
+    playerState.episodeProgressSec = startProgress + (endProgress - startProgress) * progress;
+    updateChrome();
+  }, 50);
+
+  _contentTimer = setTimeout(() => {
+    clearInterval(_chromeTimer);
+    onComplete && onComplete();
+  }, INTERLUDE_MS);
+}
+
+function playAdSlot(slotIdx) {
+  if (!playerState.active) return;
+  playerState.slotIndex = slotIdx;
+  const slotKey = AD_SEQUENCE[slotIdx];
+  const sponsor = state.sponsors.find(s => s.slotKey === slotKey);
+  if (!sponsor) return;
+
+  videoContentShow.classList.add('hidden');
+  Object.values(adScreens).forEach(s => s.classList.remove('active'));
+  adScreens[slotKey].classList.add('active');
+
+  adTag.style.display = 'flex';
+  adTagText.textContent = `${sponsor.slot.toUpperCase()} · ${sponsor.name}`;
+
+  if (slotIdx === 0) {
+    demoNote.classList.add('active');
+  } else {
+    demoNote.classList.remove('active');
+  }
+
+  const duration = AD_DURATIONS_MS[slotIdx];
+  let elapsed = 0;
+  const adDurationStart = playerState.episodeProgressSec;
+  clearInterval(_chromeTimer);
+  _chromeTimer = setInterval(() => {
+    elapsed += 50;
+    const pct = elapsed / duration;
+    playerState.episodeProgressSec = adDurationStart + sponsor.adLength * pct;
+    updateChrome();
+  }, 50);
+
+  _adTimer = setTimeout(() => {
+    clearInterval(_chromeTimer);
+    demoNote.classList.remove('active');
+    showDecision(sponsor);
+  }, duration);
+}
+
+function updateChrome() {
+  const totalSeconds = playerState.currentEp ? runtimeToSeconds(playerState.currentEp.runtime) : 0;
+  const cur = Math.floor(playerState.episodeProgressSec);
+  const pct = totalSeconds ? (cur / totalSeconds) * 100 : 0;
+  chromeProgressFill.style.width = pct + '%';
+  chromeTime.textContent = `${formatTime(cur)} / ${playerState.currentEp ? playerState.currentEp.runtime : '0:00'}`;
+}
+
+function runtimeToSeconds(rt) {
+  const parts = rt.split(':').map(Number);
+  if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+  if (parts.length === 2) return parts[0] * 60 + parts[1];
+  return parts[0];
+}
+
+function formatTime(s) {
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = Math.floor(s % 60);
+  const pad = (n) => n.toString().padStart(2, '0');
+  if (h > 0) return `${h}:${pad(m)}:${pad(sec)}`;
+  return `${m}:${pad(sec)}`;
+}
+
+function showDecision(sponsor) {
+  playerState.pendingDecision = { sponsor };
+  decisionCoin.textContent = `$${sponsor.bid}`;
+  decisionEyebrow.textContent = `${sponsor.slot} · ${sponsor.name} just played`;
+  decisionHeadline.textContent = `Your coin's at the rim.`;
+  decisionSub.textContent = `Tip it into ${persona.firstName}'s jar, or keep it in yours.`;
+  btnTipAmount.textContent = `$${sponsor.bid}`;
+  btnJipAmount.textContent = `$${sponsor.bid}`;
+  decisionOverlay.classList.add('active');
+}
+
+function handleTip(buttonEl) {
+  const sponsor = playerState.pendingDecision.sponsor;
+  playerState.decisions.push({
+    sponsorKey: sponsor.slotKey,
+    sponsorName: sponsor.name,
+    decision: 'tip',
+    amount: sponsor.bid,
+    note: null
+  });
+  flyCoin(buttonEl, 'tip', sponsor.bid);
+  decisionOverlay.classList.remove('active');
+  setTimeout(() => advanceAfterDecision(), 380);
+}
+
+function handleJip(buttonEl) {
+  const sponsor = playerState.pendingDecision.sponsor;
+  flyCoin(buttonEl, 'jip', sponsor.bid);
+  decisionOverlay.classList.remove('active');
+  setTimeout(() => {
+    jipNotePrompt.classList.add('active');
+    jipNoteText.value = '';
+    jipNoteText.focus();
+  }, 380);
+}
+
+function flyCoin(originEl, type, amount) {
+  if (!originEl) return;
+  const rect = originEl.getBoundingClientRect();
+  const startX = rect.left + rect.width / 2 - 20;
+  const startY = rect.top + rect.height / 2 - 20;
+
+  const coin = document.createElement('div');
+  coin.className = `flying-coin ${type}`;
+  coin.textContent = `$${amount}`;
+  coin.style.left = startX + 'px';
+  coin.style.top = startY + 'px';
+  coin.style.transition = 'transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.6s';
+  document.body.appendChild(coin);
+
+  const label = document.createElement('div');
+  label.className = 'flying-coin-label';
+  label.textContent = type === 'tip' ? `+$${amount}` : `+$${amount} (yours)`;
+  label.style.left = (startX + 50) + 'px';
+  label.style.top = startY + 'px';
+  label.style.transition = 'transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.7s';
+  document.body.appendChild(label);
+
+  requestAnimationFrame(() => {
+    if (type === 'tip') {
+      const dx = 30 - startX;
+      const dy = 30 - startY;
+      coin.style.transform = `translate(${dx}px, ${dy}px) scale(0.6)`;
+      coin.style.opacity = '0';
+      label.style.transform = `translate(${dx}px, ${dy - 30}px) scale(0.8)`;
+      label.style.opacity = '0';
+    } else {
+      coin.style.transform = `translate(0, 80px) scale(0.7)`;
+      coin.style.opacity = '0';
+      label.style.transform = `translate(0, 60px) scale(0.8)`;
+      label.style.opacity = '0';
+    }
+  });
+
+  setTimeout(() => { coin.remove(); label.remove(); }, 800);
+}
+
+function commitJip(note) {
+  const sponsor = playerState.pendingDecision.sponsor;
+  playerState.decisions.push({
+    sponsorKey: sponsor.slotKey,
+    sponsorName: sponsor.name,
+    decision: 'jip',
+    amount: sponsor.bid,
+    note: note || null
+  });
+  jipNotePrompt.classList.remove('active');
+  advanceAfterDecision();
+}
+
+function advanceAfterDecision() {
+  const nextSlot = playerState.slotIndex + 1;
+  if (nextSlot < AD_SEQUENCE.length) {
+    startContentInterlude(() => playAdSlot(nextSlot));
+  } else {
+    showSummary();
+  }
+}
+
+function showSummary() {
+  const tipTotal = playerState.decisions.filter(d => d.decision === 'tip').reduce((s, d) => s + d.amount, 0);
+  const jipTotal = playerState.decisions.filter(d => d.decision === 'jip').reduce((s, d) => s + d.amount, 0);
+  const tipCount = playerState.decisions.filter(d => d.decision === 'tip').length;
+  const jipCount = playerState.decisions.filter(d => d.decision === 'jip').length;
+
+  summaryTip.textContent = tipTotal.toFixed(0);
+  summaryJip.textContent = jipTotal.toFixed(0);
+  summaryTipSub.textContent = tipCount === 0 ? 'no tips this episode' : `from ${tipCount} ${tipCount === 1 ? 'tip' : 'tips'}`;
+  summaryJipSub.textContent = jipCount === 0 ? 'you tipped everything' : `from ${jipCount} ${jipCount === 1 ? 'jip' : 'jips'}`;
+
+  notifMsg.innerHTML = tipTotal > 0
+    ? `<strong>+$${tipTotal.toFixed(0)}</strong> to ${persona.showName} · Ep ${playerState.currentEp.num} · from Tip Jar #756`
+    : `Tip Jar #756 left feedback on ${persona.showName} · Ep ${playerState.currentEp.num}`;
+
+  videoContentShow.classList.add('hidden');
+  Object.values(adScreens).forEach(s => s.classList.remove('active'));
+  adTag.style.display = 'none';
+  summaryScreen.classList.add('active');
+
+  commitPreviewToDashboard(tipTotal);
+}
+
+function commitPreviewToDashboard(tipTotal) {
+  state.podcaster.jarBalance += tipTotal;
+  state.podcaster.todayEarned += tipTotal;
+  state.podcaster.lifetimeEarnings += tipTotal;
+
+  playerState.decisions.forEach(d => {
+    const evt = {
+      type: d.decision,
+      sponsor: d.sponsorName,
+      sponsorKey: d.sponsorKey,
+      jar: 756,
+      amount: d.amount,
+      note: d.note,
+      timeLabel: 'just now',
+      fresh: true,
+      isYou: true
+    };
+    state.feed.unshift(evt);
+  });
+  if (state.feed.length > 100) state.feed = state.feed.slice(0, 100);
+
+  saveState();
+}
+
+playerCloseBtn.addEventListener('click', () => { closePlayer(); renderAll(); renderFeed(); });
+btnTip.addEventListener('click', (e) => handleTip(e.currentTarget));
+btnJip.addEventListener('click', (e) => handleJip(e.currentTarget));
+btnJipSkip.addEventListener('click', () => commitJip(null));
+btnJipSend.addEventListener('click', () => commitJip(jipNoteText.value.trim()));
+summaryClose.addEventListener('click', () => {
+  closePlayer();
+  renderAll();
+  renderFeed();
+  showToast(`Your tips landed in ${persona.firstName}'s jar. Check the feed below.`);
+});
+
+document.getElementById('btn-cashout').addEventListener('click', (e) => {
+  const amount = state.podcaster.jarBalance;
+  if (amount < 20) {
+    showToast('Need at least $20 to cash out.');
+    return;
+  }
+  burstCoins(e.clientX, e.clientY);
+  state.podcaster.jarBalance = 0;
+  state.podcaster.todayEarned = 0;
+  saveState();
+  setTimeout(() => {
+    renderStats();
+    renderCashOut();
+    showToast(`$${amount.toFixed(2)} transferred. (Demo only — no real transaction.)`);
+  }, 400);
+});
+
+function burstCoins(x, y) {
+  const burst = document.createElement('div');
+  burst.className = 'coin-burst';
+  burst.style.left = x + 'px';
+  burst.style.top = y + 'px';
+  document.body.appendChild(burst);
+  for (let i = 0; i < 14; i++) {
+    const coin = document.createElement('div');
+    coin.className = 'coin-particle';
+    coin.textContent = '$';
+    const angle = (Math.PI * 2 * i) / 14 + Math.random() * 0.4;
+    const dist = 80 + Math.random() * 140;
+    coin.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+    coin.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+    coin.style.animationDelay = (i * 0.02) + 's';
+    burst.appendChild(coin);
+  }
+  setTimeout(() => burst.remove(), 1600);
+}
+
+const showIdEl = document.getElementById('show-id');
+const inputShow = document.getElementById('input-show');
+const inputHost = document.getElementById('input-host');
+const inputFirstName = document.getElementById('input-firstname');
+const inputInitials = document.getElementById('input-initials');
+
+document.getElementById('edit-show-btn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  inputShow.value = persona.showName;
+  inputHost.value = persona.hostName;
+  inputFirstName.value = persona.firstName;
+  inputInitials.value = persona.initials;
+  showIdEl.classList.toggle('editing');
+});
+
+document.getElementById('edit-cancel').addEventListener('click', () => {
+  showIdEl.classList.remove('editing');
+});
+
+document.getElementById('edit-save').addEventListener('click', () => {
+  const hostVal = inputHost.value.trim();
+  const newPersona = {
+    showName: inputShow.value.trim() || DEFAULT_PERSONA.showName,
+    hostName: hostVal || DEFAULT_PERSONA.hostName,
+    firstName: inputFirstName.value.trim() || (hostVal ? extractFirstName(hostVal) : DEFAULT_PERSONA.firstName),
+    initials: (inputInitials.value.trim() || (hostVal ? extractInitials(hostVal) : DEFAULT_PERSONA.initials)).toUpperCase()
+  };
+  persona = newPersona;
+  savePersona(persona);
+  showIdEl.classList.remove('editing');
+  renderAll();
+  showToast(`Dashboard now showing as ${persona.showName}`);
+});
+
+document.addEventListener('click', (e) => {
+  if (!showIdEl.contains(e.target)) showIdEl.classList.remove('editing');
+});
+
+const resetMenu = document.getElementById('reset-menu');
+document.getElementById('reset-toggle').addEventListener('click', (e) => {
+  e.stopPropagation();
+  resetMenu.classList.toggle('open');
+});
+document.addEventListener('click', () => resetMenu.classList.remove('open'));
+
+document.getElementById('btn-reset-state').addEventListener('click', () => {
+  if (confirm('Reset demo state? Clears tips, feed, and balances. Keeps your personalization.')) {
+    localStorage.removeItem(STATE_KEY);
+    state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+    saveState();
+    renderAll();
+    renderFeed();
+    showToast('Demo state reset.');
+  }
+});
+
+document.getElementById('btn-reset-all').addEventListener('click', () => {
+  if (confirm('Reset everything including personalization? Returns to Sally defaults.')) {
+    localStorage.removeItem(STATE_KEY);
+    localStorage.removeItem(PERSONA_KEY);
+    state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+    persona = JSON.parse(JSON.stringify(DEFAULT_PERSONA));
+    saveState();
+    savePersona(persona);
+    renderAll();
+    renderFeed();
+    showToast('Everything reset.');
+  }
+});
+
+document.getElementById('btn-marketing').addEventListener('click', () => {
+  window.location.href = 'index.html';
+});
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3200);
+}
+
+// Wire marketplace CTA in alts modal
+document.getElementById('alts-marketplace-cta').addEventListener('click', () => {
+  showToast('Sponsor marketplace launching with founding podcasters. Book a call to claim early access.');
+});
+
+// Apply vertical to state once at init so episode titles and mid-stream sponsor match the vertical.
+applyVertical();
+renderAll();
+startLiveFeed();
+</script>
+
+</body>
+</html>
