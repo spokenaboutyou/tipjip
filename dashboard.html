@@ -407,6 +407,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .welcome p { font-size: 17px; color: var(--muted); }
 
 /* Sample account preview pill */
+/* Sample account preview pill */
 .sample-account-pill {
   display: inline-flex;
   align-items: center;
@@ -434,6 +435,25 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.4; transform: scale(0.8); }
 }
+
+/* Demo data disclaimer footer */
+.demo-disclaimer {
+  margin-top: 40px;
+  padding: 16px 22px;
+  background: rgba(200, 144, 46, 0.06);
+  border: 1px solid rgba(200, 144, 46, 0.22);
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+  font-style: italic;
+}
+.demo-disclaimer strong {
+  color: var(--gold-2, #B07A1F);
+  font-style: normal;
+  font-weight: 700;
+}
+
 .welcome .greeting-time {
   font-size: 13px;
   color: var(--muted-2);
@@ -2171,7 +2191,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     </div>
 
     <div class="stat-card">
-      <div class="stat-label">Verified Listeners</div>
+      <div class="stat-label">Verified Tippers</div>
       <div class="stat-value"><span id="stat-listeners">47,820</span></div>
       <div class="stat-foot">
         unique · last 90 days <span class="delta">↑ 8%</span>
@@ -2198,7 +2218,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
         </div>
         <div class="context-item">
           <strong>Money-backed</strong>
-          Every vote is a verified human choosing between $1+ and a thank-you. Cheap reviews don't exist here.
+          Every vote is a verified Tipper choosing between $0.50&ndash;$1.00 and a thank-you. Cheap reviews don&#x2019;t exist here.
         </div>
         <div class="context-item">
           <strong>Bot-proof</strong>
@@ -2237,7 +2257,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     <div class="sponsors-card">
       <div class="activity-head">
         <h3>Your sponsors · latest ep</h3>
-        <span style="font-size: 12px; color: var(--muted);">$4 per listener</span>
+        <span style="font-size: 12px; color: var(--muted);">$0.50 – $1.00 per listener</span>
       </div>
       <div id="sponsors-list"></div>
     </div>
@@ -2249,7 +2269,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       <div class="cashout-amount">$<span id="cashout-amount">387.42</span></div>
       <div class="cashout-note">Transfer to your bank or PayPal. <span class="cashout-fees">$0 fees · TipJip absorbs processing</span></div>
       <div class="cashout-progress" id="cashout-progress" style="display:none;">
-        <div class="cashout-progress-label" id="cashout-progress-label">$0.00 of $20.00 minimum</div>
+        <div class="cashout-progress-label" id="cashout-progress-label">$0.00 of $15.00 minimum</div>
         <div class="cashout-progress-bar">
           <div class="cashout-progress-fill" id="cashout-progress-fill" style="width: 0%"></div>
         </div>
@@ -2265,7 +2285,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       <h3 id="founder-cta-headline">Ready to set this up for your show?</h3>
       <p id="founder-cta-sub">Founding podcaster slots are filling. Book a 20-minute call to claim yours and we'll get you live in 14 days.</p>
       <div class="founder-cta-actions">
-        <a href="mailto:randall@spokenabout.com?subject=TipJip%20founding%20podcaster" class="founder-cta-btn primary">Book a 20-min call with Randall →</a>
+        <a href="mailto:randall@spokenabout.com?subject=TipJip%20founding%20podcaster" class="founder-cta-btn primary">Book a 20-min call with Team →</a>
         <a href="index.html" class="founder-cta-btn ghost">Back to the marketing site</a>
       </div>
       <div class="founder-cta-footer">
@@ -2277,6 +2297,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
         <span>Custom onboarding</span>
       </div>
     </div>
+  </div>
+
+  <!-- Demo data disclaimer -->
+  <div class="demo-disclaimer">
+    <strong>Preview &middot; sample data.</strong> Numbers shown are illustrative. Actual podcaster earnings depend on listener count, slot count per episode (1&ndash;3), slot lengths (30s/60s), sponsor mix, and tip rate. TipJip does not guarantee specific earnings. 100% of every sponsor bid reaches the listener; TipJip&#x2019;s platform fee is charged separately to advertisers.
   </div>
 
 </main>
@@ -2494,9 +2519,9 @@ const DEFAULT_PERSONA = {
 
 const DEFAULT_STATE = {
   podcaster: {
-    jarBalance: 387.42,
-    todayEarned: 12.40,
-    lifetimeEarnings: 244180,
+    jarBalance: 193.71,
+    todayEarned: 6.20,
+    lifetimeEarnings: 122090,
     showTipRate: 92,
     listenersTotal: 47820,
     episodesCount: 26,
@@ -2504,15 +2529,15 @@ const DEFAULT_STATE = {
   },
   slotTipRates: { preroll: 87, midstream: 97, postroll: 92 },
   episodes: [
-    { id: 47, num: "47", title: "Perimenopause supplements that actually work", runtime: "1:27:14", releaseDays: 3, listeners: 12000, tipRate: 94, earnings: 44200, isFeatured: true, previewable: true },
-    { id: 46, num: "46", title: "The 3 lab tests every woman over 40 should run", runtime: "1:14:08", releaseDays: 10, listeners: 11200, tipRate: 91, earnings: 38800, previewable: true },
-    { id: 45, num: "45", title: "Cortisol, sleep, and the perimenopause connection", runtime: "1:32:51", releaseDays: 17, listeners: 10800, tipRate: 93, earnings: 39200, previewable: true },
-    { id: 44, num: "44", title: "Why your thyroid panel is probably wrong", runtime: "0:58:22", releaseDays: 24, listeners: 9200, tipRate: 88, earnings: 28600, previewable: true }
+    { id: 47, num: "47", title: "Perimenopause supplements that actually work", runtime: "1:27:14", releaseDays: 3, listeners: 12000, tipRate: 94, earnings: 22100, isFeatured: true, previewable: true },
+    { id: 46, num: "46", title: "The 3 lab tests every woman over 40 should run", runtime: "1:14:08", releaseDays: 10, listeners: 11200, tipRate: 91, earnings: 19400, previewable: true },
+    { id: 45, num: "45", title: "Cortisol, sleep, and the perimenopause connection", runtime: "1:32:51", releaseDays: 17, listeners: 10800, tipRate: 93, earnings: 19600, previewable: true },
+    { id: 44, num: "44", title: "Why your thyroid panel is probably wrong", runtime: "0:58:22", releaseDays: 24, listeners: 9200, tipRate: 88, earnings: 14300, previewable: true }
   ],
   sponsors: [
-    { id: "lmnt", name: "LMNT", slot: "Pre-roll", slotKey: "preroll", bid: 1, tipRate: 87, brandColor: "#3D6F8A", initial: "L", adLength: 30 },
-    { id: "meno", name: "Meno Supplements", slot: "Mid-stream · host-read", slotKey: "midstream", bid: 2, tipRate: 97, brandColor: "#8B5A2B", initial: "M", adLength: 60 },
-    { id: "eight", name: "Eight Sleep", slot: "Post-roll", slotKey: "postroll", bid: 1, tipRate: 92, brandColor: "#1F2937", initial: "8", adLength: 30 }
+    { id: "lmnt", name: "LMNT", slot: "Pre-roll · 30s", slotKey: "preroll", bid: 0.50, tipRate: 87, brandColor: "#3D6F8A", initial: "L", adLength: 30 },
+    { id: "meno", name: "Meno Supplements", slot: "Mid-stream · 60s host-read", slotKey: "midstream", bid: 1.00, tipRate: 97, brandColor: "#8B5A2B", initial: "M", adLength: 60 },
+    { id: "eight", name: "Eight Sleep", slot: "Post-roll · 30s", slotKey: "postroll", bid: 0.50, tipRate: 92, brandColor: "#1F2937", initial: "8", adLength: 30 }
   ],
   feed: []
 };
@@ -2915,12 +2940,12 @@ function renderCashOut() {
   const progressFill = document.getElementById('cashout-progress-fill');
   const progressLabel = document.getElementById('cashout-progress-label');
 
-  if (balance < 20) {
+  if (balance < 15) {
     cashoutBtn.disabled = true;
     cashoutBtn.textContent = `Need $${(20 - balance).toFixed(2)} more`;
     progress.style.display = 'block';
     const pct = (balance / 20) * 100;
-    progressLabel.textContent = `$${balance.toFixed(2)} of $20.00 minimum`;
+    progressLabel.textContent = `$${balance.toFixed(2)} of $15.00 minimum`;
     setTimeout(() => { progressFill.style.width = pct + '%'; }, 50);
   } else {
     cashoutBtn.disabled = false;
@@ -3230,12 +3255,12 @@ function formatTime(s) {
 
 function showDecision(sponsor) {
   playerState.pendingDecision = { sponsor };
-  decisionCoin.textContent = `$${sponsor.bid}`;
+  decisionCoin.textContent = `$${sponsor.bid.toFixed(2)}`;
   decisionEyebrow.textContent = `${sponsor.slot} · ${sponsor.name} just played`;
   decisionHeadline.textContent = `Your coin's at the rim.`;
   decisionSub.textContent = `Tip it into ${persona.firstName}'s jar, or keep it in yours.`;
-  btnTipAmount.textContent = `$${sponsor.bid}`;
-  btnJipAmount.textContent = `$${sponsor.bid}`;
+  btnTipAmount.textContent = `$${sponsor.bid.toFixed(2)}`;
+  btnJipAmount.textContent = `$${sponsor.bid.toFixed(2)}`;
   decisionOverlay.classList.add('active');
 }
 

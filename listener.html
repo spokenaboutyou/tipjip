@@ -396,6 +396,24 @@ a { color: var(--evergreen); }
 .welcome h1 { font-size: 38px; font-weight: 700; margin-bottom: 6px; }
 .welcome p { font-size: 17px; color: var(--muted); }
 
+/* Demo data disclaimer footer */
+.demo-disclaimer {
+  margin-top: 40px;
+  padding: 16px 22px;
+  background: rgba(200, 144, 46, 0.06);
+  border: 1px solid rgba(200, 144, 46, 0.22);
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+  font-style: italic;
+}
+.demo-disclaimer strong {
+  color: var(--gold-2, #B07A1F);
+  font-style: normal;
+  font-weight: 700;
+}
+
 /* Sample account preview pill */
 .sample-account-pill {
   display: inline-flex;
@@ -1291,7 +1309,7 @@ a { color: var(--evergreen); }
     <div class="li-text">
       <div class="li-name" id="jar-name">Tip Jar #4,471</div>
       <div class="li-sub">
-        <span id="jar-tagline">Verified human · since Jan 2026</span>
+        <span id="jar-tagline">Verified Tipper · since Jan 2026</span>
         <span class="verified-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
           Phone-verified
@@ -1348,19 +1366,19 @@ a { color: var(--evergreen); }
         <div class="today-deposit">
           <div class="today-deposit-show">Sally Functional Wellness Podcast</div>
           <div class="today-deposit-ep">Ep 47 · Perimenopause supplements</div>
-          <div class="today-deposit-amount">$4.00</div>
+          <div class="today-deposit-amount">$2.00</div>
           <div class="today-deposit-foot">3 sponsors · decisions pending</div>
         </div>
         <div class="today-deposit">
           <div class="today-deposit-show">The Drive · Peter Attia</div>
           <div class="today-deposit-ep">Ep 312 · Zone 2 cardio deep-dive</div>
-          <div class="today-deposit-amount">$4.50</div>
+          <div class="today-deposit-amount">$2.00</div>
           <div class="today-deposit-foot">3 sponsors · decisions pending</div>
         </div>
         <div class="today-deposit">
           <div class="today-deposit-show">Huberman Lab</div>
           <div class="today-deposit-ep">Ep 218 · How to use light</div>
-          <div class="today-deposit-amount">$4.00</div>
+          <div class="today-deposit-amount">$2.00</div>
           <div class="today-deposit-foot">3 sponsors · decisions pending</div>
         </div>
       </div>
@@ -1427,7 +1445,7 @@ a { color: var(--evergreen); }
       <div class="cashout-amount">$<span id="cashout-amount">14.50</span></div>
       <div class="cashout-note">Transfer to your bank or PayPal. <span class="cashout-fees">$0 fees · TipJip absorbs processing</span></div>
       <div class="cashout-progress" id="cashout-progress" style="display:none;">
-        <div class="cashout-progress-label" id="cashout-progress-label">$14.50 of $20.00 minimum</div>
+        <div class="cashout-progress-label" id="cashout-progress-label">$14.50 of $15.00 minimum</div>
         <div class="cashout-progress-bar">
           <div class="cashout-progress-fill" id="cashout-progress-fill" style="width: 0%"></div>
         </div>
@@ -1441,12 +1459,17 @@ a { color: var(--evergreen); }
        =================================================================== -->
   <div class="host-cta">
     <div class="host-cta-eyebrow">⏤ Also a podcaster?</div>
-    <h3>You're earning $4 per episode. <em style="color: var(--gold-2); font-style: italic;">Your favorite podcaster could earn $44,000.</em></h3>
+    <h3>You're earning ~$2 per episode. <em style="color: var(--gold-2); font-style: italic;">Your favorite podcaster could earn ~$22,000.</em></h3>
     <p>Same mechanic. Same loop. If you host a video podcast — or know someone who does — there's a separate dashboard built for them. Sponsors fund the listeners. Listeners tip the host. The host keeps every penny.</p>
     <div class="host-cta-actions">
       <a href="dashboard.html" class="host-cta-btn primary">See the podcaster dashboard →</a>
-      <a href="index.html#sally-walkthrough" class="host-cta-btn ghost">Sally earned $44k · see the math</a>
+      <a href="index.html#sally-walkthrough" class="host-cta-btn ghost">Sally earned ~$22k · see the math</a>
     </div>
+  </div>
+
+  <!-- Demo data disclaimer -->
+  <div class="demo-disclaimer">
+    <strong>Preview &middot; sample data.</strong> Numbers shown are illustrative. Your actual earnings depend on how often you listen, which sponsors are active in your interest categories, and the tip/jip decisions you make. TipJip does not guarantee specific earnings. Anonymous up to $600/year &mdash; a W-9 (real name + SSN) is required at the $600 threshold for U.S. tax reporting (1099-NEC).
   </div>
 
 </main>
@@ -1464,12 +1487,12 @@ const DEFAULT_PERSONA = {
 
 const DEFAULT_STATE = {
   listener: {
-    jarBalance: 14.50,
-    todayEarned: 4.00,
-    monthEarned: 87.50,
+    jarBalance: 7.50,
+    todayEarned: 2.00,
+    monthEarned: 43.50,
     monthEpisodes: 22,
-    lifetimeTipped: 312,
-    lifetimeKept: 28,
+    lifetimeTipped: 156,
+    lifetimeKept: 14,
     notesSent: 17
   },
   episodes: [
@@ -1480,9 +1503,9 @@ const DEFAULT_STATE = {
       runtime: "1:27:14",
       daysAgo: 3,
       decisions: [
-        { slot: "Pre-roll · LMNT", decision: "tip", amount: 1 },
-        { slot: "Mid-stream · Meno", decision: "tip", amount: 2 },
-        { slot: "Post-roll · Eight Sleep", decision: "jip", amount: 1, note: "love your show — just not a sleep tech person" }
+        { slot: "Pre-roll · LMNT · 30s", decision: "tip", amount: 0.50 },
+        { slot: "Mid-stream · Meno · 60s", decision: "tip", amount: 1.00 },
+        { slot: "Post-roll · Eight Sleep · 30s", decision: "jip", amount: 0.50, note: "love your show — just not a sleep tech person" }
       ]
     },
     {
@@ -1492,9 +1515,9 @@ const DEFAULT_STATE = {
       runtime: "2:14:08",
       daysAgo: 5,
       decisions: [
-        { slot: "Pre-roll · AG1", decision: "tip", amount: 1.50 },
-        { slot: "Mid-stream · Function Health", decision: "tip", amount: 2 },
-        { slot: "Post-roll · InsideTracker", decision: "tip", amount: 1.50 }
+        { slot: "Pre-roll · AG1 · 30s", decision: "tip", amount: 0.50 },
+        { slot: "Mid-stream · Function Health · 60s", decision: "tip", amount: 1.00 },
+        { slot: "Post-roll · InsideTracker · 30s", decision: "tip", amount: 0.50 }
       ]
     },
     {
@@ -1504,9 +1527,9 @@ const DEFAULT_STATE = {
       runtime: "1:48:33",
       daysAgo: 7,
       decisions: [
-        { slot: "Pre-roll · AG1", decision: "tip", amount: 1.50 },
-        { slot: "Mid-stream · Eight Sleep", decision: "jip", amount: 2, note: "already a customer, save the read for someone new" },
-        { slot: "Post-roll · LMNT", decision: "tip", amount: 1 }
+        { slot: "Pre-roll · AG1 · 30s", decision: "tip", amount: 0.50 },
+        { slot: "Mid-stream · Eight Sleep · 60s", decision: "jip", amount: 1.00, note: "already a customer, save the read for someone new" },
+        { slot: "Post-roll · LMNT · 30s", decision: "tip", amount: 0.50 }
       ]
     },
     {
@@ -1516,9 +1539,9 @@ const DEFAULT_STATE = {
       runtime: "1:14:08",
       daysAgo: 10,
       decisions: [
-        { slot: "Pre-roll · LMNT", decision: "tip", amount: 1 },
-        { slot: "Mid-stream · Meno", decision: "tip", amount: 2 },
-        { slot: "Post-roll · Eight Sleep", decision: "tip", amount: 1 }
+        { slot: "Pre-roll · LMNT · 30s", decision: "tip", amount: 0.50 },
+        { slot: "Mid-stream · Meno · 60s", decision: "tip", amount: 1.00 },
+        { slot: "Post-roll · Eight Sleep · 30s", decision: "tip", amount: 0.50 }
       ]
     },
     {
@@ -1528,9 +1551,9 @@ const DEFAULT_STATE = {
       runtime: "2:32:41",
       daysAgo: 12,
       decisions: [
-        { slot: "Pre-roll · Element Health", decision: "jip", amount: 1, note: "i fast-forward your ads at this point" },
-        { slot: "Mid-stream · AG1", decision: "tip", amount: 2 },
-        { slot: "Post-roll · Bon Charge", decision: "tip", amount: 1 }
+        { slot: "Pre-roll · Element Health · 30s", decision: "jip", amount: 0.50, note: "i fast-forward your ads at this point" },
+        { slot: "Mid-stream · AG1 · 60s", decision: "tip", amount: 1.00 },
+        { slot: "Post-roll · Bon Charge · 30s", decision: "tip", amount: 0.50 }
       ]
     }
   ],
@@ -1594,7 +1617,7 @@ function renderAll() {
 
 function renderPersona() {
   document.getElementById('jar-name').textContent = `Tip Jar #${persona.jarNumber.toLocaleString()}`;
-  document.getElementById('jar-tagline').textContent = `Verified human · since ${persona.joinedDate}`;
+  document.getElementById('jar-tagline').textContent = `Verified Tipper · since ${persona.joinedDate}`;
 }
 
 function renderToday() {
@@ -1708,12 +1731,12 @@ function renderCashOut() {
   const progressFill = document.getElementById('cashout-progress-fill');
   const progressLabel = document.getElementById('cashout-progress-label');
 
-  if (balance < 20) {
+  if (balance < 15) {
     cashoutBtn.disabled = true;
-    cashoutBtn.textContent = `Need $${(20 - balance).toFixed(2)} more`;
+    cashoutBtn.textContent = `Need $${(15 - balance).toFixed(2)} more`;
     progress.style.display = 'block';
     const pct = (balance / 20) * 100;
-    progressLabel.textContent = `$${balance.toFixed(2)} of $20.00 minimum`;
+    progressLabel.textContent = `$${balance.toFixed(2)} of $15.00 minimum`;
     setTimeout(() => { progressFill.style.width = pct + '%'; }, 50);
   } else {
     cashoutBtn.disabled = false;
@@ -1725,7 +1748,7 @@ function renderCashOut() {
 document.getElementById('btn-cashout').addEventListener('click', (e) => {
   const amount = state.listener.jarBalance;
   if (amount < 20) {
-    showToast('Need at least $20 to cash out.');
+    showToast('Need at least $15 to cash out.');
     return;
   }
   burstCoins(e.clientX, e.clientY);
