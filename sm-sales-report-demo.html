@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SM Management Sales Report Demo</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7fa;
+      --panel: #ffffff;
+      --ink: #1f2937;
+      --muted: #667085;
+      --line: #d8dee8;
+      --blue: #1f67b3;
+      --green: #17865b;
+      --amber: #a86312;
+      --red: #b43d3d;
+      --soft-blue: #e9f2fb;
+      --soft-green: #e7f5ef;
+      --soft-amber: #fff2dd;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+    }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 18px 24px;
+    }
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    h1 {
+      margin: 0;
+      font-size: 21px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+    .subtitle {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    main {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: end;
+      margin-bottom: 16px;
+    }
+    label {
+      display: grid;
+      gap: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    input, select {
+      height: 36px;
+      min-width: 164px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      padding: 0 10px;
+      font: inherit;
+    }
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .kpi, section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    .kpi {
+      min-height: 88px;
+      padding: 14px;
+    }
+    .kpi .label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .kpi .value {
+      margin-top: 8px;
+      font-size: 26px;
+      line-height: 1;
+      font-weight: 700;
+    }
+    .kpi .sub {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(320px, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+    .stack {
+      display: grid;
+      gap: 16px;
+    }
+    section {
+      overflow: hidden;
+    }
+    section h2 {
+      margin: 0;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+    .table-wrap {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      background: #fbfcfe;
+    }
+    td.num, th.num { text-align: right; }
+    tr:last-child td { border-bottom: 0; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--soft-blue);
+      color: var(--blue);
+    }
+    .pill.green {
+      background: var(--soft-green);
+      color: var(--green);
+    }
+    .pill.amber {
+      background: var(--soft-amber);
+      color: var(--amber);
+    }
+    .bars {
+      display: grid;
+      gap: 12px;
+      padding: 14px 16px 16px;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: minmax(110px, 160px) 1fr 72px;
+      gap: 10px;
+      align-items: center;
+    }
+    .bar-row strong {
+      font-size: 13px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .track {
+      height: 11px;
+      background: #edf1f6;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .fill {
+      height: 100%;
+      background: var(--blue);
+    }
+    .fill.green { background: var(--green); }
+    .fill.amber { background: var(--amber); }
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .note {
+      margin: 16px 0 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    @media (max-width: 1100px) {
+      .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .layout, .two-col { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 700px) {
+      .kpis { grid-template-columns: 1fr; }
+      .topline { display: block; }
+      input, select { min-width: 100%; }
+      .toolbar { display: grid; }
+      .bar-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topline">
+      <div>
+        <h1>SM Management Sales Report Demo</h1>
+        <div class="subtitle">Mock July report for review: lead source, rep performance, product sales, and activity.</div>
+      </div>
+      <span class="pill amber">Demo Data</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="toolbar">
+      <label>Start Date <input id="startDate" type="date" value="2026-07-01"></label>
+      <label>End Date <input id="endDate" type="date" value="2026-07-31"></label>
+      <label>Rep <select id="repFilter"><option value="">All reps</option></select></label>
+      <label>Lead Source <select id="sourceFilter"><option value="">All sources</option></select></label>
+      <label>Product <select id="productFilter"><option value="">All products</option></select></label>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><div class="label">Leads</div><div id="kpiLeads" class="value">0</div><div class="sub">Opportunities created</div></div>
+      <div class="kpi"><div class="label">Contact Rate</div><div id="kpiContact" class="value">0%</div><div class="sub">Reached or moved past intake</div></div>
+      <div class="kpi"><div class="label">Proposals</div><div id="kpiProposals" class="value">0</div><div class="sub">Estimate/proposal activity</div></div>
+      <div class="kpi"><div class="label">Close Rate</div><div id="kpiCloseRate" class="value">0%</div><div class="sub">Closed from contacted leads</div></div>
+      <div class="kpi"><div class="label">Estimate Total</div><div id="kpiEstimate" class="value">$0</div><div class="sub">Proposal dollars</div></div>
+      <div class="kpi"><div class="label">Sold Total</div><div id="kpiSold" class="value">$0</div><div class="sub">Close/Won dollars</div></div>
+    </div>
+
+    <div class="layout">
+      <div class="stack">
+        <section>
+          <h2>Sales Rep Scoreboard</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Rep</th>
+                  <th class="num">Leads</th>
+                  <th class="num">Contacted</th>
+                  <th class="num">Contact %</th>
+                  <th class="num">Proposals</th>
+                  <th class="num">Won</th>
+                  <th class="num">Close %</th>
+                  <th class="num">Estimate $</th>
+                  <th class="num">Sold $</th>
+                  <th class="num">Calls</th>
+                  <th class="num">SMS</th>
+                  <th class="num">Emails</th>
+                </tr>
+              </thead>
+              <tbody id="repRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section>
+          <h2>Lead Source Breakdown</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Lead Source</th>
+                  <th class="num">Leads</th>
+                  <th class="num">Contact %</th>
+                  <th class="num">Proposals</th>
+                  <th class="num">Won</th>
+                  <th class="num">Close %</th>
+                  <th class="num">Sold $</th>
+                </tr>
+              </thead>
+              <tbody id="sourceRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section>
+          <h2>Product Sales</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th class="num">Leads</th>
+                  <th class="num">Proposals</th>
+                  <th class="num">Won</th>
+                  <th class="num">Units Sold</th>
+                  <th class="num">Estimate $</th>
+                  <th class="num">Sold $</th>
+                </tr>
+              </thead>
+              <tbody id="productRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <div class="stack">
+        <section>
+          <h2>Lead Source Mix</h2>
+          <div id="sourceBars" class="bars"></div>
+        </section>
+
+        <section>
+          <h2>Sold By Product</h2>
+          <div id="productBars" class="bars"></div>
+        </section>
+
+        <section>
+          <h2>Pipeline Snapshot</h2>
+          <div id="stageBars" class="bars"></div>
+        </section>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-top:16px;">
+      <section>
+        <h2>Recent Won Deals</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Rep</th>
+                <th>Product</th>
+                <th>Source</th>
+                <th class="num">Sold $</th>
+              </tr>
+            </thead>
+            <tbody id="wonRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Activity Totals</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Rep</th>
+                <th class="num">Calls</th>
+                <th class="num">SMS</th>
+                <th class="num">Emails</th>
+                <th class="num">Total</th>
+              </tr>
+            </thead>
+            <tbody id="activityRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <p class="note">
+      This is mock data for management review. Production should calculate this from GHL opportunity, contact, activity, and linked estimate/payment data. Current active workflows do not need to change for this report demo.
+    </p>
+  </main>
+
+  <script>
+    const plan = [
+      { rep: "Tan", source: "Ergo Flex Website", product: "Ergo-Flex System", leads: 8, contacted: 7, proposals: 5, won: 3, avg: 12800 },
+      { rep: "Tan", source: "Meta - Knee On Trac", product: "Knee On Trac", leads: 5, contacted: 4, proposals: 3, won: 1, avg: 6800 },
+      { rep: "Tan", source: "Referral", product: "Back On Trac", leads: 4, contacted: 4, proposals: 3, won: 2, avg: 7400 },
+      { rep: "Keith", source: "Ergo Flex Website", product: "Ergo-Flex System", leads: 7, contacted: 6, proposals: 4, won: 2, avg: 13200 },
+      { rep: "Keith", source: "Meta - Back On Trac", product: "Back On Trac", leads: 6, contacted: 4, proposals: 2, won: 1, avg: 7200 },
+      { rep: "Keith", source: "O2 Pro Academy", product: "O2 Pro Academy", leads: 4, contacted: 3, proposals: 2, won: 1, avg: 9800 },
+      { rep: "Lindsey", source: "Knee On Trac", product: "Knee On Trac", leads: 7, contacted: 6, proposals: 4, won: 2, avg: 6900 },
+      { rep: "Lindsey", source: "SomaCharge", product: "SomaCharge", leads: 6, contacted: 5, proposals: 3, won: 2, avg: 4100 },
+      { rep: "Lindsey", source: "Referral", product: "Ergo-Flex System", leads: 3, contacted: 3, proposals: 2, won: 1, avg: 12500 },
+      { rep: "Alex", source: "Meta - Mito2", product: "Mito2", leads: 7, contacted: 5, proposals: 3, won: 1, avg: 5300 },
+      { rep: "Alex", source: "Ergo Flex Website", product: "Ergo-Flex System", leads: 5, contacted: 4, proposals: 3, won: 1, avg: 12700 },
+      { rep: "Alex", source: "SomaCharge", product: "SomaCharge", leads: 5, contacted: 3, proposals: 2, won: 1, avg: 4200 }
+    ];
+
+    const stageOrder = ["Close/Won", "Proposal", "Working", "Attempting Contact", "No Contact/Recycle"];
+
+    function buildOpportunities() {
+      const rows = [];
+      let id = 1;
+      plan.forEach((item, planIndex) => {
+        for (let i = 0; i < item.leads; i += 1) {
+          const isWon = i < item.won;
+          const isProposal = i < item.proposals;
+          const isContacted = i < item.contacted;
+          const stage = isWon ? "Close/Won" : isProposal ? "Proposal" : isContacted ? "Working" : (i % 2 ? "Attempting Contact" : "No Contact/Recycle");
+          const day = String(((id * 3 + planIndex) % 27) + 1).padStart(2, "0");
+          const created = `2026-07-${day}`;
+          const contacted = isContacted ? `2026-07-${String(Math.min(Number(day) + 1, 28)).padStart(2, "0")}` : "";
+          const proposal = isProposal ? `2026-07-${String(Math.min(Number(day) + 3, 29)).padStart(2, "0")}` : "";
+          const close = isWon ? `2026-07-${String(Math.min(Number(day) + 8, 31)).padStart(2, "0")}` : "";
+          const estimate = isProposal ? Math.round(item.avg * (0.9 + ((i % 5) * 0.05))) : 0;
+          const sold = isWon ? estimate : 0;
+          rows.push({
+            id: `opp_${String(id).padStart(3, "0")}`,
+            contact: `con_${String(id).padStart(3, "0")}`,
+            rep: item.rep,
+            source: item.source,
+            product: item.product,
+            created,
+            contacted,
+            proposal,
+            close,
+            stage,
+            estimate,
+            sold,
+            units: isWon ? 1 : 0
+          });
+          id += 1;
+        }
+      });
+      return rows;
+    }
+
+    const opportunities = buildOpportunities();
+    const activityTargets = {
+      Tan: { call: 118, sms: 94, email: 44 },
+      Keith: { call: 103, sms: 82, email: 39 },
+      Lindsey: { call: 109, sms: 88, email: 46 },
+      Alex: { call: 96, sms: 76, email: 35 }
+    };
+
+    const byId = id => document.getElementById(id);
+    const money = value => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value || 0);
+    const pct = (part, total) => total ? `${Math.round((part / total) * 100)}%` : "0%";
+
+    function inRange(date, start, end) {
+      return date && date >= start && date <= end;
+    }
+
+    function groupBy(rows, key) {
+      return rows.reduce((map, row) => {
+        const value = row[key] || "Unassigned";
+        if (!map[value]) map[value] = [];
+        map[value].push(row);
+        return map;
+      }, {});
+    }
+
+    function summarize(rows) {
+      const contacted = rows.filter(o => o.stage !== "No Contact/Recycle" && (o.contacted || ["Working", "Proposal", "Close/Won"].includes(o.stage)));
+      const proposals = rows.filter(o => o.proposal || o.estimate > 0);
+      const won = rows.filter(o => o.stage === "Close/Won");
+      return {
+        leads: rows.length,
+        contacted: contacted.length,
+        proposals: proposals.length,
+        won: won.length,
+        estimate: rows.reduce((sum, o) => sum + o.estimate, 0),
+        sold: rows.reduce((sum, o) => sum + o.sold, 0),
+        units: rows.reduce((sum, o) => sum + o.units, 0)
+      };
+    }
+
+    function filteredRows() {
+      const start = byId("startDate").value;
+      const end = byId("endDate").value;
+      const rep = byId("repFilter").value;
+      const source = byId("sourceFilter").value;
+      const product = byId("productFilter").value;
+      return opportunities.filter(o =>
+        inRange(o.created, start, end) &&
+        (!rep || o.rep === rep) &&
+        (!source || o.source === source) &&
+        (!product || o.product === product)
+      );
+    }
+
+    function activityForRep(rep, rows) {
+      const totalRepLeads = opportunities.filter(o => o.rep === rep).length || 1;
+      const visibleRepLeads = rows.filter(o => o.rep === rep).length;
+      const ratio = visibleRepLeads / totalRepLeads;
+      const target = activityTargets[rep] || { call: 0, sms: 0, email: 0 };
+      return {
+        calls: Math.round(target.call * ratio),
+        sms: Math.round(target.sms * ratio),
+        emails: Math.round(target.email * ratio)
+      };
+    }
+
+    function rowsForTable(grouped, keyName, rows, kind) {
+      return Object.entries(grouped).sort((a, b) => summarize(b[1]).sold - summarize(a[1]).sold).map(([name, items]) => {
+        const s = summarize(items);
+        const act = kind === "rep" ? activityForRep(name, rows) : null;
+        return { name, ...s, act };
+      });
+    }
+
+    function renderBars(containerId, data, valueKey, colorClass) {
+      const max = Math.max(1, ...data.map(item => item[valueKey]));
+      byId(containerId).innerHTML = data.map(item => `
+        <div class="bar-row">
+          <strong title="${item.name}">${item.name}</strong>
+          <div class="track"><div class="fill ${colorClass || ""}" style="width:${(item[valueKey] / max) * 100}%"></div></div>
+          <div class="num">${valueKey === "sold" ? money(item[valueKey]) : item[valueKey]}</div>
+        </div>
+      `).join("");
+    }
+
+    function render() {
+      const rows = filteredRows();
+      const total = summarize(rows);
+
+      byId("kpiLeads").textContent = total.leads;
+      byId("kpiContact").textContent = pct(total.contacted, total.leads);
+      byId("kpiProposals").textContent = total.proposals;
+      byId("kpiCloseRate").textContent = pct(total.won, total.contacted);
+      byId("kpiEstimate").textContent = money(total.estimate);
+      byId("kpiSold").textContent = money(total.sold);
+
+      const repData = rowsForTable(groupBy(rows, "rep"), "Rep", rows, "rep");
+      byId("repRows").innerHTML = repData.map(r => `
+        <tr>
+          <td><span class="pill">${r.name}</span></td>
+          <td class="num">${r.leads}</td>
+          <td class="num">${r.contacted}</td>
+          <td class="num">${pct(r.contacted, r.leads)}</td>
+          <td class="num">${r.proposals}</td>
+          <td class="num">${r.won}</td>
+          <td class="num">${pct(r.won, r.contacted)}</td>
+          <td class="num">${money(r.estimate)}</td>
+          <td class="num">${money(r.sold)}</td>
+          <td class="num">${r.act.calls}</td>
+          <td class="num">${r.act.sms}</td>
+          <td class="num">${r.act.emails}</td>
+        </tr>
+      `).join("");
+
+      const sourceData = rowsForTable(groupBy(rows, "source"), "Lead Source", rows, "source");
+      byId("sourceRows").innerHTML = sourceData.map(r => `
+        <tr>
+          <td>${r.name}</td>
+          <td class="num">${r.leads}</td>
+          <td class="num">${pct(r.contacted, r.leads)}</td>
+          <td class="num">${r.proposals}</td>
+          <td class="num">${r.won}</td>
+          <td class="num">${pct(r.won, r.contacted)}</td>
+          <td class="num">${money(r.sold)}</td>
+        </tr>
+      `).join("");
+
+      const productData = rowsForTable(groupBy(rows, "product"), "Product", rows, "product");
+      byId("productRows").innerHTML = productData.map(r => `
+        <tr>
+          <td>${r.name}</td>
+          <td class="num">${r.leads}</td>
+          <td class="num">${r.proposals}</td>
+          <td class="num">${r.won}</td>
+          <td class="num">${r.units}</td>
+          <td class="num">${money(r.estimate)}</td>
+          <td class="num">${money(r.sold)}</td>
+        </tr>
+      `).join("");
+
+      renderBars("sourceBars", sourceData.map(r => ({ name: r.name, leads: r.leads })), "leads", "");
+      renderBars("productBars", productData.map(r => ({ name: r.name, sold: r.sold })), "sold", "green");
+
+      const stageData = stageOrder.map(stage => ({ name: stage, count: rows.filter(o => o.stage === stage).length })).filter(item => item.count > 0);
+      renderBars("stageBars", stageData, "count", "amber");
+
+      byId("wonRows").innerHTML = rows
+        .filter(o => o.stage === "Close/Won")
+        .sort((a, b) => b.close.localeCompare(a.close))
+        .slice(0, 12)
+        .map(o => `
+          <tr>
+            <td>${o.close}</td>
+            <td>${o.rep}</td>
+            <td>${o.product}</td>
+            <td>${o.source}</td>
+            <td class="num">${money(o.sold)}</td>
+          </tr>
+        `).join("");
+
+      const visibleReps = [...new Set(rows.map(o => o.rep))].sort();
+      byId("activityRows").innerHTML = visibleReps.map(rep => {
+        const act = activityForRep(rep, rows);
+        return `
+          <tr>
+            <td><span class="pill green">${rep}</span></td>
+            <td class="num">${act.calls}</td>
+            <td class="num">${act.sms}</td>
+            <td class="num">${act.emails}</td>
+            <td class="num">${act.calls + act.sms + act.emails}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function populateFilters() {
+      const addOptions = (id, values) => {
+        byId(id).innerHTML += [...new Set(values)].sort().map(value => `<option>${value}</option>`).join("");
+      };
+      addOptions("repFilter", opportunities.map(o => o.rep));
+      addOptions("sourceFilter", opportunities.map(o => o.source));
+      addOptions("productFilter", opportunities.map(o => o.product));
+    }
+
+    populateFilters();
+    ["startDate", "endDate", "repFilter", "sourceFilter", "productFilter"].forEach(id => {
+      byId(id).addEventListener("input", render);
+    });
+    render();
+  </script>
+</body>
+</html>
